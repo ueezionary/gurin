@@ -1150,6 +1150,17 @@
     max-height: none !important;
   }
 }
+
+/* === ФИКС БЕШЕНОГО СВАЙПА В КЕЙСАХ === */
+.case-slider-container {
+  overscroll-behavior-x: contain !important; /* Убиваем системные жесты браузера "назад/вперед" при свайпе */
+  -webkit-overflow-scrolling: touch !important; /* Чиним правильную инерцию для айфонов */
+}
+
+.case-slide {
+  scroll-snap-stop: always !important; /* Жестко тормозим свайп ровно на следующем слайде, чтобы не улетало в конец */
+}
+
   </style>
 </head>
 <body class="lang-en">
@@ -2100,6 +2111,17 @@
   </div>
 </div>
 
+<div class="gallery-item" data-category="identity" onclick="openCase('case-eimport')">
+  <img src="eimport_logobook_Страница_1.png" alt="Eimport Global">
+  <div class="item-overlay">
+    <span class="overlay-title">Eimport Global / Логобук</span>
+    <span class="overlay-action">
+      <span lang="en">-&gt; open case</span>
+      <span lang="ru">-&gt; открыть кейс</span>
+    </span>
+  </div>
+</div>
+
   </div>
 </section>
 
@@ -2435,6 +2457,86 @@
     </div>
   </div>
 </div> <!-- Закрыли модалку листовки -->
+
+<!-- КЕЙС: EIMPORT LOGOBOOK -->
+<div id="case-eimport" class="case-modal">
+  <div class="case-modal-header">
+    <div></div>
+    <button class="close-case-btn" onclick="closeCase('case-eimport')">close [x]</button>
+  </div>
+
+  <div class="case-slider-container" id="slider-eimport" onscroll="updateCaseProgress('slider-eimport', 'case-counter-eimport', 6)">
+    
+    <!-- СЛАЙД 1: ОБЛОЖКА -->
+    <div class="case-slide">
+      <div class="case-slide-content layout-center">
+        <div class="case-text-block text-center">
+          <h2 class="case-title">Eimport Global</h2>
+          <p class="case-description">
+            <span lang="en">Basic brand identity and logobook</span>
+            <span lang="ru">Базовая айдентика и логобук</span>
+          </p>
+        </div>
+        <div class="case-visual-block">
+          <img src="eimport_logobook_Страница_1.png" alt="Cover" class="solid-image">
+        </div>
+      </div>
+    </div>
+
+    <!-- СЛАЙД 2: ВАРИАЦИИ -->
+    <div class="case-slide">
+      <div class="case-slide-content layout-center">
+        <div class="case-visual-block">
+          <img src="eimport_logobook_Страница_2.png" alt="Layouts" class="solid-image">
+        </div>
+      </div>
+    </div>
+
+    <!-- СЛАЙД 3: МОНОХРОМ -->
+    <div class="case-slide">
+      <div class="case-slide-content layout-center">
+        <div class="case-visual-block">
+          <img src="eimport_logobook_Страница_3.png" alt="Monochrome" class="solid-image">
+        </div>
+      </div>
+    </div>
+
+    <!-- СЛАЙД 4: НЕДОПУСТИМОЕ ИСПОЛЬЗОВАНИЕ -->
+    <div class="case-slide">
+      <div class="case-slide-content layout-center">
+        <div class="case-visual-block">
+          <img src="eimport_logobook_Страница_4.png" alt="Do not use" class="solid-image">
+        </div>
+      </div>
+    </div>
+
+    <!-- СЛАЙД 5: ШРИФТЫ И ЦВЕТА -->
+    <div class="case-slide">
+      <div class="case-slide-content layout-center">
+        <div class="case-visual-block">
+          <img src="eimport_logobook_Страница_5.png" alt="Colors and typography" class="solid-image">
+        </div>
+      </div>
+    </div>
+
+    <!-- СЛАЙД 6: СЕТКА -->
+    <div class="case-slide">
+      <div class="case-slide-content layout-center">
+        <div class="case-visual-block">
+          <img src="eimport_logobook_Страница_6.png" alt="Grid and safe zone" class="solid-image">
+        </div>
+      </div>
+    </div>
+
+  </div> <!-- Конец слайдера -->
+
+  <!-- НАВИГАЦИЯ -->
+  <div class="case-slide-bottom-nav">
+    <button class="case-arrow-btn" onclick="slideCase('slider-eimport', 'prev')">&lt;</button>
+    <span class="case-progress" id="case-counter-eimport">01 / 06</span>
+    <button class="case-arrow-btn" onclick="slideCase('slider-eimport', 'next')">&gt;</button>
+  </div>
+</div>
 
   <!-- PAGINATION -->
   <div class="pagination-container">
