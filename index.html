@@ -426,7 +426,7 @@
       filter: drop-shadow(0 20px 35px rgba(0, 0, 0, 0.8));
     }
 
-    /* GALLERY */
+/* GALLERY */
     .gallery-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -444,7 +444,7 @@
       display: none;
     }
 
-    .gallery-item {
+.gallery-item {
       background: transparent;
       position: relative;
       overflow: hidden;
@@ -452,17 +452,22 @@
       align-items: center;
       justify-content: center;
       transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      border-radius: 8px; /* Скругление контейнера */
+      transform: translateZ(0); /* Фикс для бага с обрезкой в Chrome */
     }
+
+.gallery-item img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  border-radius: 8px;
+  filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.9));
+}
 
     .gallery-item.tall { grid-row: span 2; }
     .gallery-item.wide { grid-column: span 2; }
 
-    .gallery-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.9));
-    }
 
     /* PAGINATION */
     .pagination-container {
@@ -2012,6 +2017,13 @@
   </div>
 </div>
 
+<div class="gallery-item wide" data-category="digital" onclick="openCase('case-vkr')">
+  <img src="Валерия_ВКР_Страница_01_Изображение_0001.png" alt="Презентация ВКР">
+  <div class="item-overlay">
+    <span class="overlay-title">ВКР / Диджитал и презентации</span>
+    <span class="overlay-action">-> open presentation</span>
+  </div>
+
   </div>
 </section>
 
@@ -2169,6 +2181,142 @@
     <button class="case-arrow-btn" onclick="slideCase('slider-diet', 'next')">&gt;</button>
   </div>
 
+</div>
+
+<!-- МОДАЛЬНОЕ ОКНО ДЛЯ ПРЕЗЕНТАЦИИ ВКР (PNG) -->
+<div id="case-vkr" class="case-modal">
+  <div class="case-modal-header">
+    <div></div>
+    <button class="close-case-btn" onclick="closeCase('case-vkr')">close [x]</button>
+  </div>
+
+  <div class="case-slider-container" id="slider-vkr" onscroll="updateCaseProgress('slider-vkr', 'case-counter-vkr', 13)">
+    
+    <!-- СЛАЙД 1 -->
+    <div class="case-slide">
+      <div class="case-slide-content layout-center">
+        <div class="case-visual-block">
+          <img src="Валерия_ВКР_Страница_01_Изображение_0001.png" alt="Слайд 1" class="solid-image">
+        </div>
+      </div>
+    </div>
+
+    <!-- СЛАЙД 2 -->
+    <div class="case-slide">
+      <div class="case-slide-content layout-center">
+        <div class="case-visual-block">
+          <img src="Валерия_ВКР_Страница_02_Изображение_0001.png" alt="Слайд 2" class="solid-image">
+        </div>
+      </div>
+    </div>
+
+    <!-- СЛАЙД 3 -->
+    <div class="case-slide">
+      <div class="case-slide-content layout-center">
+        <div class="case-visual-block">
+          <img src="Валерия_ВКР_Страница_03_Изображение_0001.png" alt="Слайд 3" class="solid-image">
+        </div>
+      </div>
+    </div>
+
+    <!-- СЛАЙД 4 -->
+    <div class="case-slide">
+      <div class="case-slide-content layout-center">
+        <div class="case-visual-block">
+          <img src="Валерия_ВКР_Страница_04_Изображение_0001.png" alt="Слайд 4" class="solid-image">
+        </div>
+      </div>
+    </div>
+
+    <!-- СЛАЙД 5 -->
+    <div class="case-slide">
+      <div class="case-slide-content layout-center">
+        <div class="case-visual-block">
+          <img src="Валерия_ВКР_Страница_05_Изображение_0001.png" alt="Слайд 5" class="solid-image">
+        </div>
+      </div>
+    </div>
+
+    <!-- СЛАЙД 6 -->
+    <div class="case-slide">
+      <div class="case-slide-content layout-center">
+        <div class="case-visual-block">
+          <img src="Валерия_ВКР_Страница_06_Изображение_0001.png" alt="Слайд 6" class="solid-image">
+        </div>
+      </div>
+    </div>
+
+    <!-- СЛАЙД 7 -->
+    <div class="case-slide">
+      <div class="case-slide-content layout-center">
+        <div class="case-visual-block">
+          <img src="Валерия_ВКР_Страница_07_Изображение_0001.png" alt="Слайд 7" class="solid-image">
+        </div>
+      </div>
+    </div>
+
+    <!-- СЛАЙД 8 -->
+    <div class="case-slide">
+      <div class="case-slide-content layout-center">
+        <div class="case-visual-block">
+          <img src="Валерия_ВКР_Страница_08_Изображение_0001.png" alt="Слайд 8" class="solid-image">
+        </div>
+      </div>
+    </div>
+
+    <!-- СЛАЙД 9 -->
+    <div class="case-slide">
+      <div class="case-slide-content layout-center">
+        <div class="case-visual-block">
+          <img src="Валерия_ВКР_Страница_09_Изображение_0001.png" alt="Слайд 9" class="solid-image">
+        </div>
+      </div>
+    </div>
+
+    <!-- СЛАЙД 10 -->
+    <div class="case-slide">
+      <div class="case-slide-content layout-center">
+        <div class="case-visual-block">
+          <img src="Валерия_ВКР_Страница_10_Изображение_0001.png" alt="Слайд 10" class="solid-image">
+        </div>
+      </div>
+    </div>
+
+    <!-- СЛАЙД 11 -->
+    <div class="case-slide">
+      <div class="case-slide-content layout-center">
+        <div class="case-visual-block">
+          <img src="Валерия_ВКР_Страница_11_Изображение_0001.png" alt="Слайд 11" class="solid-image">
+        </div>
+      </div>
+    </div>
+
+    <!-- СЛАЙД 12 -->
+    <div class="case-slide">
+      <div class="case-slide-content layout-center">
+        <div class="case-visual-block">
+          <img src="Валерия_ВКР_Страница_12_Изображение_0001.png" alt="Слайд 12" class="solid-image">
+        </div>
+      </div>
+    </div>
+
+    <!-- СЛАЙД 13 -->
+    <div class="case-slide">
+      <div class="case-slide-content layout-center">
+        <div class="case-visual-block">
+          <img src="Валерия_ВКР_Страница_13_Изображение_0001.png" alt="Слайд 13" class="solid-image">
+        </div>
+      </div>
+    </div>
+
+  </div> <!-- Конец слайдера -->
+
+  <!-- Нижняя навигация со стрелочками и счетчиком -->
+  <div class="case-slide-bottom-nav">
+    <button class="case-arrow-btn" onclick="slideCase('slider-vkr', 'prev')">&lt;</button>
+    <span class="case-progress" id="case-counter-vkr">01 / 13</span>
+    <button class="case-arrow-btn" onclick="slideCase('slider-vkr', 'next')">&gt;</button>
+  </div>
 </div>
 
   <!-- PAGINATION -->
