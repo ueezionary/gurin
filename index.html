@@ -1942,11 +1942,11 @@
           <span class="cat-action">-> open</span>
         </div>
 
-        <div class="category-card" onclick="openCategory('digital', 'Digital Architecture', 'Веб и интерфейсы')">
+        <div class="category-card" onclick="openCategory('digital', 'Digital Architecture', 'Диджитал и презентации')">
           <span class="cat-num">03</span>
           <h3 class="cat-name">
             <span lang="en">Digital Architecture</span>
-            <span lang="ru">Веб и интерфейсы</span>
+            <span lang="ru">Диджитал и презентации</span>
           </h3>
           <span class="cat-action">-> open</span>
         </div>
@@ -2197,13 +2197,29 @@
       navLinks.classList.toggle('open');
     });
 
-    const langBtns = document.querySelectorAll('.lang-btn');
+const langBtns = document.querySelectorAll('.lang-btn');
+    
+    // При загрузке страницы проверяем, сохранял ли пользователь язык ранее
+    const savedLang = localStorage.getItem('siteLang') || 'en';
+    document.body.className = `lang-${savedLang}`;
+    langBtns.forEach(b => {
+      if (b.getAttribute('data-lang') === savedLang) {
+        b.classList.add('active');
+      } else {
+        b.classList.remove('active');
+      }
+    });
+
+    // При клике сохраняем выбор в память браузера
     langBtns.forEach(btn => {
       btn.addEventListener('click', () => {
         langBtns.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         const lang = btn.getAttribute('data-lang');
         document.body.className = `lang-${lang}`; 
+        
+        // Запоминаем в localStorage
+        localStorage.setItem('siteLang', lang);
       });
     });
 
