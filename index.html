@@ -314,6 +314,7 @@
       font-weight: normal;
       letter-spacing: 0.05em;
       margin-bottom: 40px;
+      
     }
 
     .spec-grid {
@@ -821,14 +822,14 @@
 }
 
 .cat-action {
-  color: #5c5c66;
-  text-align: right;
-  font-size: 0.9rem;
-  transition: color 0.3s ease;
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: all 0.3s ease;
 }
 
 .category-card:hover .cat-action {
-  color: #00e5ff;
+  opacity: 1;
+  transform: translateX(0);
 }
 
 /* --- INSIDE FOLDER VIEW --- */
@@ -1030,7 +1031,9 @@
 }
 .gallery-item:hover .item-overlay { opacity: 1; cursor: pointer; }
 .overlay-title { color: #fff; font-size: 1.2rem; margin-bottom: 10px; text-align: center; }
-.overlay-action { color: #00e5ff; font-size: 0.9rem; }
+.overlay-action span {
+  color: #ffe600 !important;
+}
 
 @media (max-width: 768px) {
   .case-slide-content, .case-slide-content.reverse {
@@ -1921,8 +1924,8 @@
 <section id="gallery" class="slide">
   <div class="works-scroll-box">
     <h2 class="works-title">
-      <span lang="en">selected works</span>
-      <span lang="ru">избранные работы</span>
+      <span lang="en" id="main-title-en">selected works</span>
+      <span lang="ru" id="main-title-ru">избранные работы</span>
     </h2>
 
 <!-- УРОВЕНЬ 1: КАТЕГОРИИ (ПАПКИ) -->
@@ -1935,7 +1938,10 @@
             <span lang="en">Brand Identity</span>
             <span lang="ru">Айдентика</span>
           </h3>
-          <span class="cat-action">-> open</span>
+          <span class="cat-action">
+  <span lang="en">-&gt; open</span>
+  <span lang="ru">-&gt; открыть</span>
+</span>
         </div>
 
         <div class="category-card" onclick="openCategory('outdoor', 'Outdoor', 'Наружная реклама')">
@@ -1944,7 +1950,10 @@
             <span lang="en">Outdoor</span>
             <span lang="ru">Наружная реклама</span>
           </h3>
-          <span class="cat-action">-> open</span>
+          <span class="cat-action">
+  <span lang="en">-&gt; open</span>
+  <span lang="ru">-&gt; открыть</span>
+</span>
         </div>
 
         <div class="category-card" onclick="openCategory('digital', 'Digital Architecture', 'Диджитал и презентации')">
@@ -1953,7 +1962,10 @@
             <span lang="en">Digital Architecture</span>
             <span lang="ru">Диджитал и презентации</span>
           </h3>
-          <span class="cat-action">-> open</span>
+          <span class="cat-action">
+  <span lang="en">-&gt; open</span>
+  <span lang="ru">-&gt; открыть</span>
+</span>
         </div>
 
         <div class="category-card" onclick="openCategory('social', 'Social Media & Promo', 'Соцсети и промо')">
@@ -1962,7 +1974,10 @@
             <span lang="en">Social Media & Promo</span>
             <span lang="ru">Соцсети и промо</span>
           </h3>
-          <span class="cat-action">-> open</span>
+          <span class="cat-action">
+  <span lang="en">-&gt; open</span>
+  <span lang="ru">-&gt; открыть</span>
+</span>
         </div>
 
         <div class="category-card" onclick="openCategory('graphics', 'Key Graphics & CG', 'Арт-направление')">
@@ -1971,7 +1986,10 @@
             <span lang="en">Key Graphics & CG</span>
             <span lang="ru">Арт-направление</span>
           </h3>
-          <span class="cat-action">-> open</span>
+          <span class="cat-action">
+  <span lang="en">-&gt; open</span>
+  <span lang="ru">-&gt; открыть</span>
+</span>
         </div>
 
         <div class="category-card" onclick="openCategory('merch', 'Merch & Packaging', 'Мерч и упаковка')">
@@ -1980,7 +1998,10 @@
             <span lang="en">Merch & Packaging</span>
             <span lang="ru">Мерч и упаковка</span>
           </h3>
-          <span class="cat-action">-> open</span>
+          <span class="cat-action">
+  <span lang="en">-&gt; open</span>
+  <span lang="ru">-&gt; открыть</span>
+</span>
         </div>
 
       </div>
@@ -1993,11 +2014,6 @@
         <span lang="ru"><- назад к разделам</span>
       </button>
       
-      <h3 class="current-cat-title">
-        <span lang="en" id="cat-title-en">Category</span>
-        <span lang="ru" id="cat-title-ru">Категория</span>
-      </h3>
-
       <div class="gallery-grid">
         
         <!-- Карточка 1: Билборд -->
@@ -2005,15 +2021,21 @@
           <img src="banner_preview.jpg" alt="Рижский Парк">
           <div class="item-overlay">
             <span class="overlay-title">Рижский Парк / Билборд</span>
-            <span class="overlay-action">-> open case</span>
+            <span class="overlay-action">
+  <span lang="en">-&gt; open case</span>
+  <span lang="ru">-&gt; открыть кейс</span>
+</span>
           </div>
         </div>
 
 <div class="gallery-item" data-category="identity" onclick="openCase('case-diet')">
-  <img src="vika.png" alt="Чёткий диетолог">
+  <img src="vika.png" alt="Врач-диетолог">
   <div class="item-overlay">
-    <span class="overlay-title">Чёткий диетолог / Айдентика</span>
-    <span class="overlay-action">-> open case</span>
+    <span class="overlay-title">Диетолог / Визитка</span>
+    <span class="overlay-action">
+      <span lang="en">-&gt; open case</span>
+      <span lang="ru">-&gt; открыть кейс</span>
+    </span>
   </div>
 </div>
 
@@ -2021,14 +2043,21 @@
   <img src="Валерия_ВКР_Страница_01_Изображение_0001.png" alt="Презентация ВКР">
   <div class="item-overlay">
     <span class="overlay-title">ВКР / Диджитал и презентации</span>
-    <span class="overlay-action">-> open presentation</span>
+    <span class="overlay-action">
+  <span lang="en">-&gt; open presentation</span>
+  <span lang="ru">-&gt; открыть презентацию</span>
+</span>
   </div>
+</div> <!-- Вот этот закрывающий тег должен быть здесь -->
 
-  <div class="gallery-item tall" data-category="social" onclick="openCase('case-lemonade')">
+<div class="gallery-item tall" data-category="social" onclick="openCase('case-lemonade')">
   <img src="leaflet_lemonade.png" alt="Листовка 2ГИС Лимонад">
   <div class="item-overlay">
     <span class="overlay-title">2ГИС / С тебя пара слов</span>
-    <span class="overlay-action">-&gt; open case</span>
+    <span class="overlay-action">
+  <span lang="en">-&gt; open case</span>
+  <span lang="ru">-&gt; открыть кейс</span>
+</span>
   </div>
 </div>
 
@@ -2308,7 +2337,7 @@
       </div>
     </div>
 
-    <!-- СЛАЙД 13 -->
+ <!-- СЛАЙД 13 -->
     <div class="case-slide">
       <div class="case-slide-content layout-center">
         <div class="case-visual-block">
@@ -2317,15 +2346,56 @@
       </div>
     </div>
 
-  </div> <!-- Конец слайдера -->
+  </div> <!-- Конец слайдера ВКР -->
 
-  <!-- Нижняя навигация со стрелочками и счетчиком -->
+  <!-- Навигация ВКР (теперь она на месте, ВНУТРИ модалки) -->
   <div class="case-slide-bottom-nav">
     <button class="case-arrow-btn" onclick="slideCase('slider-vkr', 'prev')">&lt;</button>
     <span class="case-progress" id="case-counter-vkr">01 / 13</span>
     <button class="case-arrow-btn" onclick="slideCase('slider-vkr', 'next')">&gt;</button>
   </div>
-</div>
+
+</div> <!-- Закрыли модалку ВКР -->
+
+
+<!-- МОДАЛЬНОЕ ОКНО ДЛЯ ЛИСТОВКИ -->
+<div id="case-lemonade" class="case-modal">
+  <div class="case-modal-header">
+    <div></div>
+    <button class="close-case-btn" onclick="closeCase('case-lemonade')">close [x]</button>
+  </div>
+
+  <div class="case-slider-container" id="slider-lemonade">
+    <div class="case-slide">
+      <div class="case-slide-content">
+        
+        <div class="case-text-block">
+          <h2 class="case-title" style="font-size: 2.8rem;">
+            <span lang="en">Review Promo Flyer</span>
+            <span lang="ru">Листовка для привлечения отзывов</span>
+          </h2>
+          
+          <!-- АБЗАЦ 1: ЗАДАЧА (ГОЛУБОЙ) -->
+          <p class="case-description" style="margin-bottom: 15px;">
+            <span lang="en"><span style="color: #00e5ff;">Task:</span> Attract visitors of a new café to leave reviews in&nbsp;2GIS.</span>
+            <span lang="ru"><span style="color: #00e5ff;">Задача:</span> Привлечь посетителей нового кафе оставлять отзывы в&nbsp;2ГИС.</span>
+          </p>
+          
+          <!-- АБЗАЦ 2: РЕШЕНИЕ (ОРАНЖЕВЫЙ) -->
+          <p class="case-description">
+            <span lang="en"><span style="color: #ff5500;">Solution:</span> Arranged the visual composition and fully developed the promotional copy.</span>
+            <span lang="ru"><span style="color: #ff5500;">Решение:</span> Выстроил визуальную композицию и&nbsp;полностью придумал рекламный текст для&nbsp;листовки.</span>
+          </p>
+        </div>
+
+        <div class="case-visual-block">
+          <img src="leaflet_lemonade.png" alt="Листовка для отзывов" class="solid-image" style="max-height: 75vh; width: auto;">
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div> <!-- Закрыли модалку листовки -->
 
   <!-- PAGINATION -->
   <div class="pagination-container">
@@ -2484,37 +2554,16 @@ const langBtns = document.querySelectorAll('.lang-btn');
 
     // --- ЛОГИКА ДВУХУРОВНЕВОЙ ГАЛЕРЕИ --- //
 
+
+
 function openCategory(catId, titleEn, titleRu) {
-  // Скрываем список папок, показываем сетку
   document.getElementById('gallery-categories').classList.remove('active');
   document.getElementById('gallery-grid-view').classList.add('active');
   
-  // Устанавливаем заголовок с поддержкой языков
-  document.getElementById('cat-title-en').innerText = titleEn;
-  document.getElementById('cat-title-ru').innerText = titleRu;
+  // Меняем главный заголовок вверху на название категории
+  document.getElementById('main-title-en').innerText = titleEn;
+  document.getElementById('main-title-ru').innerText = titleRu;
 
-  // Фильтруем карточки: показываем только те, что относятся к выбранной категории
-  const items = document.querySelectorAll('.gallery-item');
-  items.forEach(item => {
-    if (item.getAttribute('data-category') === catId) {
-      item.style.display = 'flex';
-    } else {
-      item.style.display = 'none';
-    }
-  });
-}
-
-function backToCategories() {
-  // Прячем сетку, возвращаем папки
-  document.getElementById('gallery-grid-view').classList.remove('active');
-  document.getElementById('gallery-categories').classList.add('active');
-}
-
-function openCategory(catId, titleEn, titleRu) {
-  document.getElementById('gallery-categories').classList.remove('active');
-  document.getElementById('gallery-grid-view').classList.add('active');
-  document.getElementById('cat-title-en').innerText = titleEn;
-  document.getElementById('cat-title-ru').innerText = titleRu;
   const items = document.querySelectorAll('.gallery-item');
   items.forEach(item => {
     if (item.getAttribute('data-category') === catId) {
@@ -2528,6 +2577,10 @@ function openCategory(catId, titleEn, titleRu) {
 function backToCategories() {
   document.getElementById('gallery-grid-view').classList.remove('active');
   document.getElementById('gallery-categories').classList.add('active');
+  
+  // Возвращаем исходный заголовок «избранные работы»
+  document.getElementById('main-title-en').innerText = 'selected works';
+  document.getElementById('main-title-ru').innerText = 'избранные работы';
 }
 
 // Открытие и закрытие кейса
