@@ -1036,14 +1036,26 @@
 }
 
 @media (max-width: 768px) {
-  .case-slide-content, .case-slide-content.reverse {
-    grid-template-columns: 1fr; gap: 40px; text-align: center;
+  .case-slide { 
+    padding: 40px 20px 80px 20px !important; 
   }
-  .case-title { font-size: 2rem; }
-  .case-subtitle { font-size: 1.5rem; }
+  .case-slide-content, .case-slide-content.reverse {
+    grid-template-columns: 1fr !important; 
+    gap: 20px !important; 
+    text-align: center;
+  }
+  .case-title { font-size: 1.6rem !important; margin-bottom: 5px !important; }
+  .case-subtitle { font-size: 1.2rem !important; margin-bottom: 10px !important; }
+  .case-description { font-size: 0.9rem !important; line-height: 1.4 !important; margin-bottom: 10px !important; }
+  
+  .case-slide .case-visual-block img { 
+    max-height: 50vh !important; 
+    width: 100% !important; 
+  }
+  
   .floating-mockup { animation: none; }
   .flat-result { flex-direction: column; align-items: center; }
-  .flat-result img { width: 90%; }
+  .flat-result img { width: 90% !important; }
 }
 
 /* --- ПРОКАЧАННАЯ НАВИГАЦИЯ КЕЙСА --- */
