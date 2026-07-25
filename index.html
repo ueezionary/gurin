@@ -1123,6 +1123,33 @@
   width: 45% !important;
   max-height: 60vh !important;
 }
+
+/* === ФИНАЛЬНЫЕ ПРАВКИ: ЛОМАЕМ ЧЕРЕДОВАНИЕ И ФИКСИМ МОБИЛКУ === */
+
+/* 1. Убиваем чередование. Текст ВСЕГДА первый (слева/сверху), картинка вторая (справа/снизу) */
+.case-slide-content, .case-slide-content.reverse {
+  grid-template-columns: 1fr 1.2fr !important;
+}
+.case-text-block { order: 1 !important; }
+.case-visual-block { order: 2 !important; }
+
+@media (max-width: 768px) {
+  /* Сетка в один столбец для телефонов */
+  .case-slide-content, .case-slide-content.reverse {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* 2. Опускаем контент вниз, чтобы кнопка close не наезжала на заголовок */
+  .case-modal-header { padding: 15px 20px !important; }
+  .case-slide { padding: 100px 20px 80px 20px !important; }
+
+  /* 3. Увеличиваем визитки на последнем слайде */
+  .case-slide .flat-result { gap: 20px !important; }
+  .case-slide .flat-result img {
+    width: 100% !important;
+    max-height: none !important;
+  }
+}
   </style>
 </head>
 <body class="lang-en">
