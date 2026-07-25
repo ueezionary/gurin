@@ -1,0 +1,1836 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>ivan.gurin. // visual engineer // Presentation Mode</title>
+
+  <style>
+
+    /* FONT CONFIGURATION */
+
+    @font-face {
+
+      font-family: 'OCR-B 10 BT';
+
+      src: url('ocrb10pitchbt_regular.woff') format('woff');
+
+      font-weight: normal;
+
+      font-style: normal;
+
+    }
+
+
+
+    * {
+
+      box-sizing: border-box;
+
+      margin: 0;
+
+      padding: 0;
+
+    }
+
+
+
+    body {
+
+      background-color: #050505;
+
+      color: #777785;
+
+      font-family: 'OCR-B 10 BT', monospace, sans-serif;
+
+      overflow: hidden; /* Main window scroll locked */
+
+      min-height: 100vh;
+
+      display: flex;
+
+      flex-direction: column;
+
+      -webkit-font-smoothing: antialiased;
+
+      -moz-osx-font-smoothing: grayscale;
+
+    }
+
+
+
+    /* 🌐 LANGUAGE TOGGLE ENGINE (PURE CSS SWITCH) */
+
+    body.lang-en [lang="ru"] { display: none !important; }
+
+    body.lang-ru [lang="en"] { display: none !important; }
+
+
+
+    /* FIXED TOP NAVIGATION */
+
+    .nav-bar {
+
+      position: fixed;
+
+      top: 40px;
+
+      left: 0;
+
+      width: 100%;
+
+      padding: 0 60px;
+
+      display: flex;
+
+      justify-content: space-between;
+
+      align-items: center;
+
+      z-index: 100;
+
+    }
+
+
+
+    .nav-logo {
+
+      color: #ffffff;
+
+      font-size: 1.1rem;
+
+      letter-spacing: 0.05em;
+
+      text-decoration: none;
+
+    }
+
+
+
+    .nav-links {
+
+      display: flex;
+
+      gap: 40px;
+
+    }
+
+
+
+    .nav-links a {
+
+      color: #777785;
+
+      font-size: 1rem;
+
+      text-decoration: none;
+
+      letter-spacing: 0.05em;
+
+      transition: color 0.4s ease, text-shadow 0.4s ease;
+
+    }
+
+
+
+    .nav-links a:hover {
+
+      color: #ffffff;
+
+    }
+
+
+
+    /* ACTIVE STATE: ORANGE NEON GLOW */
+
+    .nav-links a.active {
+
+      color: #ff5500;
+
+      text-shadow: 0 0 12px rgba(255, 85, 0, 0.7), 0 0 4px rgba(255, 85, 0, 0.4);
+
+    }
+
+
+
+    /* BRUTALIST LANGUAGE SWITCHER */
+
+    .lang-switch {
+
+      display: flex;
+
+      gap: 8px;
+
+      font-size: 1rem;
+
+      letter-spacing: 0.05em;
+
+    }
+
+
+
+    .lang-btn {
+
+      color: #333339;
+
+      cursor: pointer;
+
+      transition: color 0.3s ease;
+
+    }
+
+
+
+    .lang-btn:hover, .lang-btn.active {
+
+      color: #ffffff;
+
+    }
+
+
+
+    .lang-divider {
+
+      color: #16161a;
+
+      user-select: none;
+
+    }
+
+
+
+    /* HORIZONTAL PRESENTATION CONTAINER */
+
+    .presentation-container {
+
+      width: 100vw;
+
+      height: 100vh;
+
+      display: flex;
+
+      overflow-x: auto;
+
+      overflow-y: hidden;
+
+      scroll-snap-type: x mandatory;
+
+      scrollbar-width: none;
+
+    }
+
+
+
+    .presentation-container::-webkit-scrollbar {
+
+      display: none;
+
+    }
+
+
+
+    /* PRESENTATION SLIDE */
+
+    .slide {
+
+      flex: 0 0 100vw;
+
+      width: 100vw;
+
+      height: 100vh;
+
+      scroll-snap-align: center;
+
+      display: flex;
+
+      position: relative;
+
+      align-items: center;
+
+      justify-content: center;
+
+      padding-top: 100px;
+
+    }
+
+
+
+    /* SLIDE 1: HERO CONTAINER */
+
+    .centered-hero {
+
+      position: relative;
+
+      width: 100%;
+
+      max-width: 1450px;
+
+      padding: 30px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+    }
+
+
+
+    @keyframes floatZeroG {
+
+      0% { transform: translateY(0px) rotate(0deg); }
+
+      50% { transform: translateY(-12px) rotate(0.4deg); }
+
+      100% { transform: translateY(0px) rotate(0deg); }
+
+    }
+
+
+
+    .chrome-svg {
+
+      display: block;
+
+      width: 100%;
+
+      height: auto;
+
+      opacity: 0.95;
+
+      animation: floatZeroG 7s ease-in-out infinite;
+
+      will-change: transform;
+
+    }
+
+
+
+    .hero-title {
+
+      position: absolute;
+
+      z-index: 10;
+
+      color: #ffffff;
+
+      text-align: center;
+
+      text-transform: none;
+
+      letter-spacing: 0.08em;
+
+      pointer-events: none;
+
+      font-size: 3.2rem;
+
+      font-weight: normal;
+
+    }
+
+
+
+    /* SLIDE 2: ABOUT GRID */
+
+    .about-grid {
+
+      display: flex;
+
+      width: 100%;
+
+      max-width: 1200px;
+
+      gap: 80px;
+
+      align-items: center;
+
+      padding: 0 40px;
+
+    }
+
+
+
+    .about-photo-frame {
+
+      flex: 0 0 380px;
+
+      height: 520px;
+
+      background-color: #0d0d11;
+
+      border: 1px solid #16161a;
+
+      overflow: hidden;
+
+    }
+
+
+
+    .about-photo-frame img {
+
+      width: 100%;
+
+      height: 100%;
+
+      object-fit: cover;
+
+      filter: grayscale(100%) contrast(115%);
+
+      opacity: 0.85;
+
+    }
+
+
+
+    .about-text-content {
+
+      flex: 1;
+
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 32px;
+
+    }
+
+
+
+    .about-text-content h2 {
+
+      color: #ffffff;
+
+      font-size: 1.6rem;
+
+      font-weight: normal;
+
+      letter-spacing: 0.05em;
+
+    }
+
+
+
+    .about-bio-p {
+
+      font-size: 0.95rem;
+
+      line-height: 1.6;
+
+      color: #777785;
+
+      max-width: 600px;
+
+    }
+
+
+
+    .about-bio-p.vision-highlight {
+
+      color: #ffffff;
+
+      border-left: 2px solid #333339;
+
+      padding-left: 20px;
+
+    }
+
+
+
+    /* INTERNAL SCROLLABLE VIEWPORTS (SLIDES 3 & 4) */
+
+    .works-scroll-box {
+
+      width: 100%;
+
+      max-width: 1350px;
+
+      height: calc(100vh - 160px);
+
+      overflow-y: scroll;
+
+      padding: 20px 40px;
+
+      scrollbar-width: none;
+
+    }
+
+
+
+    .works-scroll-box::-webkit-scrollbar {
+
+      display: none;
+
+    }
+
+
+
+    .works-title {
+
+      color: #ffffff;
+
+      font-size: 1.6rem;
+
+      font-weight: normal;
+
+      letter-spacing: 0.05em;
+
+      margin-bottom: 60px;
+
+    }
+
+
+
+    /* SLIDE 3: SKILLS CAPABILITIES HARD SPEC */
+
+    .spec-grid {
+
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 80px;
+
+      width: 100%;
+
+      padding-bottom: 60px;
+
+    }
+
+
+
+    /* COLOR SPECTRUM OVERRIDES */
+
+    .mod-violet { --mod-color: #a200ff; }
+
+    .mod-cosmo  { --mod-color: #ff007f; }
+
+    .mod-blue   { --mod-color: #00e5ff; }
+
+    .mod-yellow { --mod-color: #ffea00; }
+
+
+
+    .spec-module {
+
+      display: grid;
+
+      grid-template-areas: "header content visual";
+
+      grid-template-columns: 260px 1fr 520px;
+
+      gap: 60px;
+
+      border-bottom: 1px solid #16161a;
+
+      padding-bottom: 60px;
+
+    }
+
+
+
+    .spec-module:nth-child(even) {
+
+      grid-template-areas: "visual content header";
+
+      grid-template-columns: 520px 1fr 260px;
+
+    }
+
+
+
+    .spec-module:last-child {
+
+      border-bottom: none;
+
+      padding-bottom: 0;
+
+    }
+
+
+
+    .spec-header {
+
+      grid-area: header;
+
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 8px;
+
+    }
+
+
+
+    .spec-num {
+
+      color: var(--mod-color);
+
+      font-size: 0.9rem;
+
+      font-weight: bold;
+
+    }
+
+
+
+    .spec-header h3 {
+
+      color: #ffffff;
+
+      font-size: 1.3rem;
+
+      font-weight: normal;
+
+      letter-spacing: 0.05em;
+
+    }
+
+
+
+    .spec-content {
+
+      grid-area: content;
+
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 20px;
+
+    }
+
+
+
+    .spec-log-list {
+
+      list-style: none;
+
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 10px;
+
+    }
+
+
+
+    .spec-log-list li {
+
+      font-size: 0.9rem;
+
+      line-height: 1.5;
+
+      color: #777785;
+
+      position: relative;
+
+      padding-left: 20px;
+
+    }
+
+
+
+    .spec-log-list li::before {
+
+      content: "->";
+
+      position: absolute;
+
+      left: 0;
+
+      color: #333339;
+
+    }
+
+
+
+    .spec-user-note {
+
+      font-size: 0.9rem;
+
+      color: #ffffff;
+
+      line-height: 1.6;
+
+      border-left: 1px solid var(--mod-color);
+
+      padding-left: 15px;
+
+      margin-top: 5px;
+
+    }
+
+
+
+    .spec-visual-window {
+
+      grid-area: visual;
+
+      width: 100%;
+
+      height: 400px;
+
+      background: transparent;
+
+      border: none;
+
+      position: relative;
+
+      overflow: hidden;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+    }
+
+
+
+    .spec-visual-window img {
+
+      width: 100%;
+
+      height: 100%;
+
+      object-fit: contain;
+
+      filter: drop-shadow(0 20px 35px rgba(0, 0, 0, 0.8));
+
+    }
+
+
+
+    /* SLIDE 4: TEXTLESS GALLERY ZINE-GRID */
+
+    .gallery-grid {
+
+      display: grid;
+
+      grid-template-columns: repeat(3, 1fr);
+
+      grid-auto-rows: 320px;
+
+      gap: 24px;
+
+      width: 100%;
+
+      max-width: 1200px;
+
+      height: calc(100vh - 160px);
+
+      overflow-y: scroll;
+
+      padding-bottom: 60px;
+
+      scrollbar-width: none;
+
+    }
+
+
+
+    .gallery-grid::-webkit-scrollbar {
+
+      display: none;
+
+    }
+
+
+
+    .gallery-item {
+
+      background: transparent;
+
+      position: relative;
+
+      overflow: hidden;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+
+    }
+
+
+
+    .gallery-item.tall { grid-row: span 2; }
+
+    .gallery-item.wide { grid-column: span 2; }
+
+
+
+    .gallery-item img {
+
+      width: 100%;
+
+      height: 100%;
+
+      object-fit: contain;
+
+      filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.9));
+
+    }
+
+
+
+    .slide-content-placeholder {
+
+      color: #33333a;
+
+      font-size: 1.2rem;
+
+      letter-spacing: 0.1em;
+
+    }
+
+
+
+    /* DOTS PAGINATION NAVIGATION */
+
+    .pagination-container {
+
+      position: fixed;
+
+      bottom: 45px;
+
+      left: 0;
+
+      width: 100%;
+
+      display: flex;
+
+      justify-content: center;
+
+      align-items: center;
+
+      gap: 14px;
+
+      z-index: 80;
+
+    }
+
+
+
+    .pagination-dot {
+
+      width: 16px;
+
+      height: 2px;
+
+      background-color: #222226;
+
+      transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+
+      text-decoration: none;
+
+    }
+
+
+
+    .pagination-dot.active {
+
+      background-color: #ffffff;
+
+      width: 36px;
+
+    }
+
+
+
+    /* RESPONSIVE LAYOUT */
+
+    @media (max-width: 1100px) {
+
+      .spec-module, .spec-module:nth-child(even) {
+
+        grid-template-areas: 
+
+          "header"
+
+          "content"
+
+          "visual";
+
+        grid-template-columns: 1fr;
+
+        gap: 30px;
+
+        padding-bottom: 60px;
+
+      }
+
+      .spec-visual-window {
+
+        height: 350px;
+
+        margin-top: 10px;
+
+      }
+
+      .gallery-grid {
+
+        grid-template-columns: repeat(2, 1fr);
+
+        grid-auto-rows: 240px;
+
+        gap: 16px;
+
+      }
+
+      .gallery-item.wide { grid-column: span 1; }
+
+      .about-grid { 
+
+        flex-direction: column; 
+
+        gap: 40px; 
+
+        padding: 0 20px;
+
+      }
+
+      .about-photo-frame { 
+
+        flex: 0 0 320px; 
+
+        width: 100%; 
+
+        max-width: 340px; 
+
+      }
+
+      .works-scroll-box { 
+
+        padding: 10px 20px; 
+
+        height: calc(100vh - 140px);
+
+      }
+
+    }
+
+  </style>
+
+</head>
+
+<body class="lang-en"> <!-- Default system language set to English -->
+
+
+
+  <!-- TOP MENU NAVIGATION -->
+
+  <nav class="nav-bar">
+
+<a href="#hero" class="nav-logo">gurin.</a>
+
+
+
+<div class="nav-links">
+
+  <a href="#about">
+
+    <span lang="en">about</span>
+
+    <span lang="ru">о себе</span>
+
+  </a>
+
+  <a href="#skills">
+
+    <span lang="en">skills</span>
+
+    <span lang="ru">навыки</span>
+
+  </a>
+
+  <a href="#gallery">
+
+    <span lang="en">gallery</span>
+
+    <span lang="ru">галерея</span>
+
+  </a>
+
+  <a href="#contact">
+
+    <span lang="en">contact</span>
+
+    <span lang="ru">контакты</span>
+
+  </a>
+
+</div>
+
+
+
+<!-- TYPOGRAPHIC LANGUAGE SWITCHER -->
+
+<div class="lang-switch">
+
+  <span class="lang-btn active" data-lang="en">en</span>
+
+  <span class="lang-divider">//</span>
+
+  <span class="lang-btn" data-lang="ru">ru</span>
+
+</div>
+
+  </nav>
+
+
+
+  <!-- MAIN SCOPE -->
+
+  <main class="presentation-container">
+
+
+
+<!-- SLIDE 1: HERO -->
+
+<section id="hero" class="slide">
+
+  <div class="centered-hero">
+
+    <h1 class="hero-title">
+
+      <span lang="en">free designer</span>
+
+      <span lang="ru">вольный дизайнер</span>
+
+    </h1>
+
+    <svg viewBox="-100 -100 1610.88 872.04" xmlns="http://www.w3.org/2000/svg" class="chrome-svg">
+
+      <defs>
+
+        <filter id="heavy-liquid-chrome" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%">
+
+          <feGaussianBlur in="SourceAlpha" stdDeviation="24" result="heightMap" />
+
+          <feSpecularLighting in="heightMap" surfaceScale="45" specularConstant="2.2" specularExponent="14" lighting-color="#4466ff" result="specularOut">
+
+            <feDistantLight azimuth="0" elevation="45">
+
+              <animate attributeName="azimuth" values="0; 160; 60; 290; 140; 360" dur="3.5s" repeatCount="indefinite" />
+
+              <animate attributeName="elevation" values="30; 65; 35; 75; 50; 30" dur="2.7s" repeatCount="indefinite" />
+
+            </feDistantLight>
+
+          </feSpecularLighting>
+
+          <feComposite in="specularOut" in2="SourceAlpha" operator="in" opacity="0.95" result="specularCut" />
+
+          <feColorMatrix type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" in="SourceAlpha" result="steelBase"/>
+
+          <feBlend mode="screen" in="specularCut" in2="steelBase" result="blendedMetal" />
+
+          <feComponentTransfer in="blendedMetal" result="liquidChrome">
+
+            <feFuncR type="table" tableValues="0 0.02 0.1 0.35 0.55 0.3 0.1 0.25 0.5" />
+
+            <feFuncG type="table" tableValues="0 0 0 0 0 0 0 0 0" />
+
+            <feFuncB type="table" tableValues="0.05 0.25 0.6 0.4 0.5 0.4 0.18 0.35 0.6" />
+
+          </feComponentTransfer>
+
+          <feComposite in="liquidChrome" in2="SourceAlpha" operator="in" result="finalChrome" />
+
+        </filter>
+
+        <filter id="ultra-melting-waves" color-interpolation-filters="sRGB" x="-50%" y="-50%" width="200%" height="200%">
+
+          <feTurbulence type="fractalNoise" baseFrequency="0.002 0.005" numOctaves="2" result="heavyNoise">
+
+            <animate attributeName="baseFrequency" values="0.002 0.005; 0.004 0.010; 0.002 0.005" dur="7s" repeatCount="indefinite" />
+
+          </feTurbulence>
+
+          <feDisplacementMap in="SourceGraphic" in2="heavyNoise" scale="35" xChannelSelector="R" yChannelSelector="G" />
+
+        </filter>
+
+      </defs>
+
+      <g filter="url(#ultra-melting-waves)">
+
+        <g filter="url(#heavy-liquid-chrome)">
+
+          <path fill="#ffffff" d="M980.72,160.08c10.51,8.16,25.65,5.51,38.18,1.07,7.93-2.81,15.63-6.2,23.05-10.13,23.15-12.24,131.42-112.82,58.99-117.06-47.47-2.78-125.78,51.24-130.05,100.31h0c-.83,9.57,2.24,19.93,9.82,25.81Z"/>
+
+          <path fill="#ffffff" d="M1410.06,160.83c-2.92-11.07-14.06-18.57-25.41-20.05-11.35-1.48-22.79,2.04-33.2,6.8-42.91,19.64-73.07,59.75-94.42,101.83-21.35,42.08-35.73,87.46-57.84,129.15-5.94,11.21-18.67,23.79-29.09,16.56-5.87-4.07-6.72-12.3-6.58-19.43,1.46-71.53,46.32-133.76,71.95-200.56,9.3-24.24,15.02-55.09-7.11-72.11-9.57-7.36-22-9.92-33.84-7.52-48.11,9.77-92.84,54.52-121.16,92.36-17.8,23.79-34.93,48.24-50.47,73.58-2.56-38.67-31.9-83.64-74.88-68.14-42.71,15.41-72,68.22-92.58,105.32-20.24,36.49-39.21,76.25-52.91,117.05-34.27-29.28-69.05-57.93-92.86-95.83-14.88-23.68-24.21-56.37-6.79-78.25,6.04-7.59,14.6-12.78,23.4-16.89,38.54-18.01,83.01-17.76,123.66-30.3,23.8-7.34,46.22-19.12,65.78-34.54,12.32-9.72,24.04-21.8,27.32-37.15C959.7,44.62,799.75-2.41,743.98.1c-65.78,2.96-97.03,67.12-125.28,117.77-6.8,12.2-13.38,24.52-19.73,36.95-2.19-2.36-4.85-4.21-8.09-5.33-11.48-3.97-23.55,3.76-32.51,11.96-47.22,43.19-67.47,105.96-93.12,162.66-5.25,11.6-35.35,82.24-48.71,77.81-21.16-7.02,8.49-88.21,12.81-101.1,3.52-10.51,24.75-46.5,10.56-56.34-6.35-4.41-17.01-.25-26.14,4.85,8.47-25.01,15.96-50.34,22.23-76,5.99-24.54,10.89-49.7,9.26-74.91-1.1-17.01-6.61-35.78-21.59-43.93-11.83-6.44-26.41-4.46-39.34-.71-23.99,6.95-41.91,20.7-62.64,33.27-2.52-11.8,1.24-19.62-9.9-28.12-18.18-13.88-48.16-4.19-66.56,3.48h0c-49.79,20.77-92.69,55.76-128.58,96.04-31.12,34.93-57.9,75.09-69.41,120.44-4.27,16.84-5.14,37.63,8.42,48.5,10.69,8.57,26.12,7.29,39.44,4.08,66.01-15.93,117.6-66.36,178.51-96.38,4.99-2.46,11.73-4.5,15.47-.39,2.99,3.28,1.99,8.42.77,12.68-21.62,75.74-55.6,147.94-100.18,212.87-6.1,8.89-16.3,18.77-25.98,14.03-4.61-2.26-7.15-7.24-9.11-11.99-14.21-34.56-14.11-74.44-32.69-106.86-3.6-6.27-8.01-12.32-14.15-16.14-10.02-6.23-23.27-5.42-33.94-.36-10.66,5.06-19.12,13.8-26.47,23.04C5.25,414.86-6.14,487.22,2.9,554.23c3.51,26.05,10.08,52.23,24.29,74.34,14.21,22.11,37.02,39.76,63.11,42.94,32.52,3.95,63.46-14.44,88.93-35.04,58.28-47.13,102.59-108.5,139.4-174.24-.61,68.94,10.91,152.47,70.72,144.9,12.94-1.64,24.14-9.61,34.03-18.12,35.43-30.47,61.31-70.26,85.16-110.54-.94,26.45-.19,52.94,2.45,79.32.78,7.77,1.79,15.78,5.73,22.52,3.94,6.74,11.56,11.94,19.26,10.68,5.92-.97,10.62-5.38,14.69-9.79,48.66-52.71,60.93-129.74,102.23-188.38,2.55-3.61,5.69-7.45,10.08-7.99,7.69-.93,12.23,8.25,14.1,15.76,10.6,42.5,12.83,87.13,27.93,128.25,15.1,41.12,47.79,80.16,91.34,84.84,27.35,2.94,55.85-9.09,72.82-30.75,15.33-19.57,20.77-46.41,14.73-70.47,15.25-13.34,28.71-29.15,40.61-44.12,10.47-13.18,21.35-27.54,31.9-42.74-7.66,42.51-7.76,86.16,2.72,128.02.81,3.24,2.6,6.2,5.24,8.24,8.41,6.49,17.53-.96,23.42-7.98,37.04-44.1,79.01-142.71,98.92-144.06s20.89,26.46,24.14,42.43c3.43,16.85,6.66,33.84,12.7,50,11.34,30.34,35.68,59.47,67.98,61.87,19.03,1.41,37.87-6.91,52.29-19.41,14.42-12.5,24.92-28.9,33.87-45.75,31.53-59.35,45.93-126.18,72.14-188.07,17.75-41.91,40.88-81.49,56.62-124.19,3.06-8.29,5.86-17.28,3.6-25.83ZM844.61,144.29c4.65,10.89-33.54,15.76-49.05,18.66-12.65,2.36-55.86,5.62-50.94-4.83,26.08-55.33,96.5-21.99,99.99-13.83ZM245.13,168.3c-8.82,14.51-21.47,26.28-34.56,37.09-13.05,10.77-27.09,20.99-43.31,25.78-2.04.6-4.44,1.06-6.14-.23-2.74-2.09-1.21-6.43.61-9.36h0c11.23-18.05,25.39-34.4,41.75-47.99,7.23-6,33.67-23.93,42.48-15.56,2.7,2.57,1.11,7.09-.83,10.27Z"/>
+
+        </g>
+
+        <g fill="none" stroke="#5c5c66" stroke-width="1.3px" opacity="0.85" style="pointer-events: none;">
+
+          <path d="M980.72,160.08c10.51,8.16,25.65,5.51,38.18,1.07,7.93-2.81,15.63-6.2,23.05-10.13,23.15-12.24,131.42-112.82,58.99-117.06-47.47-2.78-125.78,51.24-130.05,100.31h0c-.83,9.57,2.24,19.93,9.82,25.81Z"/>
+
+          <path d="M1410.06,160.83c-2.92-11.07-14.06-18.57-25.41-20.05-11.35-1.48-22.79,2.04-33.2,6.8-42.91,19.64-73.07,59.75-94.42,101.83-21.35,42.08-35.73,87.46-57.84,129.15-5.94,11.21-18.67,23.79-29.09,16.56-5.87-4.07-6.72-12.3-6.58-19.43,1.46-71.53,46.32-133.76,71.95-200.56,9.3-24.24,15.02-55.09-7.11-72.11-9.57-7.36-22-9.92-33.84-7.52-48.11,9.77-92.84,54.52-121.16,92.36-17.8,23.79-34.93,48.24-50.47,73.58-2.56-38.67-31.9-83.64-74.88-68.14-42.71,15.41-72,68.22-92.58,105.32-20.24,36.49-39.21,76.25-52.91,117.05-34.27-29.28-69.05-57.93-92.86-95.83-14.88-23.68-24.21-56.37-6.79-78.25,6.04-7.59,14.6-12.78,23.4-16.89,38.54-18.01,83.01-17.76,123.66-30.3,23.8-7.34,46.22-19.12,65.78-34.54,12.32-9.72,24.04-21.8,27.32-37.15C959.7,44.62,799.75-2.41,743.98.1c-65.78,2.96-97.03,67.12-125.28,117.77-6.8,12.2-13.38,24.52-19.73,36.95-2.19-2.36-4.85-4.21-8.09-5.33-11.48-3.97-23.55,3.76-32.51,11.96-47.22,43.19-67.47,105.96-93.12,162.66-5.25,11.6-35.35,82.24-48.71,77.81-21.16-7.02,8.49-88.21,12.81-101.1,3.52-10.51,24.75-46.5,10.56-56.34-6.35-4.41-17.01-.25-26.14,4.85,8.47-25.01,15.96-50.34,22.23-76,5.99-24.54,10.89-49.7,9.26-74.91-1.1-17.01-6.61-35.78-21.59-43.93-11.83-6.44-26.41-4.46-39.34-.71-23.99,6.95-41.91,20.7-62.64,33.27-2.52-11.8,1.24-19.62-9.9-28.12-18.18-13.88-48.16-4.19-66.56,3.48h0c-49.79,20.77-92.69,55.76-128.58,96.04-31.12,34.93-57.9,75.09-69.41,120.44-4.27,16.84-5.14,37.63,8.42,48.5,10.69,8.57,26.12,7.29,39.44,4.08,66.01-15.93,117.6-66.36,178.51-96.38,4.99-2.46,11.73-4.5,15.47-.39,2.99,3.28,1.99,8.42.77,12.68-21.62,75.74-55.6,147.94-100.18,212.87-6.1,8.89-16.3,18.77-25.98,14.03-4.61-2.26-7.15-7.24-9.11-11.99-14.21-34.56-14.11-74.44-32.69-106.86-3.6-6.27-8.01-12.32-14.15-16.14-10.02-6.23-23.27-5.42-33.94-.36-10.66,5.06-19.12,13.8-26.47,23.04C5.25,414.86-6.14,487.22,2.9,554.23c3.51,26.05,10.08,52.23,24.29,74.34,14.21,22.11,37.02,39.76,63.11,42.94,32.52,3.95,63.46-14.44,88.93-35.04,58.28-47.13,102.59-108.5,139.4-174.24-.61,68.94,10.91,152.47,70.72,144.9,12.94-1.64,24.14-9.61,34.03-18.12,35.43-30.47,61.31-70.26,85.16-110.54-.94,26.45-.19,52.94,2.45,79.32.78,7.77,1.79,15.78,5.73,22.52,3.94,6.74,11.56,11.94,19.26,10.68,5.92-.97,10.62-5.38,14.69-9.79,48.66-52.71,60.93-129.74,102.23-188.38,2.55-3.61,5.69-7.45,10.08-7.99,7.69-.93,12.23,8.25,14.1,15.76,10.6,42.5,12.83,87.13,27.93,128.25,15.1,41.12,47.79,80.16,91.34,84.84,27.35,2.94,55.85-9.09,72.82-30.75,15.33-19.57,20.77-46.41,14.73-70.47,15.25-13.34,28.71-29.15,40.61-44.12,10.47-13.18,21.35-27.54,31.9-42.74-7.66,42.51-7.76,86.16,2.72,128.02.81,3.24,2.6,6.2,5.24,8.24,8.41,6.49,17.53-.96,23.42-7.98,37.04-44.1,79.01-142.71,98.92-144.06s20.89,26.46,24.14,42.43c3.43,16.85,6.66,33.84,12.7,50,11.34,30.34,35.68,59.47,67.98,61.87,19.03,1.41,37.87-6.91,52.29-19.41,14.42-12.5,24.92-28.9,33.87-45.75,31.53-59.35,45.93-126.18,72.14-188.07,17.75-41.91,40.88-81.49,56.62-124.19,3.06-8.29,5.86-17.28,3.6-25.83ZM844.61,144.29c4.65,10.89-33.54,15.76-49.05,18.66-12.65,2.36-55.86,5.62-50.94-4.83,26.08-55.33,96.5-21.99,99.99-13.83ZM245.13,168.3c-8.82,14.51-21.47,26.28-34.56,37.09-13.05,10.77-27.09,20.99-43.31,25.78-2.04.6-4.44,1.06-6.14-.23-2.74-2.09-1.21-6.43.61-9.36h0c11.23-18.05,25.39-34.4,41.75-47.99,7.23-6,33.67-23.93,42.48-15.56,2.7,2.57,1.11,7.09-.83,10.27Z"/>
+
+        </g>
+
+      </g>
+
+    </svg>
+
+  </div>
+
+</section>
+
+
+
+<!-- SLIDE 2: ABOUT -->
+
+<section id="about" class="slide">
+
+  <div class="about-grid">
+
+    <div class="about-photo-frame">
+
+      <img src="" alt="" />
+
+    </div>
+
+    <div class="about-text-content">
+
+      <h2>
+
+        <span lang="en">about me // story & vision</span>
+
+        <span lang="ru">о себе // история и видение</span>
+
+      </h2>
+
+      <p class="about-bio-p">
+
+        <span lang="en">[your origin story. how you approached visual engineering, key milestones, and independent execution.]</span>
+
+        <span lang="ru">[твоя история. путь к визуальной инженерии, ключевые этапы и опыт независимой работы.]</span>
+
+      </p>
+
+      <p class="about-bio-p">
+
+        <span lang="en">[current lifestyle and operational framework. zero bureaucracy, high-octane freelance execution.]</span>
+
+        <span lang="ru">[текущий образ жизни и принципы работы. ноль бюрократии, эффективный фриланс.]</span>
+
+      </p>
+
+      <p class="about-bio-p vision-highlight">
+
+        <span lang="en">[global design vision. a manifesto on pure, functional, and uncompromising visual products.]</span>
+
+        <span lang="ru">[глобальное видение дизайна. манифест о чистых, functional-интерфейсах и бескомпромиссных визуальных продуктах.]</span>
+
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- SLIDE 3: SKILLS DATA SHEET -->
+
+<section id="skills" class="slide">
+
+  <div class="works-scroll-box">
+
+    <h2 class="works-title">
+
+      <span lang="en">capabilities // hard specification</span>
+
+      <span lang="ru">возможности // жесткая спецификация</span>
+
+    </h2>
+
+    
+
+    <div class="spec-grid">
+
+      
+
+      <!-- MOD.01: BRAND SYSTEMS (VIOLET) -->
+
+      <div class="spec-module mod-violet">
+
+        <div class="spec-header">
+
+          <span class="spec-num">[mod.01]</span>
+
+          <h3>
+
+            <span lang="en">brand systems</span>
+
+            <span lang="ru">системы бренда</span>
+
+          </h3>
+
+        </div>
+
+        <div class="spec-content">
+
+          <ul class="spec-log-list">
+
+            <li>
+
+              <span lang="en">Development of holistic visual concepts, brand identities, and design systems.</span>
+
+              <span lang="ru">Разработка целостных визуальных концепций, айдентики и дизайн-систем.</span>
+
+            </li>
+
+            <li>
+
+              <span lang="en">Visual language systematization: building guidelines and scalable brand books.</span>
+
+              <span lang="ru">Систематизация визуального языка: создание гайдлайнов и масштабируемых брендбуков.</span>
+
+            </li>
+
+            <li>
+
+              <span lang="en">Maintaining absolute brand consistency across all physical and digital touchpoints.</span>
+
+              <span lang="ru">Поддержание абсолютной консистентности бренда на всех точках контакта (физических и цифровых).</span>
+
+            </li>
+
+          </ul>
+
+          <p class="spec-user-note">
+
+            <span lang="en">[Your direct note: e.g., how you build scalable systems that remain unbreakable in production.]</span>
+
+            <span lang="ru">[Твое примечание: например, о том, как ты создаешь масштабируемые системы, которые не ломаются в продакшене.]</span>
+
+          </p>
+
+        </div>
+
+        <div class="spec-visual-window">
+
+          <!-- Float your clean 3D transparent image asset here -->
+
+        </div>
+
+      </div>
+
+
+
+      <!-- MOD.02: DIGITAL ARCHITECTURE (COSMO) -->
+
+      <div class="spec-module mod-cosmo">
+
+        <div class="spec-header">
+
+          <span class="spec-num">[mod.02]</span>
+
+          <h3>
+
+            <span lang="en">digital architecture</span>
+
+            <span lang="ru">цифровая архитектура</span>
+
+          </h3>
+
+        </div>
+
+        <div class="spec-content">
+
+          <ul class="spec-log-list">
+
+            <li>
+
+              <span lang="en">UI/UX architecture: end-to-end design of websites, web applications, and landing pages.</span>
+
+              <span lang="ru">UI/UX архитектура: проектирование сайтов, веб-приложений и лендингов от А до Я.</span>
+
+            </li>
+
+            <li>
+
+              <span lang="en">Advanced prototyping, interaction design, and fully responsive layouts.</span>
+
+              <span lang="ru">Передовое прототипирование, дизайн взаимодействия (interaction design) и полностью адаптивные макеты.</span>
+
+            </li>
+
+            <li>
+
+              <span lang="en">Custom scroll logic, motion design, and user attention management.</span>
+
+              <span lang="ru">Кастомная логика скролла, моушн-дизайн и управление вниманием пользователя.</span>
+
+            </li>
+
+          </ul>
+
+          <p class="spec-user-note">
+
+            <span lang="en">[Your direct note: e.g., why you engineer systems from zero instead of reusing boring standard templates.]</span>
+
+            <span lang="ru">[Твое примечание: например, почему ты проектируешь системы с нуля, а не используешь скучные стандартные шаблоны.]</span>
+
+          </p>
+
+        </div>
+
+        <div class="spec-visual-window">
+
+          <!-- Float your digital 3D interface asset here -->
+
+        </div>
+
+      </div>
+
+
+
+      <!-- MOD.03: KEY VISUALS (BLUE) -->
+
+      <div class="spec-module mod-blue">
+
+        <div class="spec-header">
+
+          <span class="spec-num">[mod.03]</span>
+
+          <h3>
+
+            <span lang="en">key visuals</span>
+
+            <span lang="ru">главные визуальные образы</span>
+
+          </h3>
+
+        </div>
+
+        <div class="spec-content">
+
+          <ul class="spec-log-list">
+
+            <li>
+
+              <span lang="en">Creation of high-impact graphic concepts and master assets for global campaigns.</span>
+
+              <span lang="ru">Создание мощных графических концепций и мастер-ассетов для глобальных кампаний.</span>
+
+            </li>
+
+            <li>
+
+              <span lang="en">Cross-medium experimentation: UI animation, motion graphics, and high-end CGI/3D execution.</span>
+
+              <span lang="ru">Эксперименты на стыке медиа: UI-анимация, моушн-графика и высокотехнологичное CGI/3D исполнение.</span>
+
+            </li>
+
+            <li>
+
+              <span lang="en">Curation of dense conceptual presentations for high-stakes client pitches.</span>
+
+              <span lang="ru">Курирование плотных концептуальных презентаций для защиты идей перед крупными клиентами.</span>
+
+            </li>
+
+          </ul>
+
+          <p class="spec-user-note">
+
+            <span lang="en">[Your direct note: e.g., on executing that main heavy visual anchor that carries the entire project.]</span>
+
+            <span lang="ru">[Твое примечание: например, о реализации того самого главного визуального якоря, который держит весь проект.]</span>
+
+          </p>
+
+        </div>
+
+        <div class="spec-visual-window">
+
+          <!-- Your heavy liquid chrome asset fits perfectly here -->
+
+        </div>
+
+      </div>
+
+
+
+      <!-- MOD.04: PRE-PRESS & PRODUCTION (YELLOW) -->
+
+      <div class="spec-module mod-yellow">
+
+        <div class="spec-header">
+
+          <span class="spec-num">[mod.04]</span>
+
+          <h3>
+
+            <span lang="en">pre-press & production</span>
+
+            <span lang="ru">препресс и производство</span>
+
+          </h3>
+
+        </div>
+
+        <div class="spec-content">
+
+          <ul class="spec-log-list">
+
+            <li>
+
+              <span lang="en">Print production architecture: comprehensive pre-press, material selection, and tech specs.</span>
+
+              <span lang="ru">Архитектура печатного производства: полный препресс, подбор материалов и технические спецификации.</span>
+
+            </li>
+
+            <li>
+
+              <span lang="en">Editorial design: layout engineering for books, independent zines, and premium catalogs.</span>
+
+              <span lang="ru">Editorial дизайн: верстка книг, независимых зинов и премиальных каталогов.</span>
+
+            </li>
+
+            <li>
+
+              <span lang="en">Merchandise engineering and direct manufacturing supervision with print houses.</span>
+
+              <span lang="ru">Проектирование мерча и прямой контроль производства в типографиях.</span>
+
+            </li>
+
+          </ul>
+
+          <p class="spec-user-note">
+
+            <span lang="en">[Your direct note: e.g., showing that design doesn't end on screens, but commands tactile space.]</span>
+
+            <span lang="ru">[Твое примечание: например, демонстрация того, что дизайн не заканчивается на экранах, а управляет тактильным пространством.]</span>
+
+          </p>
+
+        </div>
+
+        <div class="spec-visual-window">
+
+          <!-- Float your physical production macro shot here -->
+
+        </div>
+
+      </div>
+
+
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- SLIDE 4: TEXTLESS GALLERY WALL -->
+
+<section id="gallery" class="slide">
+
+  <div class="gallery-grid">
+
+    
+
+    <!-- ITEM 1: STANDARD -->
+
+    <div class="gallery-item">
+
+      <img src="" alt="" />
+
+    </div>
+
+
+
+    <!-- ITEM 2: ASYMMETRICAL TALL -->
+
+    <div class="gallery-item tall">
+
+      <img src="" alt="" />
+
+    </div>
+
+
+
+    <!-- ITEM 3: STANDARD -->
+
+    <div class="gallery-item">
+
+      <img src="" alt="" />
+
+    </div>
+
+
+
+    <!-- ITEM 4: ASYMMETRICAL WIDE -->
+
+    <div class="gallery-item wide">
+
+      <img src="" alt="" />
+
+    </div>
+
+
+
+    <!-- ITEM 5: STANDARD -->
+
+    <div class="gallery-item">
+
+      <img src="" alt="" />
+
+    </div>
+
+
+
+    <!-- ITEM 6: STANDARD -->
+
+    <div class="gallery-item">
+
+      <img src="" alt="" />
+
+    </div>
+
+
+
+    <!-- ITEM 7: ASYMMETRICAL TALL -->
+
+    <div class="gallery-item tall">
+
+      <img src="" alt="" />
+
+    </div>
+
+
+
+    <!-- ITEM 8: ASYMMETRICAL WIDE -->
+
+    <div class="gallery-item wide">
+
+      <img src="" alt="" />
+
+    </div>
+
+
+
+  </div>
+
+</section>
+
+
+
+<!-- SLIDE 5: CONTACT -->
+
+<section id="contact" class="slide">
+
+  <div class="slide-content-placeholder">
+
+    <span lang="en">connect — [links // telegram channel]</span>
+
+    <span lang="ru">связь — [ссылки // телеграм-канал]</span>
+
+  </div>
+
+</section>
+
+
+
+  </main>
+
+
+
+  <!-- DOTS PAGINATION (5 SLIDES) -->
+
+  <div class="pagination-container">
+
+<a href="#hero" class="pagination-dot active"></a>
+
+<a href="#about" class="pagination-dot"></a>
+
+<a href="#skills" class="pagination-dot"></a>
+
+<a href="#gallery" class="pagination-dot"></a>
+
+<a href="#contact" class="pagination-dot"></a>
+
+  </div>
+
+
+
+  <script>
+
+    const container = document.querySelector('.presentation-container');
+
+    const dots = document.querySelectorAll('.pagination-dot');
+
+    const links = document.querySelectorAll('.nav-links a');
+
+    const slides = document.querySelectorAll('.slide');
+
+
+
+    let currentSlide = 0;
+
+    let isThrottled = false;
+
+    let lastInternalScrollTime = 0;
+
+
+
+    // 🌐 LANGUAGE BUTTONS HANDLER
+
+    const langBtns = document.querySelectorAll('.lang-btn');
+
+    langBtns.forEach(btn => {
+
+      btn.addEventListener('click', () => {
+
+        langBtns.forEach(b => b.classList.remove('active'));
+
+        btn.classList.add('active');
+
+        const lang = btn.getAttribute('data-lang');
+
+        document.body.className = `lang-${lang}`; 
+
+      });
+
+    });
+
+
+
+    // ПЕРЕХВАТ КЛИКОВ НАВИГАЦИИ ДЛЯ ПЛАВНОГО ДВИЖЕНИЯ СНЭПА
+
+    const allNavAnchors = document.querySelectorAll('.nav-logo, .nav-links a, .pagination-dot');
+
+    allNavAnchors.forEach(anchor => {
+
+      anchor.addEventListener('click', (e) => {
+
+        e.preventDefault(); 
+
+        
+
+        const targetId = anchor.getAttribute('href');
+
+        const targetSlide = document.querySelector(targetId);
+
+        
+
+        slides.forEach((slide, index) => {
+
+          if (slide.getAttribute('id') === targetId.replace('#', '')) {
+
+            currentSlide = index;
+
+          }
+
+        });
+
+
+
+        targetSlide.scrollIntoView({ 
+
+          behavior: 'smooth', 
+
+          block: 'nearest', 
+
+          inline: 'start' 
+
+        });
+
+      });
+
+    });
+
+
+
+    // AUTOMATED DYNAMIC INTERCEPTOR FOR SCROLLABLE VIEWPORTS WITH 350MS TIME-LOCK
+
+    container.addEventListener('wheel', (e) => {
+
+      if (e.deltaY === 0) return;
+
+      e.preventDefault(); 
+
+
+
+      if (isThrottled) return;
+
+
+
+      const activeSlide = slides[currentSlide];
+
+      const scrollBox = activeSlide.querySelector('.works-scroll-box, .gallery-grid');
+
+
+
+      if (scrollBox) {
+
+        const isAtBottom = scrollBox.scrollTop + scrollBox.clientHeight >= scrollBox.scrollHeight - 5;
+
+        const isAtTop = scrollBox.scrollTop <= 5;
+
+
+
+        if (e.deltaY > 0) {
+
+          if (!isAtBottom) {
+
+            scrollBox.scrollTop += e.deltaY;
+
+            lastInternalScrollTime = Date.now();
+
+            return;
+
+          }
+
+          if (Date.now() - lastInternalScrollTime < 350) return; 
+
+        } else {
+
+          if (!isAtTop) {
+
+            scrollBox.scrollTop += e.deltaY;
+
+            lastInternalScrollTime = Date.now();
+
+            return;
+
+          }
+
+          if (Date.now() - lastInternalScrollTime < 350) return; 
+
+        }
+
+      }
+
+
+
+      if (e.deltaY > 0) {
+
+        if (currentSlide < slides.length - 1) currentSlide++;
+
+      } else {
+
+        if (currentSlide > 0) currentSlide--;
+
+      }
+
+
+
+      isThrottled = true;
+
+
+
+      slides[currentSlide].scrollIntoView({ 
+
+        behavior: 'smooth', 
+
+        block: 'nearest', 
+
+        inline: 'start' 
+
+      });
+
+
+
+      setTimeout(() => {
+
+        isThrottled = false;
+
+      }, 600);
+
+    }, { passive: false });
+
+
+
+    // NAVIGATION LINK SYNC AND OBSERVER LAYER
+
+    const observerOptions = {
+
+      root: container,
+
+      threshold: 0.5
+
+    };
+
+
+
+    const observerCallback = (entries) => {
+
+      entries.forEach(entry => {
+
+        if (entry.isIntersecting) {
+
+          dots.forEach(dot => dot.classList.remove('active'));
+
+          links.forEach(link => link.classList.remove('active'));
+
+          
+
+          const id = entry.target.getAttribute('id');
+
+          
+
+          slides.forEach((slide, index) => {
+
+            if(slide.getAttribute('id') === id) currentSlide = index;
+
+          });
+
+
+
+          const currentDot = document.querySelector(`.pagination-dot[href="#${id}"]`);
+
+          if (currentDot) currentDot.classList.add('active');
+
+
+
+          const currentLink = document.querySelector(`.nav-links a[href="#${id}"]`);
+
+          if (currentLink) currentLink.classList.add('active');
+
+        }
+
+      });
+
+    };
+
+
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+    slides.forEach(slide => observer.observe(slide));
+
+  </script>
+
+
+
+</body>
+
+</html>
+
