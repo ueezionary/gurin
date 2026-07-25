@@ -760,6 +760,349 @@
     align-items: center;
   }
 }
+
+/* --- GALLERY DUAL-LEVEL LOGIC --- */
+.gallery-view {
+  display: none;
+  animation: fadeInTerminal 0.4s ease forwards;
+}
+.gallery-view.active {
+  display: block;
+}
+
+@keyframes fadeInTerminal {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- CATEGORY FOLDERS --- */
+.category-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.category-card {
+  display: grid;
+  grid-template-columns: 80px 1fr 120px;
+  align-items: center;
+  padding: 30px 40px;
+  background-color: #0d0d11;
+  border: 1px solid #16161a;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.category-card:hover {
+  border-color: #333339;
+  transform: translateX(15px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+}
+
+.cat-num {
+  color: #5c5c66;
+  font-size: 1.2rem;
+  transition: color 0.3s ease;
+}
+
+.category-card:hover .cat-num {
+  color: #ff5500;
+}
+
+.cat-name {
+  color: #ffffff;
+  font-size: 1.6rem;
+  letter-spacing: 0.05em;
+}
+
+.cat-action {
+  color: #5c5c66;
+  text-align: right;
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+}
+
+.category-card:hover .cat-action {
+  color: #00e5ff;
+}
+
+/* --- INSIDE FOLDER VIEW --- */
+.back-to-cat-btn {
+  background: none;
+  border: none;
+  color: #5c5c66;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-bottom: 20px;
+  font-family: 'JetBrains Mono', monospace;
+  transition: color 0.3s ease, transform 0.3s ease;
+  display: inline-block;
+}
+
+.back-to-cat-btn:hover {
+  color: #ffffff;
+  transform: translateX(-5px);
+}
+
+.current-cat-title {
+  color: #00e5ff;
+  font-size: 2rem;
+  margin-bottom: 30px;
+  letter-spacing: 0.05em;
+  font-weight: normal;
+}
+
+/* Мобильный фикс для карточек категорий */
+@media (max-width: 768px) {
+  .category-card {
+    grid-template-columns: 50px 1fr;
+    padding: 20px;
+  }
+  .cat-action {
+    display: none;
+  }
+  .cat-name {
+    font-size: 1.2rem;
+  }
+}
+
+/* --- КЕЙСЫ: МОДАЛЬНОЕ ОКНО И СЛАЙДЕР --- */
+.case-modal {
+  display: none; /* ВОТ ЭТОГО НЕ ХВАТАЛО! Без этого она висит всегда */
+  position: fixed;
+  top: 0; 
+  left: 0;
+  width: 100vw; 
+  height: 100vh;
+  background-color: #050505;
+  z-index: 2000;
+  overflow: hidden;
+}
+
+.case-modal.active {
+  display: block;
+}
+
+.case-modal-header {
+  position: absolute;
+  top: 0; left: 0; width: 100%;
+  padding: 30px 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 2100;
+  pointer-events: none;
+}
+
+.case-slider-container {
+  display: flex; width: 100%; height: 100vh; overflow-x: auto; overflow-y: hidden;
+  scroll-snap-type: x mandatory; scrollbar-width: none;
+}
+.case-slider-container::-webkit-scrollbar { display: none; }
+
+.case-slide {
+  flex: 0 0 100vw; width: 100vw; height: 100vh; scroll-snap-align: center;
+  display: flex; align-items: center; justify-content: center; padding: 0 60px;
+}
+
+.case-slide-content {
+  display: grid; grid-template-columns: 1fr 1.2fr; gap: 80px;
+  width: 100%; max-width: 1400px; align-items: center;
+}
+.case-slide-content.reverse { grid-template-columns: 1.2fr 1fr; }
+
+.case-text-block { display: flex; flex-direction: column; gap: 20px; }
+.case-title { color: #ffffff; font-size: 3.5rem; line-height: 1.1; letter-spacing: 0.02em; margin-top: 0; }
+.case-subtitle { color: #00e5ff; font-size: 2rem; font-weight: normal; margin-top: 0; }
+.case-description { font-size: 1.1rem; color: #777785; line-height: 1.6; border: none; padding: 0; }
+
+.case-visual-block { display: flex; justify-content: center; align-items: center; }
+
+.case-slide {
+  position: relative;
+}
+
+.case-slide-bottom-nav {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  z-index: 2500;
+  pointer-events: auto;
+}
+
+.floating-mockup {
+  width: 100%; height: auto; max-height: 80vh; object-fit: contain;
+  animation: floatCase 6s ease-in-out infinite;
+  filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.8));
+}
+
+@keyframes floatCase {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+.solid-image {
+  width: 100%; height: auto; border-radius: 10px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+}
+
+.case-slider-container {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.case-slider-container::-webkit-scrollbar { display: none; }
+
+.case-slide {
+  flex: 0 0 100vw;
+  width: 100vw;
+  height: 100vh;
+  scroll-snap-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 60px 80px 60px;
+}
+
+.case-slide-content {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 80px;
+  width: 100%;
+  max-width: 1400px;
+  align-items: center;
+}
+
+.case-visual-block img,
+.case-slide-content img {
+  max-width: 100% !important;
+  max-height: 65vh !important;
+  width: auto !important;
+  height: auto !important;
+  object-fit: contain !important;
+}
+
+/* СТИЛИ ДЛЯ ФИНАЛЬНОГО СЛАЙДА */
+.layout-center {
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 40px !important;
+}
+
+.text-center {
+  text-align: center;
+  align-items: center;
+}
+
+.flat-result {
+  display: flex;
+  gap: 40px;
+  width: 100%;
+  justify-content: center;
+}
+
+.flat-result img {
+  width: 45%;
+  max-width: 600px;
+}
+
+/* OVERLAY ДЛЯ КАРТОЧЕК ГАЛЕРЕИ */
+.item-overlay {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(5, 5, 5, 0.85); display: flex; flex-direction: column;
+  align-items: center; justify-content: center; opacity: 0;
+  transition: opacity 0.4s ease; backdrop-filter: blur(5px);
+}
+.gallery-item:hover .item-overlay { opacity: 1; cursor: pointer; }
+.overlay-title { color: #fff; font-size: 1.2rem; margin-bottom: 10px; text-align: center; }
+.overlay-action { color: #00e5ff; font-size: 0.9rem; }
+
+@media (max-width: 768px) {
+  .case-slide-content, .case-slide-content.reverse {
+    grid-template-columns: 1fr; gap: 40px; text-align: center;
+  }
+  .case-title { font-size: 2rem; }
+  .case-subtitle { font-size: 1.5rem; }
+  .floating-mockup { animation: none; }
+  .flat-result { flex-direction: column; align-items: center; }
+  .flat-result img { width: 90%; }
+}
+
+/* --- ПРОКАЧАННАЯ НАВИГАЦИЯ КЕЙСА --- */
+.case-nav-controls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  pointer-events: auto;
+}
+
+.case-arrow-btn {
+  background: none;
+  border: none;
+  color: #00e5ff; /* Постоянный цвет */
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 1.4rem;
+  cursor: pointer;
+  padding: 0 5px;
+  transition: transform 0.2s ease; /* Плавный зум */
+}
+
+.case-arrow-btn:hover {
+  transform: scale(1.3); /* Увеличение при наведении */
+}
+
+.case-progress { 
+  color: #ffffff; 
+  font-size: 0.95rem; 
+  letter-spacing: 0.12em; 
+  font-weight: bold !important;
+}
+
+/* --- КНОПКА ЗАКРЫТИЯ (ВЫХОДА) --- */
+.close-case-btn {
+  pointer-events: auto;
+  background: #0d0d11;
+  color: #ffffff;
+  border: 1px solid #333339;
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 0.9rem;
+  padding: 8px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.close-case-btn:hover { 
+  color: #ff5500; 
+  border-color: #ff5500;
+  box-shadow: 0 0 12px rgba(255, 85, 0, 0.4);
+  transform: translateY(-1px);
+}
+
+/* --- ЖЕСТКИЙ КОНТРОЛЬ РАЗМЕРОВ КАРТИНОК В СЛАЙДЕРЕ --- */
+.case-slide .case-visual-block img {
+  max-width: 100% !important;
+  max-height: 70vh !important;
+  width: auto !important;
+  height: auto !important;
+  object-fit: contain !important;
+}
+
+/* Отдельный контроль для финального слайда с двумя визитками */
+.case-slide .flat-result img {
+  width: 45% !important;
+  max-height: 60vh !important;
+}
   </style>
 </head>
 <body class="lang-en">
@@ -1407,9 +1750,9 @@
           <!-- MOD.04: PRE-PRESS & PRODUCTION -->
 <div class="spec-module mod-yellow">
   <div class="spec-header">
-    <span class="spec-num" style="font-size: 1.1rem; letter-spacing: 0.05em;">
-      <span style="opacity: 0.35;">44</span><span style="color: var(--mod-color); text-shadow: 0 0 8px var(--mod-color);">4</span><span style="opacity: 0.35;">4</span>
-    </span>
+  <span class="spec-num" style="font-size: 1.1rem; letter-spacing: 0.05em;">
+  <span style="opacity: 0.35;">444</span><span style="color: var(--mod-color); text-shadow: 0 0 8px var(--mod-color);">4</span>
+</span>
     <h3>
       <span lang="en">pre-press &amp; production</span>
       <span lang="ru">допечатная подготовка и&nbsp;производство</span>
@@ -1569,6 +1912,109 @@
       </div>
     </section>
 
+<!-- SLIDE 4: GALLERY -->
+<section id="gallery" class="slide">
+  <div class="works-scroll-box">
+    <h2 class="works-title">
+      <span lang="en">selected works</span>
+      <span lang="ru">избранные работы</span>
+    </h2>
+
+<!-- УРОВЕНЬ 1: КАТЕГОРИИ (ПАПКИ) -->
+    <div id="gallery-categories" class="gallery-view active">
+      <div class="category-list">
+        
+        <div class="category-card" onclick="openCategory('identity', 'Brand Identity', 'Айдентика')">
+          <span class="cat-num">01</span>
+          <h3 class="cat-name">
+            <span lang="en">Brand Identity</span>
+            <span lang="ru">Айдентика</span>
+          </h3>
+          <span class="cat-action">-> open</span>
+        </div>
+
+        <div class="category-card" onclick="openCategory('outdoor', 'Outdoor', 'Наружная реклама')">
+          <span class="cat-num">02</span>
+          <h3 class="cat-name">
+            <span lang="en">Outdoor</span>
+            <span lang="ru">Наружная реклама</span>
+          </h3>
+          <span class="cat-action">-> open</span>
+        </div>
+
+        <div class="category-card" onclick="openCategory('digital', 'Digital Architecture', 'Веб и интерфейсы')">
+          <span class="cat-num">03</span>
+          <h3 class="cat-name">
+            <span lang="en">Digital Architecture</span>
+            <span lang="ru">Веб и интерфейсы</span>
+          </h3>
+          <span class="cat-action">-> open</span>
+        </div>
+
+        <div class="category-card" onclick="openCategory('social', 'Social Media & Promo', 'Соцсети и промо')">
+          <span class="cat-num">04</span>
+          <h3 class="cat-name">
+            <span lang="en">Social Media & Promo</span>
+            <span lang="ru">Соцсети и промо</span>
+          </h3>
+          <span class="cat-action">-> open</span>
+        </div>
+
+        <div class="category-card" onclick="openCategory('graphics', 'Key Graphics & CG', 'Арт-направление')">
+          <span class="cat-num">05</span>
+          <h3 class="cat-name">
+            <span lang="en">Key Graphics & CG</span>
+            <span lang="ru">Арт-направление</span>
+          </h3>
+          <span class="cat-action">-> open</span>
+        </div>
+
+        <div class="category-card" onclick="openCategory('merch', 'Merch & Packaging', 'Мерч и упаковка')">
+          <span class="cat-num">06</span>
+          <h3 class="cat-name">
+            <span lang="en">Merch & Packaging</span>
+            <span lang="ru">Мерч и упаковка</span>
+          </h3>
+          <span class="cat-action">-> open</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- УРОВЕНЬ 2: СЕТКА ПРОЕКТОВ ВНУТРИ КАТЕГОРИИ -->
+    <div id="gallery-grid-view" class="gallery-view">
+      <button class="back-to-cat-btn" onclick="backToCategories()">
+        <span lang="en"><- back to folders</span>
+        <span lang="ru"><- назад к разделам</span>
+      </button>
+      
+      <h3 class="current-cat-title">
+        <span lang="en" id="cat-title-en">Category</span>
+        <span lang="ru" id="cat-title-ru">Категория</span>
+      </h3>
+
+      <div class="gallery-grid">
+        
+        <!-- Карточка 1: Билборд -->
+        <div class="gallery-item wide" data-category="outdoor" onclick="openCase('case-riga')">
+          <img src="banner_preview.jpg" alt="Рижский Парк">
+          <div class="item-overlay">
+            <span class="overlay-title">Рижский Парк / Билборд</span>
+            <span class="overlay-action">-> open case</span>
+          </div>
+        </div>
+
+<div class="gallery-item" data-category="identity" onclick="openCase('case-diet')">
+  <img src="vika.png" alt="Чёткий диетолог">
+  <div class="item-overlay">
+    <span class="overlay-title">Чёткий диетолог / Айдентика</span>
+    <span class="overlay-action">-> open case</span>
+  </div>
+</div>
+
+  </div>
+</section>
+
 
     <!-- SLIDE 5: CONTACT -->
     <section id="contact" class="slide">
@@ -1592,6 +2038,138 @@
     </section>
 
   </main>
+
+<!-- КЕЙС: ЧЁТКИЙ ДИЕТОЛОГ (МОДАЛКА) -->
+<div id="case-diet" class="case-modal">
+  <div class="case-modal-header">
+    <div></div>
+    <button class="close-case-btn" onclick="closeCase('case-diet')">close [x]</button>
+  </div>
+
+  <div class="case-slider-container" id="slider-diet" onscroll="updateCaseProgress('slider-diet', 'case-counter-diet', 6)">
+    
+    <!-- СЛАЙД 1 -->
+    <div class="case-slide">
+      <div class="case-slide-content">
+        <div class="case-text-block">
+          <h2 class="case-title">
+            <span lang="en">Strict Dietitian</span>
+            <span lang="ru">Чёткий диетолог</span>
+          </h2>
+          <p class="case-description">
+            <span lang="en">Identity and business card design for an endocrinologist. The main goal was to move away from sterile hospital vibes and combine strict medicine with a strong personal brand.</span>
+            <span lang="ru">Разработка айдентики и визитной карточки для врача-эндокринолога. Главная задача — уйти от стерильного больничного стиля и совместить строгую медицину с ярким личным брендом.</span>
+          </p>
+        </div>
+        <div class="case-visual-block">
+          <img src="vika.png" alt="Cover" class="floating-mockup">
+        </div>
+      </div>
+      <!-- ВНИМАНИЕ: ЗДЕСЬ БОЛЬШЕ НЕТ НАВИГАЦИИ -->
+    </div>
+
+    <!-- СЛАЙД 2 -->
+    <div class="case-slide">
+      <div class="case-slide-content">
+        <div class="case-text-block">
+          <h3 class="case-subtitle">
+            <span lang="en">Color System</span>
+            <span lang="ru">Цветовая система</span>
+          </h3>
+          <p class="case-description">
+            <span lang="en">Moving away from white in favor of powdery beige. Magenta stands for energy and personal brand, breaking the stereotype of a "boring doctor".</span>
+            <span lang="ru">Отказ от белого в пользу пудрово-бежевого. Маджента отвечает за энергию и личный бренд, разбивая стереотип о «скучном враче».</span>
+          </p>
+        </div>
+        <div class="case-visual-block">
+          <img src="vika_slide1.png" alt="Palette" class="solid-image">
+        </div>
+      </div>
+    </div>
+
+    <!-- СЛАЙД 3 -->
+    <div class="case-slide">
+      <div class="case-slide-content reverse">
+        <div class="case-visual-block">
+          <img src="vika_slide2.png" alt="Typography" class="solid-image">
+        </div>
+        <div class="case-text-block">
+          <h3 class="case-subtitle">
+            <span lang="en">Typography Anatomy</span>
+            <span lang="ru">Анатомия типографики</span>
+          </h3>
+          <p class="case-description">
+            <span lang="en">The doctor's name is brought to the foreground in a bold, strict sans-serif. A light handwritten font is used at the bottom as a stylistic reference to the famous "doctor's handwriting".</span>
+            <span lang="ru">Имя врача выведено на первый план крупным строгим гротеском. Внизу использован легкий рукописный шрифт — стилистическая отсылка к знаменитому «врачебному почерку».</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- СЛАЙД 4 -->
+    <div class="case-slide">
+      <div class="case-slide-content reverse">
+        <div class="case-visual-block">
+          <img src="vika_slide3.png" alt="Graphics" class="solid-image">
+        </div>
+        <div class="case-text-block">
+          <h3 class="case-subtitle">
+            <span lang="en">Dynamics & Details</span>
+            <span lang="ru">Динамика и детали</span>
+          </h3>
+          <p class="case-description">
+            <span lang="en">Juicy vector graphics. Cropping elements "into the bleed" creates compositional dynamics. QR code colors are matched with avocado shades.</span>
+            <span lang="ru">Сочная векторная графика. Кадрирование элементов «в срез» задает динамику композиции. Цвета QR-кодов зарифмованы с оттенками авокадо.</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- СЛАЙД 5 -->
+    <div class="case-slide">
+      <div class="case-slide-content">
+        <div class="case-text-block">
+          <h3 class="case-subtitle">
+            <span lang="en">Pre-press & Production</span>
+            <span lang="ru">Препресс и производство</span>
+          </h3>
+          <p class="case-description">
+            <span lang="en">Flawless technical layout preparation. Strict layer grouping, safe zones and bleed lines included. The file is ready for printing without edits.</span>
+            <span lang="ru">Идеальная техническая подготовка макета. Строгая группировка слоев, заложены безопасные зоны и линии реза (bleed). Файл готов к отправке в типографию без правок.</span>
+          </p>
+        </div>
+        <div class="case-visual-block">
+          <img src="vika_slide5.png" alt="Layers" class="solid-image">
+        </div>
+      </div>
+    </div>
+
+    <!-- СЛАЙД 6 -->
+    <div class="case-slide">
+      <div class="case-slide-content layout-center">
+        <div class="case-text-block text-center">
+          <h3 class="case-subtitle">
+            <span lang="en">Final Output</span>
+            <span lang="ru">Финальный результат</span>
+          </h3>
+        </div>
+        <div class="case-visual-block flat-result">
+          <img src="vika1.png" alt="Front" class="solid-image">
+          <img src="vika2.png" alt="Back" class="solid-image">
+        </div>
+      </div>
+    </div>
+
+  </div> <!-- Конец слайдера -->
+
+  <!-- ЕДИНАЯ НИЖНЯЯ ПАНЕЛЬ НАВИГАЦИИ (ВИСИТ МЕРТВО ПО ЦЕНТРУ СНИЗУ) -->
+  <div class="case-slide-bottom-nav">
+    <button class="case-arrow-btn" onclick="slideCase('slider-diet', 'prev')">&lt;</button>
+    <span class="case-progress" id="case-counter-diet">01 / 06</span>
+    <button class="case-arrow-btn" onclick="slideCase('slider-diet', 'next')">&gt;</button>
+  </div>
+
+</div>
 
   <!-- PAGINATION -->
   <div class="pagination-container">
@@ -1731,6 +2309,105 @@
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
     slides.forEach(slide => observer.observe(slide));
+
+    // --- ЛОГИКА ДВУХУРОВНЕВОЙ ГАЛЕРЕИ --- //
+
+function openCategory(catId, titleEn, titleRu) {
+  // Скрываем список папок, показываем сетку
+  document.getElementById('gallery-categories').classList.remove('active');
+  document.getElementById('gallery-grid-view').classList.add('active');
+  
+  // Устанавливаем заголовок с поддержкой языков
+  document.getElementById('cat-title-en').innerText = titleEn;
+  document.getElementById('cat-title-ru').innerText = titleRu;
+
+  // Фильтруем карточки: показываем только те, что относятся к выбранной категории
+  const items = document.querySelectorAll('.gallery-item');
+  items.forEach(item => {
+    if (item.getAttribute('data-category') === catId) {
+      item.style.display = 'flex';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+}
+
+function backToCategories() {
+  // Прячем сетку, возвращаем папки
+  document.getElementById('gallery-grid-view').classList.remove('active');
+  document.getElementById('gallery-categories').classList.add('active');
+}
+
+function openCategory(catId, titleEn, titleRu) {
+  document.getElementById('gallery-categories').classList.remove('active');
+  document.getElementById('gallery-grid-view').classList.add('active');
+  document.getElementById('cat-title-en').innerText = titleEn;
+  document.getElementById('cat-title-ru').innerText = titleRu;
+  const items = document.querySelectorAll('.gallery-item');
+  items.forEach(item => {
+    if (item.getAttribute('data-category') === catId) {
+      item.style.display = 'flex';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+}
+
+function backToCategories() {
+  document.getElementById('gallery-grid-view').classList.remove('active');
+  document.getElementById('gallery-categories').classList.add('active');
+}
+
+// Открытие и закрытие кейса
+function openCase(caseId) {
+  document.getElementById(caseId).classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeCase(caseId) {
+  const modal = document.getElementById(caseId);
+  if (modal) {
+    modal.classList.remove('active');
+  }
+  document.body.style.overflow = '';
+}
+
+// Переключение стрелочками в модалке
+function slideCase(sliderId, direction) {
+  const slider = document.getElementById(sliderId);
+  const slideWidth = slider.clientWidth;
+  if (direction === 'next') {
+    slider.scrollBy({ left: slideWidth, behavior: 'smooth' });
+  } else {
+    slider.scrollBy({ left: -slideWidth, behavior: 'smooth' });
+  }
+}
+
+// Обновление цифр счетчика
+function updateCaseProgress(sliderId, counterId, totalSlides) {
+  const slider = document.getElementById(sliderId);
+  const counter = document.getElementById(counterId);
+  const slideWidth = slider.clientWidth;
+  const currentScroll = slider.scrollLeft;
+  let currentSlide = Math.round(currentScroll / slideWidth) + 1;
+  let formattedCurrent = currentSlide < 10 ? '0' + currentSlide : currentSlide;
+  let formattedTotal = totalSlides < 10 ? '0' + totalSlides : totalSlides;
+  counter.innerText = `${formattedCurrent} / ${formattedTotal}`;
+}
+
+// Изоляция скролла внутри кейса
+const caseSlider = document.getElementById('slider-diet');
+if (caseSlider) {
+  caseSlider.addEventListener('wheel', (e) => {
+    if (e.deltaY !== 0) {
+      e.preventDefault();
+      caseSlider.scrollLeft += e.deltaY;
+    }
+  }, { passive: false });
+}
+
+
+
   </script>
 
 </body>
