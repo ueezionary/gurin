@@ -1069,7 +1069,7 @@
 .case-arrow-btn {
   background: none;
   border: none;
-  color: #00e5ff; /* Постоянный цвет */
+  color: #ff5500; /* Постоянный цвет */
   font-family: 'JetBrains Mono', monospace !important;
   font-size: 1.4rem;
   cursor: pointer;
@@ -1082,10 +1082,10 @@
 }
 
 .case-progress { 
-  color: #ffffff; 
+  color: #7e7e7e; 
   font-size: 0.95rem; 
   letter-spacing: 0.12em; 
-  font-weight: bold !important;
+  font-weight: normal !important;
 }
 
 /* --- КНОПКА ЗАКРЫТИЯ (ВЫХОДА) --- */
@@ -2066,17 +2066,17 @@
       
       <div class="gallery-grid">
         
-        <!-- Карточка 1: Билборд -->
-        <div class="gallery-item wide" data-category="outdoor" onclick="openCase('case-riga')">
-          <img src="banner_preview.jpg" alt="Рижский Парк">
-          <div class="item-overlay">
-            <span class="overlay-title">Рижский Парк / Билборд</span>
-            <span class="overlay-action">
-  <span lang="en">-&gt; open case</span>
-  <span lang="ru">-&gt; открыть кейс</span>
-</span>
-          </div>
-        </div>
+<!-- Карточка 1: Билборд Рижский Парк -->
+<div class="gallery-item" data-category="outdoor" onclick="openCase('case-riga')">
+  <img src="баннер_усадьба.jpg" alt="Рижский Парк">
+  <div class="item-overlay">
+    <span class="overlay-title">Рижский Парк / Билборд</span>
+    <span class="overlay-action">
+      <span lang="en">-&gt; open case</span>
+      <span lang="ru">-&gt; открыть кейс</span>
+    </span>
+  </div>
+</div>
 
 <div class="gallery-item" data-category="identity" onclick="openCase('case-diet')">
   <img src="vika.png" alt="Врач-диетолог">
@@ -2089,25 +2089,27 @@
   </div>
 </div>
 
-<div class="gallery-item wide" data-category="digital" onclick="openCase('case-vkr')">
+<!-- ВКР (Диджитал) -->
+<div class="gallery-item" data-category="digital" onclick="openCase('case-vkr')">
   <img src="Валерия_ВКР_Страница_01_Изображение_0001.png" alt="Презентация ВКР">
   <div class="item-overlay">
     <span class="overlay-title">ВКР / Диджитал и презентации</span>
     <span class="overlay-action">
-  <span lang="en">-&gt; open presentation</span>
-  <span lang="ru">-&gt; открыть презентацию</span>
-</span>
+      <span lang="en">-&gt; open presentation</span>
+      <span lang="ru">-&gt; открыть презентацию</span>
+    </span>
   </div>
-</div> <!-- Вот этот закрывающий тег должен быть здесь -->
+</div>
 
-<div class="gallery-item tall" data-category="social" onclick="openCase('case-lemonade')">
+<!-- 2ГИС Лимонад (Соцсети) -->
+<div class="gallery-item" data-category="social" onclick="openCase('case-lemonade')">
   <img src="leaflet_lemonade.png" alt="Листовка 2ГИС Лимонад">
   <div class="item-overlay">
     <span class="overlay-title">2ГИС / С тебя пара слов</span>
     <span class="overlay-action">
-  <span lang="en">-&gt; open case</span>
-  <span lang="ru">-&gt; открыть кейс</span>
-</span>
+      <span lang="en">-&gt; open case</span>
+      <span lang="ru">-&gt; открыть кейс</span>
+    </span>
   </div>
 </div>
 
@@ -2115,6 +2117,18 @@
   <img src="eimport_logobook_Страница_1.png" alt="Eimport Global">
   <div class="item-overlay">
     <span class="overlay-title">Eimport Global / Логобук</span>
+    <span class="overlay-action">
+      <span lang="en">-&gt; open case</span>
+      <span lang="ru">-&gt; открыть кейс</span>
+    </span>
+  </div>
+</div>
+
+<!-- Карточка 2: НГТК -->
+<div class="gallery-item" data-category="outdoor" onclick="openCase('case-ngtk')">
+  <img src="Колледж_2_Страница_1_Изображение_0001.png" alt="Нижегородский гуманитарно-технический колледж">
+  <div class="item-overlay">
+    <span class="overlay-title">НГТК / Наружная реклама</span>
     <span class="overlay-action">
       <span lang="en">-&gt; open case</span>
       <span lang="ru">-&gt; открыть кейс</span>
@@ -2148,6 +2162,7 @@
     </section>
 
   </main>
+
 
 <!-- КЕЙС: ЧЁТКИЙ ДИЕТОЛОГ (МОДАЛКА) -->
 <div id="case-diet" class="case-modal">
@@ -2290,9 +2305,26 @@
 
   <div class="case-slider-container" id="slider-vkr" onscroll="updateCaseProgress('slider-vkr', 'case-counter-vkr', 13)">
     
-    <!-- СЛАЙД 1 -->
+<!-- СЛАЙД 1: ОПИСАНИЕ И ОБЛОЖКА (ТЕКСТ СЛЕВА) -->
     <div class="case-slide">
-      <div class="case-slide-content layout-center">
+      <div class="case-slide-content">
+        <div class="case-text-block" style="display: flex; flex-direction: column; gap: 24px;">
+          <h2 class="case-title" style="font-size: 2.8rem; margin-bottom: 10px;">
+            <span lang="en">Academic Presentation</span>
+            <span lang="ru">Презентация для&nbsp;ВКР</span>
+          </h2>
+          
+          <p class="case-description">
+            <span lang="en"><span style="color: #00e5ff;">Task:</span> Visual overhaul of a graduation thesis, mandated by the committee to replace standard, uninspiring student templates with a modern design.</span>
+            <span lang="ru"><span style="color: #00e5ff;">Задача:</span> Полное обновление визуала квалификационной работы по&nbsp;жесткому требованию комиссии уйти от&nbsp;стандартных и&nbsp;скучных студенческих шаблонов.</span>
+          </p>
+          
+          <p class="case-description">
+            <span lang="en"><span style="color: #ff5500;">Solution:</span> A bold, modern style featuring 3D elements was implemented. Complex academic tables and graphs were completely redesigned into trendy infographics, elevating the perception of dry data.</span>
+            <span lang="ru"><span style="color: #ff5500;">Решение:</span> Разработан яркий, современный стиль с&nbsp;интеграцией 3D-элементов. Главный акцент сделан на&nbsp;переработке сложных академических таблиц и&nbsp;графиков в&nbsp;стильную инфографику, которая полностью изменила подачу сухих данных.</span>
+          </p>
+        </div>
+        
         <div class="case-visual-block">
           <img src="Валерия_ВКР_Страница_01_Изображение_0001.png" alt="Слайд 1" class="solid-image">
         </div>
@@ -2398,7 +2430,7 @@
       </div>
     </div>
 
- <!-- СЛАЙД 13 -->
+    <!-- СЛАЙД 13 -->
     <div class="case-slide">
       <div class="case-slide-content layout-center">
         <div class="case-visual-block">
@@ -2409,7 +2441,7 @@
 
   </div> <!-- Конец слайдера ВКР -->
 
-  <!-- Навигация ВКР (теперь она на месте, ВНУТРИ модалки) -->
+  <!-- Навигация ВКР -->
   <div class="case-slide-bottom-nav">
     <button class="case-arrow-btn" onclick="slideCase('slider-vkr', 'prev')">&lt;</button>
     <span class="case-progress" id="case-counter-vkr">01 / 13</span>
@@ -2430,22 +2462,22 @@
     <div class="case-slide">
       <div class="case-slide-content">
         
-        <div class="case-text-block">
-          <h2 class="case-title" style="font-size: 2.8rem;">
+<div class="case-text-block" style="display: flex; flex-direction: column; gap: 24px;">
+          <h2 class="case-title" style="font-size: 2.8rem; margin-bottom: 10px;">
             <span lang="en">Review Promo Flyer</span>
-            <span lang="ru">Листовка для привлечения отзывов</span>
+            <span lang="ru">Листовка для&nbsp;привлечения отзывов</span>
           </h2>
           
-          <!-- АБЗАЦ 1: ЗАДАЧА (ГОЛУБОЙ) -->
-          <p class="case-description" style="margin-bottom: 15px;">
-            <span lang="en"><span style="color: #00e5ff;">Task:</span> Attract visitors of a new café to leave reviews in&nbsp;2GIS.</span>
-            <span lang="ru"><span style="color: #00e5ff;">Задача:</span> Привлечь посетителей нового кафе оставлять отзывы в&nbsp;2ГИС.</span>
+          <!-- ЗАДАЧА -->
+          <p class="case-description">
+            <span lang="en"><span style="color: #00e5ff;">Task:</span> Engagement of new café visitors to leave reviews in&nbsp;2GIS.</span>
+            <span lang="ru"><span style="color: #00e5ff;">Задача:</span> Вовлечение посетителей нового кафе в&nbsp;публикацию отзывов на&nbsp;платформе 2ГИС.</span>
           </p>
           
-          <!-- АБЗАЦ 2: РЕШЕНИЕ (ОРАНЖЕВЫЙ) -->
+          <!-- РЕШЕНИЕ -->
           <p class="case-description">
-            <span lang="en"><span style="color: #ff5500;">Solution:</span> Arranged the visual composition and fully developed the promotional copy.</span>
-            <span lang="ru"><span style="color: #ff5500;">Решение:</span> Выстроил визуальную композицию и&nbsp;полностью придумал рекламный текст для&nbsp;листовки.</span>
+            <span lang="en"><span style="color: #ff5500;">Solution:</span> Visual composition and promotional copy were developed with a focus on capturing customer attention at the checkout counter. Typography was carefully engineered, fonts were specifically selected, and the QR code was custom-styled to match the overall brand aesthetics. The deep green color scheme was deliberately chosen to fit the summer season and create a striking, clean contrast with the beverage glass.</span>
+            <span lang="ru"><span style="color: #ff5500;">Решение:</span> Визуальная композиция и&nbsp;рекламный текст были выстроены с&nbsp;расчетом на&nbsp;мгновенный захват внимания клиента во&nbsp;время ожидания в&nbsp;очереди у&nbsp;кассы. Проведена детальная работа с&nbsp;типографикой и&nbsp;подбором шрифтов, а&nbsp;QR-код интегрирован в&nbsp;едином стилистическом оформлении. Глубокий зеленый цвет выбран неслучайно: он&nbsp;идеально подходит под летний период и&nbsp;создает выразительный контраст со&nbsp;стаканом напитка.</span>
           </p>
         </div>
 
@@ -2470,13 +2502,6 @@
     <!-- СЛАЙД 1: ОБЛОЖКА -->
     <div class="case-slide">
       <div class="case-slide-content layout-center">
-        <div class="case-text-block text-center">
-          <h2 class="case-title">Eimport Global</h2>
-          <p class="case-description">
-            <span lang="en">Basic brand identity and logobook</span>
-            <span lang="ru">Базовая айдентика и логобук</span>
-          </p>
-        </div>
         <div class="case-visual-block">
           <img src="eimport_logobook_Страница_1.png" alt="Cover" class="solid-image">
         </div>
@@ -2535,6 +2560,183 @@
     <button class="case-arrow-btn" onclick="slideCase('slider-eimport', 'prev')">&lt;</button>
     <span class="case-progress" id="case-counter-eimport">01 / 06</span>
     <button class="case-arrow-btn" onclick="slideCase('slider-eimport', 'next')">&gt;</button>
+  </div>
+</div>
+
+<!-- КЕЙС: НГТК -->
+<div id="case-ngtk" class="case-modal">
+  <div class="case-modal-header">
+    <div></div>
+    <button class="close-case-btn" onclick="closeCase('case-ngtk')">close [x]</button>
+  </div>
+
+  <div class="case-slider-container" id="slider-ngtk" onscroll="updateCaseProgress('slider-ngtk', 'case-counter-ngtk', 5)">
+    
+    <!-- СЛАЙД 1: РЕАЛИЗАЦИЯ НА ВХОДЕ (ОБЛОЖКА) -->
+    <div class="case-slide">
+      <div class="case-slide-content">
+        <div class="case-text-block" style="display: flex; flex-direction: column; gap: 24px;">
+          <h2 class="case-title" style="font-size: 2.8rem; margin-bottom: 10px;">
+            <span lang="en">NGTK Outdoor</span>
+            <span lang="ru">Наружная реклама для&nbsp;НГТК</span>
+          </h2>
+          <p class="case-description">
+            <span lang="en">Comprehensive visual communication and outdoor advertising for the Nizhny Novgorod Humanities and Technical College.</span>
+            <span lang="ru">Комплексная визуальная коммуникация и&nbsp;наружная реклама для&nbsp;Нижегородского гуманитарно-технического колледжа.</span>
+          </p>
+        </div>
+        <div class="case-visual-block">
+          <img src="Колледж_рука.jpeg" alt="Realization" class="solid-image">
+        </div>
+      </div>
+    </div>
+
+    <!-- СЛАЙД 2: ЛИСТОВКА ДЛЯ РАЗДАЧИ (КОЛЛЕДЖ 2) -->
+    <div class="case-slide">
+      <div class="case-slide-content">
+        <div class="case-text-block" style="display: flex; flex-direction: column; gap: 24px;">
+          <h3 class="case-subtitle">
+            <span lang="en">Promo Flyer</span>
+            <span lang="ru">Рекламная листовка</span>
+          </h3>
+          <p class="case-description">
+            <span lang="en">Designed for mass street distribution. Features an engaging 3D character and a clear step-by-step enrollment plan on the back.</span>
+            <span lang="ru">Спроектирована для&nbsp;массовой раздачи на&nbsp;улице. Внимание аудитории захватывает дружелюбный 3D-персонаж, а&nbsp;на&nbsp;обороте сверстан четкий пошаговый алгоритм поступления и&nbsp;сбора документов.</span>
+          </p>
+        </div>
+        <div class="case-visual-block flat-result">
+          <img src="Колледж_2_Страница_1_Изображение_0001.png" alt="Flyer Front" class="solid-image">
+          <img src="Колледж_2_Страница_2_Изображение_0001.png" alt="Flyer Back" class="solid-image">
+        </div>
+      </div>
+    </div>
+
+    <!-- СЛАЙД 3: ПЛАКАТ ВНУТРИ КОЛЛЕДЖА (КОЛЛЕДЖ 1) -->
+    <div class="case-slide">
+      <div class="case-slide-content">
+        <div class="case-text-block" style="display: flex; flex-direction: column; gap: 24px;">
+          <h3 class="case-subtitle">
+            <span lang="en">Internal Info Poster</span>
+            <span lang="ru">Плакат для&nbsp;доски объявлений</span>
+          </h3>
+          <p class="case-description">
+            <span lang="en">An informative poster placed inside the college, utilizing a strict yet accessible layout for the specialties table.</span>
+            <span lang="ru">Информационный плакат, размещенный внутри самого колледжа на&nbsp;главной доске объявлений. Содержит подробную сводную таблицу специальностей и&nbsp;сроков обучения с&nbsp;использованием строгой, но&nbsp;максимально понятной верстки.</span>
+          </p>
+        </div>
+        <div class="case-visual-block">
+          <img src="Колледж_1.png" alt="Internal Poster" class="solid-image">
+        </div>
+      </div>
+    </div>
+
+    <!-- СЛАЙД 4: ОБЪЯВЛЕНИЯ НА ВХОДЕ (КОЛЛЕДЖ 3) -->
+    <div class="case-slide">
+      <div class="case-slide-content">
+        <div class="case-text-block" style="display: flex; flex-direction: column; gap: 24px;">
+          <h3 class="case-subtitle">
+            <span lang="en">Entrance Announcements</span>
+            <span lang="ru">Объявления на&nbsp;входе</span>
+          </h3>
+          <p class="case-description">
+            <span lang="en">Clear and strict informational panels mounted directly at the college entrance group. Focused on high legibility and immediate call-to-action.</span>
+            <span lang="ru">Информационные панели, встречающие абитуриентов прямо на&nbsp;входной группе. Крупная контрастная типографика, мгновенно считываемый посыл и&nbsp;акцент на&nbsp;целевые действия без&nbsp;лишнего визуального шума.</span>
+          </p>
+        </div>
+        <div class="case-visual-block flat-result">
+          <img src="Колледж3_1.png" alt="Entrance Info" class="solid-image">
+          <img src="Колледж_3.png" alt="Entrance Specialties" class="solid-image">
+        </div>
+      </div>
+    </div>
+
+    <!-- СЛАЙД 5: ИТОГ / ВЫВОД -->
+    <div class="case-slide">
+      <div class="case-slide-content">
+        <div class="case-text-block" style="display: flex; flex-direction: column; gap: 24px;">
+          <h3 class="case-subtitle" style="font-size: 2.8rem; margin-bottom: 10px;">
+            <span lang="en">Bridging the Gap</span>
+            <span lang="ru">Госструктура нового&nbsp;поколения</span>
+          </h3>
+          <p class="case-description">
+            <span lang="en">The final visual system successfully merges official state requirements with a fresh, modern aesthetic, ensuring high impact across both physical and digital touchpoints.</span>
+            <span lang="ru">Итоговая дизайн-система успешно объединила строгие требования государственного учебного заведения с&nbsp;современной, свежей эстетикой. Это обеспечило высокую вовлеченность абитуриентов как&nbsp;через печатные носители, так и&nbsp;в&nbsp;живой городской среде.</span>
+          </p>
+        </div>
+        <div class="case-visual-block">
+          <img src="Колледж_фото.png" alt="Details" class="solid-image">
+        </div>
+      </div>
+    </div>
+
+  </div> <!-- Конец слайдера -->
+
+  <!-- НАВИГАЦИЯ -->
+  <div class="case-slide-bottom-nav">
+    <button class="case-arrow-btn" onclick="slideCase('slider-ngtk', 'prev')">&lt;</button>
+    <span class="case-progress" id="case-counter-ngtk">01 / 05</span>
+    <button class="case-arrow-btn" onclick="slideCase('slider-ngtk', 'next')">&gt;</button>
+  </div>
+</div>
+
+<!-- КЕЙС: РИЖСКИЙ ПАРК -->
+<div id="case-riga" class="case-modal">
+  <div class="case-modal-header">
+    <div></div>
+    <button class="close-case-btn" onclick="closeCase('case-riga')">close [x]</button>
+  </div>
+
+  <div class="case-slider-container" id="slider-riga" onscroll="updateCaseProgress('slider-riga', 'case-counter-riga', 2)">
+
+    <!-- СЛАЙД 1: РЕАЛИЗАЦИЯ (МАКЕТ НА ТРАССЕ) -->
+    <div class="case-slide">
+      <div class="case-slide-content">
+        <div class="case-text-block" style="display: flex; flex-direction: column; gap: 24px;">
+          <h2 class="case-title" style="font-size: 2.8rem; margin-bottom: 10px;">
+            <span lang="en">Rizhsky Park</span>
+            <span lang="ru">Билборд Рижский Парк</span>
+          </h2>
+          <p class="case-description">
+            <span lang="en"><span style="color: #00e5ff;">Task:</span> Premium billboard design for a countryside estate, optimized for instant readability on a high-speed highway.</span>
+            <span lang="ru"><span style="color: #00e5ff;">Задача:</span> Разработка премиального билборда для&nbsp;загородного поселка с&nbsp;учетом мгновенной считываемости на&nbsp;скоростной трассе.</span>
+          </p>
+          <p class="case-description">
+            <span lang="en"><span style="color: #ff5500;">Solution:</span> The layout is diagonally divided into two functional zones. A dark background on the left ensures perfect text contrast, while the open right side captures the location's atmosphere. Visual noise was completely eliminated to achieve a monolithic, premium look.</span>
+            <span lang="ru"><span style="color: #ff5500;">Решение:</span> Макет разделен диагональю на&nbsp;два функциональных блока. Темный фон слева обеспечивает идеальную контрастность текста, а&nbsp;свободная правая часть передает атмосферу локации. Визуальный шум полностью устранен для&nbsp;создания дорогого и&nbsp;монолитного образа бизнес-класса.</span>
+          </p>
+        </div>
+        <div class="case-visual-block">
+          <img src="баннер_усадьба_макет.jpg" alt="Billboard Mockup" class="solid-image">
+        </div>
+      </div>
+    </div>
+
+    <!-- СЛАЙД 2: ДЕТАЛИ И ВЕРСТКА (ПЛОСКИЙ МАКЕТ) -->
+    <div class="case-slide">
+      <div class="case-slide-content">
+        <div class="case-text-block" style="display: flex; flex-direction: column; gap: 24px;">
+          <h3 class="case-subtitle">
+            <span lang="en">Typography & Layout</span>
+            <span lang="ru">Типографика и&nbsp;верстка</span>
+          </h3>
+          <p class="case-description">
+            <span lang="en">Copywriting was meticulously edited and shortened for instant comprehension by drivers. Info badges are grouped to support the main diagonal angle, complemented by strict, dense typography without heavy glossy effects.</span>
+            <span lang="ru">Проведена точечная редактура копирайта: текстовые блоки сокращены для&nbsp;моментального восприятия водителями за&nbsp;доли секунды. Информационные плашки собраны в&nbsp;единую визуальную связку, поддерживающую угол главного разделителя, и&nbsp;дополнены строгой плотной типографикой.</span>
+          </p>
+        </div>
+        <div class="case-visual-block">
+          <img src="баннер_усадьба.jpg" alt="Billboard Layout" class="solid-image">
+        </div>
+      </div>
+    </div>
+
+  </div> <!-- Конец слайдера -->
+
+  <!-- НАВИГАЦИЯ -->
+  <div class="case-slide-bottom-nav">
+    <button class="case-arrow-btn" onclick="slideCase('slider-riga', 'prev')">&lt;</button>
+    <span class="case-progress" id="case-counter-riga">01 / 02</span>
+    <button class="case-arrow-btn" onclick="slideCase('slider-riga', 'next')">&gt;</button>
   </div>
 </div>
 
