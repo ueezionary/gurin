@@ -2940,14 +2940,38 @@ function closeCase(caseId) {
   document.body.style.overflow = '';
 }
 
-// Переключение стрелочками в модалке
+// Переключение стрелочками с эффектом плавного затухания (Fade) при закольцовке
 function slideCase(sliderId, direction) {
   const slider = document.getElementById(sliderId);
   const slideWidth = slider.clientWidth;
+  const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
+
   if (direction === 'next') {
-    slider.scrollBy({ left: slideWidth, behavior: 'smooth' });
+    // Если дошли до конца — прячем слайдер, перекидываем в начало, проявляем
+    if (slider.scrollLeft + slideWidth >= maxScrollLeft - 10) {
+      slider.style.transition = 'opacity 0.25s ease-in-out';
+      slider.style.opacity = '0';
+      setTimeout(() => {
+        slider.scrollTo({ left: 0, behavior: 'auto' });
+        slider.style.opacity = '1';
+        setTimeout(() => { slider.style.transition = ''; }, 250);
+      }, 250);
+    } else {
+      slider.scrollBy({ left: slideWidth, behavior: 'smooth' });
+    }
   } else {
-    slider.scrollBy({ left: -slideWidth, behavior: 'smooth' });
+    // Если на первом слайде — прячем слайдер, перекидываем в конец, проявляем
+    if (slider.scrollLeft <= 10) {
+      slider.style.transition = 'opacity 0.25s ease-in-out';
+      slider.style.opacity = '0';
+      setTimeout(() => {
+        slider.scrollTo({ left: maxScrollLeft, behavior: 'auto' });
+        slider.style.opacity = '1';
+        setTimeout(() => { slider.style.transition = ''; }, 250);
+      }, 250);
+    } else {
+      slider.scrollBy({ left: -slideWidth, behavior: 'smooth' });
+    }
   }
 }
 
