@@ -2940,15 +2940,19 @@ function closeCase(caseId) {
   document.body.style.overflow = '';
 }
 
-// Переключение стрелочками с эффектом плавного затухания (Fade) при закольцовке
+// Переключение стрелочками с точным отслеживанием последнего слайда
 function slideCase(sliderId, direction) {
   const slider = document.getElementById(sliderId);
   const slideWidth = slider.clientWidth;
   const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
+  
+  // Вычисляем текущий номер слайда (начиная с 0)
+  const currentSlideIndex = Math.round(slider.scrollLeft / slideWidth);
+  const totalSlides = Math.round(slider.scrollWidth / slideWidth);
 
   if (direction === 'next') {
-    // Если дошли до конца — прячем слайдер, перекидываем в начало, проявляем
-    if (slider.scrollLeft + slideWidth >= maxScrollLeft - 10) {
+    // Переходим на начало ТОЛЬКО если мы на самом последнем слайде
+    if (currentSlideIndex >= totalSlides - 1) {
       slider.style.transition = 'opacity 0.25s ease-in-out';
       slider.style.opacity = '0';
       setTimeout(() => {
@@ -2960,8 +2964,8 @@ function slideCase(sliderId, direction) {
       slider.scrollBy({ left: slideWidth, behavior: 'smooth' });
     }
   } else {
-    // Если на первом слайде — прячем слайдер, перекидываем в конец, проявляем
-    if (slider.scrollLeft <= 10) {
+    // Если на первом слайде — переходим в самый конец
+    if (currentSlideIndex <= 0) {
       slider.style.transition = 'opacity 0.25s ease-in-out';
       slider.style.opacity = '0';
       setTimeout(() => {
