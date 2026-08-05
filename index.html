@@ -1161,6 +1161,110 @@
   scroll-snap-stop: always !important; /* Жестко тормозим свайп ровно на следующем слайде, чтобы не улетало в конец */
 }
 
+/* --- ЖУРНАЛ BROWSER FLIPBOOK --- */
+.journal-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  padding: 80px 20px;
+  box-sizing: border-box;
+}
+
+#flipbook {
+  /* Жестко ограничиваем максимальный размер самого блока книги */
+  max-width: 850px; 
+  max-height: 600px;
+  margin: auto;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8);
+}
+
+.flip-page {
+  background-color: #fff;
+}
+
+@media (max-width: 768px) {
+  .journal-wrapper { padding: 100px 10px 80px 10px; }
+  #flipbook {
+    max-width: 100%;
+    max-height: 70vh;
+  }
+}
+
+/* --- ПАНЕЛЬ БЫСТРОГО ДОСТУПА (СКРОЛЛ-ЛЕНТА СПРАВА) --- */
+.journal-container-wrapper {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.journal-sidebar {
+  position: absolute;
+  right: 25px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 90px;
+  height: 75vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 10px 5px;
+  scrollbar-width: thin;
+  scrollbar-color: #333 #0d0d11;
+  z-index: 2200;
+}
+
+.journal-sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+.journal-sidebar::-webkit-scrollbar-track {
+  background: #0d0d11;
+}
+.journal-sidebar::-webkit-scrollbar-thumb {
+  background: #333339;
+  border-radius: 3px;
+}
+
+.sidebar-thumb {
+  width: 75px;
+  height: 105px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  overflow: hidden;
+  opacity: 0.5;
+  transition: all 0.25s ease;
+  flex-shrink: 0;
+  background: #000;
+}
+
+.sidebar-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.sidebar-thumb:hover {
+  opacity: 1;
+  border-color: #777;
+}
+
+.sidebar-thumb.active {
+  opacity: 1;
+  border-color: #ff5500;
+  box-shadow: 0 0 10px rgba(255, 85, 0, 0.5);
+}
+
+@media (max-width: 1024px) {
+  .journal-sidebar { display: none; } /* На мобилках скрываем, чтобы не загромождать экран */
+}
+
   </style>
 </head>
 <body class="lang-en">
@@ -1497,6 +1601,7 @@
               </p>
             </div>
             <div class="spec-visual-window">
+
   <style>
     .mod-cosmo .spec-visual-window {
   perspective: 1200px;
@@ -2065,6 +2170,18 @@
       </button>
       
       <div class="gallery-grid">
+
+        <!-- Бортовик (Журнал Flipbook) -->
+<div class="gallery-item" data-category="digital" onclick="openCase('case-journal')">
+  <img src="Бортовик_compressed_Страница_001.jpg" alt="Бортовик">
+  <div class="item-overlay">
+    <span class="overlay-title">Бортовик / Журнал</span>
+    <span class="overlay-action">
+      <span lang="en">-&gt; open journal</span>
+      <span lang="ru">-&gt; читать выпуск</span>
+    </span>
+  </div>
+</div>
         
 <!-- Карточка 1: Билборд Рижский Парк -->
 <div class="gallery-item" data-category="outdoor" onclick="openCase('case-riga')">
@@ -2740,6 +2857,29 @@
   </div>
 </div>
 
+<!-- КЕЙС: БОРТОВИК (ЖУРНАЛ FLIPBOOK) -->
+<div id="case-journal" class="case-modal">
+  <div class="case-modal-header">
+    <div></div>
+    <button class="close-case-btn" onclick="closeCase('case-journal')">close [x]</button>
+  </div>
+
+  <div class="journal-container-wrapper">
+    <div class="journal-wrapper">
+      <div id="flipbook"></div>
+    </div>
+    <!-- Правая скролл-лента миниатюр -->
+    <div class="journal-sidebar" id="journal-sidebar"></div>
+  </div>
+
+  <!-- Навигация журнала -->
+  <div class="case-slide-bottom-nav">
+    <button class="case-arrow-btn" id="j-prev">&lt;</button>
+    <span class="case-progress" id="journal-counter">002 / 104</span>
+    <button class="case-arrow-btn" id="j-next">&gt;</button>
+  </div>
+</div>
+
   <!-- PAGINATION -->
   <div class="pagination-container">
     <a href="#hero" class="pagination-dot active"></a>
@@ -2748,6 +2888,8 @@
     <a href="#gallery" class="pagination-dot"></a>
     <a href="#contact" class="pagination-dot"></a>
   </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
 
   <script>
     const container = document.querySelector('.presentation-container');
@@ -2766,9 +2908,8 @@
       navLinks.classList.toggle('open');
     });
 
-const langBtns = document.querySelectorAll('.lang-btn');
+    const langBtns = document.querySelectorAll('.lang-btn');
     
-    // При загрузке страницы проверяем, сохранял ли пользователь язык ранее
     const savedLang = localStorage.getItem('siteLang') || 'en';
     document.body.className = `lang-${savedLang}`;
     langBtns.forEach(b => {
@@ -2779,15 +2920,12 @@ const langBtns = document.querySelectorAll('.lang-btn');
       }
     });
 
-    // При клике сохраняем выбор в память браузера
     langBtns.forEach(btn => {
       btn.addEventListener('click', () => {
         langBtns.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         const lang = btn.getAttribute('data-lang');
         document.body.className = `lang-${lang}`; 
-        
-        // Запоминаем в localStorage
         localStorage.setItem('siteLang', lang);
       });
     });
@@ -2897,113 +3035,193 @@ const langBtns = document.querySelectorAll('.lang-btn');
 
     // --- ЛОГИКА ДВУХУРОВНЕВОЙ ГАЛЕРЕИ --- //
 
+    function openCategory(catId, titleEn, titleRu) {
+      document.getElementById('gallery-categories').classList.remove('active');
+      document.getElementById('gallery-grid-view').classList.add('active');
+      
+      document.getElementById('main-title-en').innerText = titleEn;
+      document.getElementById('main-title-ru').innerText = titleRu;
 
-
-function openCategory(catId, titleEn, titleRu) {
-  document.getElementById('gallery-categories').classList.remove('active');
-  document.getElementById('gallery-grid-view').classList.add('active');
-  
-  // Меняем главный заголовок вверху на название категории
-  document.getElementById('main-title-en').innerText = titleEn;
-  document.getElementById('main-title-ru').innerText = titleRu;
-
-  const items = document.querySelectorAll('.gallery-item');
-  items.forEach(item => {
-    if (item.getAttribute('data-category') === catId) {
-      item.style.display = 'flex';
-    } else {
-      item.style.display = 'none';
+      const items = document.querySelectorAll('.gallery-item');
+      items.forEach(item => {
+        if (item.getAttribute('data-category') === catId) {
+          item.style.display = 'flex';
+        } else {
+          item.style.display = 'none';
+        }
+      });
     }
-  });
-}
 
-function backToCategories() {
-  document.getElementById('gallery-grid-view').classList.remove('active');
-  document.getElementById('gallery-categories').classList.add('active');
-  
-  // Возвращаем исходный заголовок «избранные работы»
-  document.getElementById('main-title-en').innerText = 'selected works';
-  document.getElementById('main-title-ru').innerText = 'избранные работы';
-}
-
-// Открытие и закрытие кейса
-function openCase(caseId) {
-  document.getElementById(caseId).classList.add('active');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeCase(caseId) {
-  const modal = document.getElementById(caseId);
-  if (modal) {
-    modal.classList.remove('active');
-  }
-  document.body.style.overflow = '';
-}
-
-// Переключение стрелочками с точным отслеживанием последнего слайда
-function slideCase(sliderId, direction) {
-  const slider = document.getElementById(sliderId);
-  const slideWidth = slider.clientWidth;
-  const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
-  
-  // Вычисляем текущий номер слайда (начиная с 0)
-  const currentSlideIndex = Math.round(slider.scrollLeft / slideWidth);
-  const totalSlides = Math.round(slider.scrollWidth / slideWidth);
-
-  if (direction === 'next') {
-    // Переходим на начало ТОЛЬКО если мы на самом последнем слайде
-    if (currentSlideIndex >= totalSlides - 1) {
-      slider.style.transition = 'opacity 0.25s ease-in-out';
-      slider.style.opacity = '0';
-      setTimeout(() => {
-        slider.scrollTo({ left: 0, behavior: 'auto' });
-        slider.style.opacity = '1';
-        setTimeout(() => { slider.style.transition = ''; }, 250);
-      }, 250);
-    } else {
-      slider.scrollBy({ left: slideWidth, behavior: 'smooth' });
+    function backToCategories() {
+      document.getElementById('gallery-grid-view').classList.remove('active');
+      document.getElementById('gallery-categories').classList.add('active');
+      
+      document.getElementById('main-title-en').innerText = 'selected works';
+      document.getElementById('main-title-ru').innerText = 'избранные работы';
     }
-  } else {
-    // Если на первом слайде — переходим в самый конец
-    if (currentSlideIndex <= 0) {
-      slider.style.transition = 'opacity 0.25s ease-in-out';
-      slider.style.opacity = '0';
-      setTimeout(() => {
-        slider.scrollTo({ left: maxScrollLeft, behavior: 'auto' });
-        slider.style.opacity = '1';
-        setTimeout(() => { slider.style.transition = ''; }, 250);
-      }, 250);
-    } else {
-      slider.scrollBy({ left: -slideWidth, behavior: 'smooth' });
+
+    let isJournalLoaded = false;
+    let pageFlip = null;
+
+    // Открытие и закрытие кейса
+    function openCase(caseId) {
+      document.getElementById(caseId).classList.add('active');
+      document.body.style.overflow = 'hidden';
+
+      // Инициализируем журнал ТОЛЬКО после того, как модалка стала видимой
+      if (caseId === 'case-journal' && !isJournalLoaded) {
+        isJournalLoaded = true;
+
+        const totalPages = 103; // Без обложки и задника
+        const flipbookContainer = document.getElementById('flipbook');
+        const sidebarContainer = document.getElementById('journal-sidebar');
+
+        flipbookContainer.innerHTML = '';
+        sidebarContainer.innerHTML = '';
+
+        // Генерируем страницы со 2-й по 103-ю
+        for (let i = 2; i <= totalPages; i++) {
+          const pageNum = String(i).padStart(3, '0');
+          const imgPath = `Бортовик_compressed_Страница_${pageNum}.jpg`;
+          
+          // Страница для книги
+          const pageDiv = document.createElement('div');
+          pageDiv.className = 'flip-page';
+          
+          const pageImg = document.createElement('img');
+          pageImg.src = imgPath;
+          pageImg.style.width = '100%';
+          pageImg.style.height = '100%';
+          pageImg.style.objectFit = 'cover';
+          pageImg.style.pointerEvents = 'none';
+          
+          pageDiv.appendChild(pageImg);
+          flipbookContainer.appendChild(pageDiv);
+
+          // Миниатюра для правой ленты
+          const thumbDiv = document.createElement('div');
+          thumbDiv.className = 'sidebar-thumb';
+          if (i === 2) thumbDiv.classList.add('active');
+          thumbDiv.setAttribute('data-page-index', i - 2);
+
+          const thumbImg = document.createElement('img');
+          thumbImg.src = imgPath;
+          thumbDiv.appendChild(thumbImg);
+
+          // Клик по миниатюре переносит на нужную страницу
+          thumbDiv.addEventListener('click', () => {
+            pageFlip.flip(i - 2);
+          });
+
+          sidebarContainer.appendChild(thumbDiv);
+        }
+
+        pageFlip = new St.PageFlip(flipbookContainer, {
+          width: 450,
+          height: 650,
+          size: "stretch",
+          minWidth: 300,
+          maxWidth: 800,
+          minHeight: 420,
+          maxHeight: 1100,
+          maxShadowOpacity: 0.4,
+          showCover: false,
+          mobileScrollSupport: false
+        });
+
+        pageFlip.loadFromHTML(document.querySelectorAll('.flip-page'));
+
+        pageFlip.on('flip', (e) => {
+          let displayPage = e.data + 2; 
+          let formattedCurrent = String(displayPage).padStart(3, '0');
+          document.getElementById('journal-counter').innerText = `${formattedCurrent} / 104`;
+
+          // Подсветка активной миниатюры в ленте и автоскролл к ней
+          document.querySelectorAll('.sidebar-thumb').forEach((thumb, idx) => {
+            if (idx === e.data) {
+              thumb.classList.add('active');
+              thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            } else {
+              thumb.classList.remove('active');
+            }
+          });
+        });
+
+        document.getElementById('j-prev').addEventListener('click', () => {
+          pageFlip.flipPrev();
+        });
+        document.getElementById('j-next').addEventListener('click', () => {
+          pageFlip.flipNext();
+        });
+      }
     }
-  }
-}
 
-// Обновление цифр счетчика
-function updateCaseProgress(sliderId, counterId, totalSlides) {
-  const slider = document.getElementById(sliderId);
-  const counter = document.getElementById(counterId);
-  const slideWidth = slider.clientWidth;
-  const currentScroll = slider.scrollLeft;
-  let currentSlide = Math.round(currentScroll / slideWidth) + 1;
-  let formattedCurrent = currentSlide < 10 ? '0' + currentSlide : currentSlide;
-  let formattedTotal = totalSlides < 10 ? '0' + totalSlides : totalSlides;
-  counter.innerText = `${formattedCurrent} / ${formattedTotal}`;
-}
-
-// Изоляция скролла внутри кейса
-const caseSlider = document.getElementById('slider-diet');
-if (caseSlider) {
-  caseSlider.addEventListener('wheel', (e) => {
-    if (e.deltaY !== 0) {
-      e.preventDefault();
-      caseSlider.scrollLeft += e.deltaY;
+    function closeCase(caseId) {
+      const modal = document.getElementById(caseId);
+      if (modal) {
+        modal.classList.remove('active');
+      }
+      document.body.style.overflow = '';
     }
-  }, { passive: false });
-}
 
+    // Переключение стрелочками с точным отслеживанием последнего слайда
+    function slideCase(sliderId, direction) {
+      const slider = document.getElementById(sliderId);
+      const slideWidth = slider.clientWidth;
+      const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
+      
+      const currentSlideIndex = Math.round(slider.scrollLeft / slideWidth);
+      const totalSlides = Math.round(slider.scrollWidth / slideWidth);
 
+      if (direction === 'next') {
+        if (currentSlideIndex >= totalSlides - 1) {
+          slider.style.transition = 'opacity 0.25s ease-in-out';
+          slider.style.opacity = '0';
+          setTimeout(() => {
+            slider.scrollTo({ left: 0, behavior: 'auto' });
+            slider.style.opacity = '1';
+            setTimeout(() => { slider.style.transition = ''; }, 250);
+          }, 250);
+        } else {
+          slider.scrollBy({ left: slideWidth, behavior: 'smooth' });
+        }
+      } else {
+        if (currentSlideIndex <= 0) {
+          slider.style.transition = 'opacity 0.25s ease-in-out';
+          slider.style.opacity = '0';
+          setTimeout(() => {
+            slider.scrollTo({ left: maxScrollLeft, behavior: 'auto' });
+            slider.style.opacity = '1';
+            setTimeout(() => { slider.style.transition = ''; }, 250);
+          }, 250);
+        } else {
+          slider.scrollBy({ left: -slideWidth, behavior: 'smooth' });
+        }
+      }
+    }
 
+    // Обновление цифр счетчика
+    function updateCaseProgress(sliderId, counterId, totalSlides) {
+      const slider = document.getElementById(sliderId);
+      const counter = document.getElementById(counterId);
+      const slideWidth = slider.clientWidth;
+      const currentScroll = slider.scrollLeft;
+      let currentSlide = Math.round(currentScroll / slideWidth) + 1;
+      let formattedCurrent = currentSlide < 10 ? '0' + currentSlide : currentSlide;
+      let formattedTotal = totalSlides < 10 ? '0' + totalSlides : totalSlides;
+      counter.innerText = `${formattedCurrent} / ${formattedTotal}`;
+    }
+
+    // Изоляция скролла внутри кейса
+    const caseSlider = document.getElementById('slider-diet');
+    if (caseSlider) {
+      caseSlider.addEventListener('wheel', (e) => {
+        if (e.deltaY !== 0) {
+          e.preventDefault();
+          caseSlider.scrollLeft += e.deltaY;
+        }
+      }, { passive: false });
+    }
   </script>
 
 </body>
