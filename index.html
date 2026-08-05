@@ -1500,6 +1500,39 @@
                     .letter-group-sync {
                       transform-origin: 540px 540px;
                     }
+
+                    /* УНИВЕРСАЛЬНЫЙ САЙДБАР ДЛЯ ВСЕХ КЕЙСОВ */
+.case-sidebar {
+  position: fixed;
+  right: 25px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 90px;
+  height: 70vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 10px 5px;
+  scrollbar-width: thin;
+  scrollbar-color: #333 #0d0d11;
+  z-index: 2300;
+}
+
+.case-sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+.case-sidebar::-webkit-scrollbar-track {
+  background: #0d0d11;
+}
+.case-sidebar::-webkit-scrollbar-thumb {
+  background: #333339;
+  border-radius: 3px;
+}
+
+@media (max-width: 1024px) {
+  .case-sidebar { display: none !important; } /* Скрываем на мобилках */
+}
                   </style>
                 </defs>
 
@@ -3063,10 +3096,65 @@
     let isJournalLoaded = false;
     let pageFlip = null;
 
-    // Открытие и закрытие кейса
-    function openCase(caseId) {
-      document.getElementById(caseId).classList.add('active');
-      document.body.style.overflow = 'hidden';
+function openCase(caseId) {
+  const modal = document.getElementById(caseId);
+  if (!modal) return;
+
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+
+  // Если это не журнал и сайдбар еще не создавался
+  if (caseId !== 'case-journal' && !modal.querySelector('.case-sidebar')) {
+    const slider = modal.querySelector('.case-slider-container');
+    if (!slider) return;
+
+    // Создаем контейнер сайдбара
+    const sidebar = document.createElement('div');
+    sidebar.className = 'case-sidebar';
+    modal.appendChild(sidebar);
+
+    const slides = slider.querySelectorAll('.case-slide');
+
+    slides.forEach((slide, index) => {
+      // Ищем главную картинку на слайде
+      const img = slide.querySelector('img');
+      if (!img) return;
+
+      const thumbDiv = document.createElement('div');
+      thumbDiv.className = 'sidebar-thumb';
+      if (index === 0) thumbDiv.classList.add('active');
+
+      const thumbImg = document.createElement('img');
+      thumbImg.src = img.src;
+      thumbDiv.appendChild(thumbImg);
+
+      // Клик по миниатюре — переходим к слайду
+      thumbDiv.addEventListener('click', () => {
+        slider.scrollTo({
+          left: slider.clientWidth * index,
+          behavior: 'smooth'
+        });
+      });
+
+      sidebar.appendChild(thumbDiv);
+    });
+
+    // Авто-подсветка активной миниатюры при скролле
+    slider.addEventListener('scroll', () => {
+      const currentIndex = Math.round(slider.scrollLeft / slider.clientWidth);
+      const thumbs = sidebar.querySelectorAll('.sidebar-thumb');
+
+      thumbs.forEach((thumb, idx) => {
+        if (idx === currentIndex) {
+          thumb.classList.add('active');
+          thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        } else {
+          thumb.classList.remove('active');
+        }
+      });
+    });
+  }
+
 
       // Инициализируем журнал ТОЛЬКО после того, как модалка стала видимой
       if (caseId === 'case-journal' && !isJournalLoaded) {
