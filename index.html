@@ -874,7 +874,9 @@
 
 /* --- КЕЙСЫ: МОДАЛЬНОЕ ОКНО И СЛАЙДЕР --- */
 .case-modal {
-  display: none; /* ВОТ ЭТОГО НЕ ХВАТАЛО! Без этого она висит всегда */
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
   position: fixed;
   top: 0; 
   left: 0;
@@ -883,10 +885,13 @@
   background-color: #050505;
   z-index: 2000;
   overflow: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
 .case-modal.active {
-  display: block;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
 }
 
 .case-modal-header {
@@ -1172,21 +1177,20 @@
   box-sizing: border-box;
 }
 
-#flipbook {
-  /* Жестко ограничиваем максимальный размер самого блока книги */
-  max-width: 850px; 
-  max-height: 600px;
+/* Размеры флипбуков для обычных экранов (ПК/Ноутбуки) */
+#flipbook, #flipbook-ermak {
+  width: 850px;
+  height: 600px;
+  max-width: 100%;
+  max-height: 70vh;
   margin: auto;
   box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8);
 }
 
-.flip-page {
-  background-color: #fff;
-}
-
+/* Мобильные фиксы */
 @media (max-width: 768px) {
   .journal-wrapper { padding: 100px 10px 80px 10px; }
-  #flipbook {
+  #flipbook, #flipbook-ermak {
     max-width: 100%;
     max-height: 70vh;
   }
@@ -2144,11 +2148,11 @@
 </span>
         </div>
 
-        <div class="category-card" onclick="openCategory('digital', 'Digital Architecture', 'Диджитал и презентации')">
+        <div class="category-card" onclick="openCategory('digital', 'Digital Architecture', 'Верстка и презентации')">
           <span class="cat-num">03</span>
           <h3 class="cat-name">
             <span lang="en">Digital Architecture</span>
-            <span lang="ru">Диджитал и презентации</span>
+            <span lang="ru">Верстка и презентации</span>
           </h3>
           <span class="cat-action">
   <span lang="en">-&gt; open</span>
@@ -2204,6 +2208,18 @@
       
       <div class="gallery-grid">
 
+        <!-- КАТАЛОГ ЕРМАК -->
+<div class="gallery-item" data-category="digital" onclick="openCase('case-ermak')">
+  <img src="ЕРМАК_КАТАЛОГ_Веб (1)_Страница_01.jpg" alt="Ермак Каталог">
+  <div class="item-overlay">
+    <span class="overlay-title">Ермак / Каталог продукции</span>
+    <span class="overlay-action">
+      <span lang="en">-&gt; open catalog</span>
+      <span lang="ru">-&gt; смотреть каталог</span>
+    </span>
+  </div>
+</div>
+
         <!-- Бортовик (Журнал Flipbook) -->
 <div class="gallery-item" data-category="digital" onclick="openCase('case-journal')">
   <img src="Бортовик_compressed_Страница_001.jpg" alt="Бортовик">
@@ -2243,7 +2259,7 @@
 <div class="gallery-item" data-category="digital" onclick="openCase('case-vkr')">
   <img src="Валерия_ВКР_Страница_01_Изображение_0001.png" alt="Презентация ВКР">
   <div class="item-overlay">
-    <span class="overlay-title">ВКР / Диджитал и презентации</span>
+    <span class="overlay-title">ВКР / Верстка и презентации</span>
     <span class="overlay-action">
       <span lang="en">-&gt; open presentation</span>
       <span lang="ru">-&gt; открыть презентацию</span>
@@ -2913,6 +2929,27 @@
   </div>
 </div>
 
+<!-- МОДАЛЬНОЕ ОКНО: ЕРМАК (КАТАЛОГ) -->
+<div id="case-ermak" class="case-modal">
+  <div class="case-modal-header">
+    <div></div>
+    <button class="close-case-btn" onclick="closeCase('case-ermak')">close [x]</button>
+  </div>
+
+  <div class="journal-container-wrapper">
+    <div class="journal-wrapper">
+      <div id="flipbook-ermak"></div>
+    </div>
+    <div class="journal-sidebar" id="sidebar-ermak"></div>
+  </div>
+
+  <div class="case-slide-bottom-nav">
+    <button class="case-arrow-btn" id="ermak-prev">&lt;</button>
+    <span class="case-progress" id="counter-ermak">2 / 54</span>
+    <button class="case-arrow-btn" id="ermak-next">&gt;</button>
+  </div>
+</div>
+
   <!-- PAGINATION -->
   <div class="pagination-container">
     <a href="#hero" class="pagination-dot active"></a>
@@ -3093,6 +3130,8 @@
       document.getElementById('main-title-ru').innerText = 'избранные работы';
     }
 
+    let isErmakLoaded = false;
+let pageFlipErmak = null;
     let isJournalLoaded = false;
     let pageFlip = null;
 
@@ -3103,12 +3142,185 @@ function openCase(caseId) {
   modal.classList.add('active');
   document.body.style.overflow = 'hidden';
 
-  // Если это не журнал и сайдбар еще не создавался
-  if (caseId !== 'case-journal' && !modal.querySelector('.case-sidebar')) {
+  // ==========================================
+  // ЛОГИКА КАТАЛОГА ЕРМАК
+  // ==========================================
+  if (caseId === 'case-ermak' && !isErmakLoaded) {
+    isErmakLoaded = true;
+
+    const totalPages = 54;
+    const flipbookContainer = document.getElementById('flipbook-ermak');
+    const sidebarContainer = document.getElementById('sidebar-ermak');
+
+    flipbookContainer.innerHTML = '';
+    sidebarContainer.innerHTML = '';
+
+    // Генерируем со 2-й по 53-ю страницу
+    for (let i = 2; i < totalPages; i++) {
+      const pageNum = String(i).padStart(2, '0');
+      const imgPath = `ЕРМАК_КАТАЛОГ_Веб (1)_Страница_${pageNum}.jpg`;
+
+      const pageDiv = document.createElement('div');
+      pageDiv.className = 'flip-page';
+
+      const pageImg = document.createElement('img');
+      pageImg.src = imgPath;
+      pageImg.style.width = '100%';
+      pageImg.style.height = '100%';
+      pageImg.style.objectFit = 'cover';
+      pageImg.style.pointerEvents = 'none';
+
+      pageDiv.appendChild(pageImg);
+      flipbookContainer.appendChild(pageDiv);
+
+      const thumbDiv = document.createElement('div');
+      thumbDiv.className = 'sidebar-thumb';
+      if (i === 2) thumbDiv.classList.add('active');
+
+      const thumbImg = document.createElement('img');
+      thumbImg.src = imgPath;
+      thumbDiv.appendChild(thumbImg);
+
+      thumbDiv.addEventListener('click', () => {
+        pageFlipErmak.flip(i - 2);
+      });
+
+      sidebarContainer.appendChild(thumbDiv);
+    }
+
+    // Инициализация с небольшой задержкой для отрисовки DOM
+    setTimeout(() => {
+      pageFlipErmak = new St.PageFlip(flipbookContainer, {
+        width: 450,
+        height: 650,
+        size: "stretch",
+        minWidth: 300,
+        maxWidth: 800,
+        minHeight: 420,
+        maxHeight: 1100,
+        maxShadowOpacity: 0.4,
+        showCover: false,
+        mobileScrollSupport: false
+      });
+
+      // ИЩЕМ ТОЛЬКО ВНУТРИ ЕРМАКА!
+      pageFlipErmak.loadFromHTML(flipbookContainer.querySelectorAll('.flip-page'));
+
+      document.getElementById('counter-ermak').innerText = `2 / 53`;
+
+      pageFlipErmak.on('flip', (e) => {
+        const currentIndex = e.data; 
+        const actualPage = currentIndex + 2; 
+
+        document.getElementById('counter-ermak').innerText = `${actualPage} / 53`;
+
+        sidebarContainer.querySelectorAll('.sidebar-thumb').forEach((thumb, idx) => {
+          if (idx === currentIndex) {
+            thumb.classList.add('active');
+            thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          } else {
+            thumb.classList.remove('active');
+          }
+        });
+      });
+
+      document.getElementById('ermak-prev').addEventListener('click', () => pageFlipErmak.flipPrev());
+      document.getElementById('ermak-next').addEventListener('click', () => pageFlipErmak.flipNext());
+    }, 50);
+  }
+
+  // ==========================================
+  // ЛОГИКА ЖУРНАЛА БОРТОВИК
+  // ==========================================
+  else if (caseId === 'case-journal' && !isJournalLoaded) {
+    isJournalLoaded = true;
+
+    const totalPages = 103; 
+    const flipbookContainer = document.getElementById('flipbook');
+    const sidebarContainer = document.getElementById('journal-sidebar');
+
+    flipbookContainer.innerHTML = '';
+    sidebarContainer.innerHTML = '';
+
+    for (let i = 2; i <= totalPages; i++) {
+      const pageNum = String(i).padStart(3, '0');
+      const imgPath = `Бортовик_compressed_Страница_${pageNum}.jpg`;
+      
+      const pageDiv = document.createElement('div');
+      pageDiv.className = 'flip-page';
+      
+      const pageImg = document.createElement('img');
+      pageImg.src = imgPath;
+      pageImg.style.width = '100%';
+      pageImg.style.height = '100%';
+      pageImg.style.objectFit = 'cover';
+      pageImg.style.pointerEvents = 'none';
+      
+      pageDiv.appendChild(pageImg);
+      flipbookContainer.appendChild(pageDiv);
+
+      const thumbDiv = document.createElement('div');
+      thumbDiv.className = 'sidebar-thumb';
+      if (i === 2) thumbDiv.classList.add('active');
+
+      const thumbImg = document.createElement('img');
+      thumbImg.src = imgPath;
+      thumbDiv.appendChild(thumbImg);
+
+      thumbDiv.addEventListener('click', () => {
+        pageFlip.flip(i - 2);
+      });
+
+      sidebarContainer.appendChild(thumbDiv);
+    }
+
+    setTimeout(() => {
+      pageFlip = new St.PageFlip(flipbookContainer, {
+        width: 450,
+        height: 650,
+        size: "stretch",
+        minWidth: 300,
+        maxWidth: 800,
+        minHeight: 420,
+        maxHeight: 1100,
+        maxShadowOpacity: 0.4,
+        showCover: false,
+        mobileScrollSupport: false
+      });
+
+      // ИЩЕМ ТОЛЬКО ВНУТРИ ЖУРНАЛА! (Исправлен баг воровства страниц)
+      pageFlip.loadFromHTML(flipbookContainer.querySelectorAll('.flip-page'));
+
+      document.getElementById('journal-counter').innerText = `2 / 103`;
+
+      pageFlip.on('flip', (e) => {
+        const currentIndex = e.data;
+        const actualPage = currentIndex + 2;
+        
+        document.getElementById('journal-counter').innerText = `${actualPage} / 103`;
+
+        sidebarContainer.querySelectorAll('.sidebar-thumb').forEach((thumb, idx) => {
+          if (idx === currentIndex) {
+            thumb.classList.add('active');
+            thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          } else {
+            thumb.classList.remove('active');
+          }
+        });
+      });
+
+      document.getElementById('j-prev').addEventListener('click', () => pageFlip.flipPrev());
+      document.getElementById('j-next').addEventListener('click', () => pageFlip.flipNext());
+    }, 50);
+  }
+
+  // ==========================================
+  // ЛОГИКА ОСТАЛЬНЫХ КЕЙСОВ (ОБЫЧНЫЕ СЛАЙДЕРЫ)
+  // ==========================================
+  else if (caseId !== 'case-journal' && caseId !== 'case-ermak' && !modal.querySelector('.case-sidebar')) {
     const slider = modal.querySelector('.case-slider-container');
     if (!slider) return;
 
-    // Создаем контейнер сайдбара
     const sidebar = document.createElement('div');
     sidebar.className = 'case-sidebar';
     modal.appendChild(sidebar);
@@ -3116,7 +3328,6 @@ function openCase(caseId) {
     const slides = slider.querySelectorAll('.case-slide');
 
     slides.forEach((slide, index) => {
-      // Ищем главную картинку на слайде
       const img = slide.querySelector('img');
       if (!img) return;
 
@@ -3128,7 +3339,6 @@ function openCase(caseId) {
       thumbImg.src = img.src;
       thumbDiv.appendChild(thumbImg);
 
-      // Клик по миниатюре — переходим к слайду
       thumbDiv.addEventListener('click', () => {
         slider.scrollTo({
           left: slider.clientWidth * index,
@@ -3139,7 +3349,6 @@ function openCase(caseId) {
       sidebar.appendChild(thumbDiv);
     });
 
-    // Авто-подсветка активной миниатюры при скролле
     slider.addEventListener('scroll', () => {
       const currentIndex = Math.round(slider.scrollLeft / slider.clientWidth);
       const thumbs = sidebar.querySelectorAll('.sidebar-thumb');
@@ -3154,95 +3363,7 @@ function openCase(caseId) {
       });
     });
   }
-
-
-      // Инициализируем журнал ТОЛЬКО после того, как модалка стала видимой
-      if (caseId === 'case-journal' && !isJournalLoaded) {
-        isJournalLoaded = true;
-
-        const totalPages = 103; // Без обложки и задника
-        const flipbookContainer = document.getElementById('flipbook');
-        const sidebarContainer = document.getElementById('journal-sidebar');
-
-        flipbookContainer.innerHTML = '';
-        sidebarContainer.innerHTML = '';
-
-        // Генерируем страницы со 2-й по 103-ю
-        for (let i = 2; i <= totalPages; i++) {
-          const pageNum = String(i).padStart(3, '0');
-          const imgPath = `Бортовик_compressed_Страница_${pageNum}.jpg`;
-          
-          // Страница для книги
-          const pageDiv = document.createElement('div');
-          pageDiv.className = 'flip-page';
-          
-          const pageImg = document.createElement('img');
-          pageImg.src = imgPath;
-          pageImg.style.width = '100%';
-          pageImg.style.height = '100%';
-          pageImg.style.objectFit = 'cover';
-          pageImg.style.pointerEvents = 'none';
-          
-          pageDiv.appendChild(pageImg);
-          flipbookContainer.appendChild(pageDiv);
-
-          // Миниатюра для правой ленты
-          const thumbDiv = document.createElement('div');
-          thumbDiv.className = 'sidebar-thumb';
-          if (i === 2) thumbDiv.classList.add('active');
-          thumbDiv.setAttribute('data-page-index', i - 2);
-
-          const thumbImg = document.createElement('img');
-          thumbImg.src = imgPath;
-          thumbDiv.appendChild(thumbImg);
-
-          // Клик по миниатюре переносит на нужную страницу
-          thumbDiv.addEventListener('click', () => {
-            pageFlip.flip(i - 2);
-          });
-
-          sidebarContainer.appendChild(thumbDiv);
-        }
-
-        pageFlip = new St.PageFlip(flipbookContainer, {
-          width: 450,
-          height: 650,
-          size: "stretch",
-          minWidth: 300,
-          maxWidth: 800,
-          minHeight: 420,
-          maxHeight: 1100,
-          maxShadowOpacity: 0.4,
-          showCover: false,
-          mobileScrollSupport: false
-        });
-
-        pageFlip.loadFromHTML(document.querySelectorAll('.flip-page'));
-
-        pageFlip.on('flip', (e) => {
-          let displayPage = e.data + 2; 
-          let formattedCurrent = String(displayPage).padStart(3, '0');
-          document.getElementById('journal-counter').innerText = `${formattedCurrent} / 104`;
-
-          // Подсветка активной миниатюры в ленте и автоскролл к ней
-          document.querySelectorAll('.sidebar-thumb').forEach((thumb, idx) => {
-            if (idx === e.data) {
-              thumb.classList.add('active');
-              thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            } else {
-              thumb.classList.remove('active');
-            }
-          });
-        });
-
-        document.getElementById('j-prev').addEventListener('click', () => {
-          pageFlip.flipPrev();
-        });
-        document.getElementById('j-next').addEventListener('click', () => {
-          pageFlip.flipNext();
-        });
-      }
-    }
+}
 
     function closeCase(caseId) {
       const modal = document.getElementById(caseId);
