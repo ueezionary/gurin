@@ -1269,21 +1269,30 @@
   .journal-sidebar { display: none; } /* На мобилках скрываем, чтобы не загромождать экран */
 }
 
-/* --- MOBILE FULL OPTIMIZATION --- */
+/* =======================================================
+   ФИНАЛЬНЫЙ МОБИЛЬНЫЙ ФИКС (ВСТАВИТЬ ПЕРЕД ЗАКРЫТИЕМ </style>)
+   ======================================================= */
 @media (max-width: 768px) {
-  /* Перевод кейсов в удобную вертикальную ленту */
+  /* 1. ИСПРАВЛЕНИЕ ОБЫЧНЫХ КЕЙСОВ (2ГИС, ВКР, ДИЕТОЛОГ) */
+  .case-slide {
+    display: block !important; /* Убираем flex-center, чтобы верх не выталкивался за экран */
+    height: 100vh !important;
+    overflow-y: auto !important; /* Разрешаем вертикальный скролл внутри слайда */
+    padding: 80px 20px 100px 20px !important;
+  }
+
   .case-slide-content, .case-slide-content.reverse {
     display: flex !important;
     flex-direction: column !important;
-    gap: 20px !important;
-    padding: 20px 10px !important;
-    height: auto !important;
+    justify-content: center !important;
+    min-height: 100% !important; /* Центрируем, если текста мало */
+    gap: 30px !important;
   }
 
   .case-text-block {
     order: 1 !important;
     width: 100% !important;
-    text-align: left !important;
+    text-align: center !important;
   }
 
   .case-visual-block {
@@ -1291,31 +1300,44 @@
     width: 100% !important;
   }
 
-  .case-title { font-size: 1.8rem !important; }
-  .case-subtitle { font-size: 1.3rem !important; }
-  .case-description { font-size: 0.95rem !important; line-height: 1.5 !important; }
+  .case-title { font-size: 2.2rem !important; }
+  .case-subtitle { font-size: 1.6rem !important; }
+  .case-description { font-size: 1.05rem !important; line-height: 1.6 !important; }
 
-  /* Картинки занимают адекватное место и не плющатся */
+  /* Снимаем жесткие ограничения высоты, чтобы картинки (как листовка) не плющились */
   .case-visual-block img, 
   .case-slide-content img,
-  .solid-image {
-    max-height: 55vh !important;
+  .solid-image,
+  .floating-mockup {
+    max-height: none !important; 
     width: 100% !important;
     height: auto !important;
     object-fit: contain !important;
+    margin-bottom: 20px !important;
   }
 
-  /* Для мобилок превращаем флипбук-контейнер в вертикальный ленточный скролл */
+  /* 2. ИСПРАВЛЕНИЕ КАТАЛОГОВ (ЕРМАК И ЖУРНАЛ) */
+  .case-modal.mobile-scroll-mode {
+    overflow-y: auto !important; /* Разрешаем скролл всей модалке */
+    display: block !important;
+  }
+
+  .mobile-scroll-mode .journal-container-wrapper {
+    height: auto !important;
+    display: block !important; /* Убираем блокировку скролла */
+  }
+
   .mobile-scroll-mode .journal-wrapper {
     height: auto !important;
-    padding: 60px 10px 100px 10px !important;
+    padding: 80px 15px 40px 15px !important;
   }
 
+  /* Выстраиваем страницы каталога в колонку друг под другом */
   .mobile-scroll-mode #flipbook,
   .mobile-scroll-mode #flipbook-ermak {
     display: flex !important;
     flex-direction: column !important;
-    gap: 15px !important;
+    gap: 20px !important;
     width: 100% !important;
     height: auto !important;
     max-height: none !important;
@@ -1325,12 +1347,14 @@
   .mobile-scroll-mode .flip-page {
     width: 100% !important;
     height: auto !important;
+    background: transparent !important;
   }
 
   .mobile-scroll-mode .flip-page img {
     width: 100% !important;
     height: auto !important;
-    border-radius: 6px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
   }
 }
 
