@@ -872,39 +872,6 @@
   }
 }
 
-/* --- КЕЙСЫ: МОДАЛЬНОЕ ОКНО И СЛАЙДЕР --- */
-.case-modal {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  position: fixed;
-  top: 0; 
-  left: 0;
-  width: 100vw; 
-  height: 100vh;
-  background-color: #050505;
-  z-index: 2000;
-  overflow: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
-}
-
-.case-modal.active {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-}
-
-.case-modal-header {
-  position: absolute;
-  top: 0; left: 0; width: 100%;
-  padding: 30px 60px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  z-index: 2100;
-  pointer-events: none;
-}
-
 .case-slider-container {
   display: flex; width: 100%; height: 100vh; overflow-x: auto; overflow-y: hidden;
   scroll-snap-type: x mandatory; scrollbar-width: none;
@@ -1267,6 +1234,105 @@
 
 @media (max-width: 1024px) {
   .journal-sidebar { display: none; } /* На мобилках скрываем, чтобы не загромождать экран */
+}
+
+/* --- ЕДИНАЯ ГАЛЕРЕЯ (МИНИМАЛИЗМ) --- */
+.global-modal {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background-color: #050505;
+  z-index: 3000;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+.global-modal.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+.modal-top-bar {
+  position: absolute;
+  top: 0; left: 0; width: 100%;
+  padding: 30px 40px;
+  display: flex;
+  justify-content: flex-end;
+  z-index: 3100;
+}
+.close-btn {
+  background: transparent;
+  color: #777785;
+  border: none;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+.close-btn:hover { color: #ff5500; }
+
+.slider-track {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none; 
+  -webkit-overflow-scrolling: touch; 
+}
+.slider-track::-webkit-scrollbar { display: none; }
+
+.slider-slide {
+  flex: 0 0 100vw;
+  width: 100vw;
+  height: 100vh;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 40px;
+}
+.slider-slide img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 20px 40px rgba(0,0,0,0.8));
+}
+
+.modal-bottom-bar {
+  position: absolute;
+  bottom: 30px; left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  z-index: 3100;
+}
+.nav-arrow {
+  background: none; border: none;
+  color: #ff5500;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 10px;
+}
+.slide-counter {
+  color: #777785;
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+}
+
+@media (max-width: 768px) {
+  .slider-slide { padding: 60px 15px; }
+  .modal-top-bar { padding: 20px; }
+  .modal-bottom-bar { bottom: 20px; }
 }
 
   </style>
@@ -2113,198 +2179,75 @@
     </section>
 
 <!-- SLIDE 4: GALLERY -->
-<section id="gallery" class="slide">
-  <div class="works-scroll-box">
-    <h2 class="works-title">
-      <span lang="en" id="main-title-en">selected works</span>
-      <span lang="ru" id="main-title-ru">избранные работы</span>
-    </h2>
+    <section id="gallery" class="slide">
+      <div class="works-scroll-box">
+        <h2 class="works-title">
+          <span lang="en" id="main-title-en">selected works</span>
+          <span lang="ru" id="main-title-ru">избранные работы</span>
+        </h2>
 
-<!-- УРОВЕНЬ 1: КАТЕГОРИИ (ПАПКИ) -->
-    <div id="gallery-categories" class="gallery-view active">
-      <div class="category-list">
-        
-        <div class="category-card" onclick="openCategory('identity', 'Brand Identity', 'Айдентика')">
-          <span class="cat-num">01</span>
-          <h3 class="cat-name">
-            <span lang="en">Brand Identity</span>
-            <span lang="ru">Айдентика</span>
-          </h3>
-          <span class="cat-action">
-  <span lang="en">-&gt; open</span>
-  <span lang="ru">-&gt; открыть</span>
-</span>
+        <!-- УРОВЕНЬ 1: КАТЕГОРИИ (ПАПКИ) -->
+        <div id="gallery-categories" class="gallery-view active">
+          <div class="category-list">
+            
+            <div class="category-card" onclick="openGallery('identity', 10)">
+              <span class="cat-num">01</span>
+              <h3 class="cat-name">
+                <span lang="en">Brand Identity</span>
+                <span lang="ru">Айдентика</span>
+              </h3>
+              <span class="cat-action"><span lang="en">-&gt; view</span><span lang="ru">-&gt; смотреть</span></span>
+            </div>
+
+            <div class="category-card" onclick="openGallery('outdoor', 8)">
+              <span class="cat-num">02</span>
+              <h3 class="cat-name">
+                <span lang="en">Outdoor</span>
+                <span lang="ru">Наружная реклама</span>
+              </h3>
+              <span class="cat-action"><span lang="en">-&gt; view</span><span lang="ru">-&gt; смотреть</span></span>
+            </div>
+
+            <div class="category-card" onclick="openGallery('digital', 15)">
+              <span class="cat-num">03</span>
+              <h3 class="cat-name">
+                <span lang="en">Editorial &amp; Presentations</span>
+                <span lang="ru">Верстка и презентации</span>
+              </h3>
+              <span class="cat-action"><span lang="en">-&gt; view</span><span lang="ru">-&gt; смотреть</span></span>
+            </div>
+
+            <div class="category-card" onclick="openGallery('social', 5)">
+              <span class="cat-num">04</span>
+              <h3 class="cat-name">
+                <span lang="en">Social Media &amp; Promo</span>
+                <span lang="ru">Соцсети и промо</span>
+              </h3>
+              <span class="cat-action"><span lang="en">-&gt; view</span><span lang="ru">-&gt; смотреть</span></span>
+            </div>
+
+            <div class="category-card" onclick="openGallery('graphics', 12)">
+              <span class="cat-num">05</span>
+              <h3 class="cat-name">
+                <span lang="en">Key Graphics &amp; CG</span>
+                <span lang="ru">Арт-направление</span>
+              </h3>
+              <span class="cat-action"><span lang="en">-&gt; view</span><span lang="ru">-&gt; смотреть</span></span>
+            </div>
+
+            <div class="category-card" onclick="openGallery('merch', 6)">
+              <span class="cat-num">06</span>
+              <h3 class="cat-name">
+                <span lang="en">Merch &amp; Packaging</span>
+                <span lang="ru">Мерч и упаковка</span>
+              </h3>
+              <span class="cat-action"><span lang="en">-&gt; view</span><span lang="ru">-&gt; смотреть</span></span>
+            </div>
+
+          </div>
         </div>
-
-        <div class="category-card" onclick="openCategory('outdoor', 'Outdoor', 'Наружная реклама')">
-          <span class="cat-num">02</span>
-          <h3 class="cat-name">
-            <span lang="en">Outdoor</span>
-            <span lang="ru">Наружная реклама</span>
-          </h3>
-          <span class="cat-action">
-  <span lang="en">-&gt; open</span>
-  <span lang="ru">-&gt; открыть</span>
-</span>
-        </div>
-
-        <div class="category-card" onclick="openCategory('digital', 'Digital Architecture', 'Верстка и презентации')">
-          <span class="cat-num">03</span>
-          <h3 class="cat-name">
-            <span lang="en">Digital Architecture</span>
-            <span lang="ru">Верстка и презентации</span>
-          </h3>
-          <span class="cat-action">
-  <span lang="en">-&gt; open</span>
-  <span lang="ru">-&gt; открыть</span>
-</span>
-        </div>
-
-        <div class="category-card" onclick="openCategory('social', 'Social Media & Promo', 'Соцсети и промо')">
-          <span class="cat-num">04</span>
-          <h3 class="cat-name">
-            <span lang="en">Social Media & Promo</span>
-            <span lang="ru">Соцсети и промо</span>
-          </h3>
-          <span class="cat-action">
-  <span lang="en">-&gt; open</span>
-  <span lang="ru">-&gt; открыть</span>
-</span>
-        </div>
-
-        <div class="category-card" onclick="openCategory('graphics', 'Key Graphics & CG', 'Арт-направление')">
-          <span class="cat-num">05</span>
-          <h3 class="cat-name">
-            <span lang="en">Key Graphics & CG</span>
-            <span lang="ru">Арт-направление</span>
-          </h3>
-          <span class="cat-action">
-  <span lang="en">-&gt; open</span>
-  <span lang="ru">-&gt; открыть</span>
-</span>
-        </div>
-
-        <div class="category-card" onclick="openCategory('merch', 'Merch & Packaging', 'Мерч и упаковка')">
-          <span class="cat-num">06</span>
-          <h3 class="cat-name">
-            <span lang="en">Merch & Packaging</span>
-            <span lang="ru">Мерч и упаковка</span>
-          </h3>
-          <span class="cat-action">
-  <span lang="en">-&gt; open</span>
-  <span lang="ru">-&gt; открыть</span>
-</span>
-        </div>
-
       </div>
-    </div>
-
-    <!-- УРОВЕНЬ 2: СЕТКА ПРОЕКТОВ ВНУТРИ КАТЕГОРИИ -->
-    <div id="gallery-grid-view" class="gallery-view">
-      <button class="back-to-cat-btn" onclick="backToCategories()">
-        <span lang="en"><- back to folders</span>
-        <span lang="ru"><- назад к разделам</span>
-      </button>
-      
-      <div class="gallery-grid">
-
-        <!-- КАТАЛОГ ЕРМАК -->
-<div class="gallery-item" data-category="digital" onclick="openCase('case-ermak')">
-  <img src="ЕРМАК_КАТАЛОГ_Веб (1)_Страница_01.jpg" alt="Ермак Каталог">
-  <div class="item-overlay">
-    <span class="overlay-title">Ермак / Каталог продукции</span>
-    <span class="overlay-action">
-      <span lang="en">-&gt; open catalog</span>
-      <span lang="ru">-&gt; смотреть каталог</span>
-    </span>
-  </div>
-</div>
-
-        <!-- Бортовик (Журнал Flipbook) -->
-<div class="gallery-item" data-category="digital" onclick="openCase('case-journal')">
-  <img src="Бортовик_compressed_Страница_001.jpg" alt="Бортовик">
-  <div class="item-overlay">
-    <span class="overlay-title">Бортовик / Журнал</span>
-    <span class="overlay-action">
-      <span lang="en">-&gt; open journal</span>
-      <span lang="ru">-&gt; читать выпуск</span>
-    </span>
-  </div>
-</div>
-        
-<!-- Карточка 1: Билборд Рижский Парк -->
-<div class="gallery-item" data-category="outdoor" onclick="openCase('case-riga')">
-  <img src="баннер_усадьба.jpg" alt="Рижский Парк">
-  <div class="item-overlay">
-    <span class="overlay-title">Рижский Парк / Билборд</span>
-    <span class="overlay-action">
-      <span lang="en">-&gt; open case</span>
-      <span lang="ru">-&gt; открыть кейс</span>
-    </span>
-  </div>
-</div>
-
-<div class="gallery-item" data-category="identity" onclick="openCase('case-diet')">
-  <img src="vika.png" alt="Врач-диетолог">
-  <div class="item-overlay">
-    <span class="overlay-title">Диетолог / Визитка</span>
-    <span class="overlay-action">
-      <span lang="en">-&gt; open case</span>
-      <span lang="ru">-&gt; открыть кейс</span>
-    </span>
-  </div>
-</div>
-
-<!-- ВКР (Диджитал) -->
-<div class="gallery-item" data-category="digital" onclick="openCase('case-vkr')">
-  <img src="Валерия_ВКР_Страница_01_Изображение_0001.png" alt="Презентация ВКР">
-  <div class="item-overlay">
-    <span class="overlay-title">ВКР / Диджитал и презентации</span>
-    <span class="overlay-action">
-      <span lang="en">-&gt; open presentation</span>
-      <span lang="ru">-&gt; открыть презентацию</span>
-    </span>
-  </div>
-</div>
-
-<!-- 2ГИС Лимонад (Соцсети) -->
-<div class="gallery-item" data-category="social" onclick="openCase('case-lemonade')">
-  <img src="leaflet_lemonade.png" alt="Листовка 2ГИС Лимонад">
-  <div class="item-overlay">
-    <span class="overlay-title">2ГИС / С тебя пара слов</span>
-    <span class="overlay-action">
-      <span lang="en">-&gt; open case</span>
-      <span lang="ru">-&gt; открыть кейс</span>
-    </span>
-  </div>
-</div>
-
-<div class="gallery-item" data-category="identity" onclick="openCase('case-eimport')">
-  <img src="eimport_logobook_Страница_1.png" alt="Eimport Global">
-  <div class="item-overlay">
-    <span class="overlay-title">Eimport Global / Логобук</span>
-    <span class="overlay-action">
-      <span lang="en">-&gt; open case</span>
-      <span lang="ru">-&gt; открыть кейс</span>
-    </span>
-  </div>
-</div>
-
-<!-- Карточка 2: НГТК -->
-<div class="gallery-item" data-category="outdoor" onclick="openCase('case-ngtk')">
-  <img src="Колледж_2_Страница_1_Изображение_0001.png" alt="Нижегородский гуманитарно-технический колледж">
-  <div class="item-overlay">
-    <span class="overlay-title">НГТК / Наружная реклама</span>
-    <span class="overlay-action">
-      <span lang="en">-&gt; open case</span>
-      <span lang="ru">-&gt; открыть кейс</span>
-    </span>
-  </div>
-</div>
-
-  </div>
-</section>
-
+    </section>
 
     <!-- SLIDE 5: CONTACT -->
     <section id="contact" class="slide">
@@ -2329,626 +2272,22 @@
 
   </main>
 
-
-<!-- КЕЙС: ЧЁТКИЙ ДИЕТОЛОГ (МОДАЛКА) -->
-<div id="case-diet" class="case-modal">
-  <div class="case-modal-header">
-    <div></div>
-    <button class="close-case-btn" onclick="closeCase('case-diet')">close [x]</button>
-  </div>
-
-  <div class="case-slider-container" id="slider-diet" onscroll="updateCaseProgress('slider-diet', 'case-counter-diet', 6)">
+  <!-- ЕДИНОЕ ОКНО ПРОСМОТРА ГАЛЕРЕИ -->
+  <div id="global-gallery" class="global-modal">
+    <div class="modal-top-bar">
+      <button class="close-btn" onclick="closeGallery()">[ close ]</button>
+    </div>
     
-    <!-- СЛАЙД 1 -->
-    <div class="case-slide">
-      <div class="case-slide-content">
-        <div class="case-text-block">
-          <h2 class="case-title">
-            <span lang="en">Strict Dietitian</span>
-            <span lang="ru">Чёткий диетолог</span>
-          </h2>
-          <p class="case-description">
-            <span lang="en">Identity and business card design for an endocrinologist. The main goal was to move away from sterile hospital vibes and combine strict medicine with a strong personal brand.</span>
-            <span lang="ru">Разработка айдентики и визитной карточки для врача-эндокринолога. Главная задача — уйти от стерильного больничного стиля и совместить строгую медицину с ярким личным брендом.</span>
-          </p>
-        </div>
-        <div class="case-visual-block">
-          <img src="vika.png" alt="Cover" class="floating-mockup">
-        </div>
-      </div>
-      <!-- ВНИМАНИЕ: ЗДЕСЬ БОЛЬШЕ НЕТ НАВИГАЦИИ -->
+    <div class="slider-track" id="gallery-track">
+      <!-- Сюда JS будет закидывать картинки -->
     </div>
 
-    <!-- СЛАЙД 2 -->
-    <div class="case-slide">
-      <div class="case-slide-content">
-        <div class="case-text-block">
-          <h3 class="case-subtitle">
-            <span lang="en">Color System</span>
-            <span lang="ru">Цветовая система</span>
-          </h3>
-          <p class="case-description">
-            <span lang="en">Moving away from white in favor of powdery beige. Magenta stands for energy and personal brand, breaking the stereotype of a "boring doctor".</span>
-            <span lang="ru">Отказ от белого в пользу пудрово-бежевого. Маджента отвечает за энергию и личный бренд, разбивая стереотип о «скучном враче».</span>
-          </p>
-        </div>
-        <div class="case-visual-block">
-          <img src="vika_slide1.png" alt="Palette" class="solid-image">
-        </div>
-      </div>
-    </div>
-
-    <!-- СЛАЙД 3 -->
-    <div class="case-slide">
-      <div class="case-slide-content reverse">
-        <div class="case-visual-block">
-          <img src="vika_slide2.png" alt="Typography" class="solid-image">
-        </div>
-        <div class="case-text-block">
-          <h3 class="case-subtitle">
-            <span lang="en">Typography Anatomy</span>
-            <span lang="ru">Анатомия типографики</span>
-          </h3>
-          <p class="case-description">
-            <span lang="en">The doctor's name is brought to the foreground in a bold, strict sans-serif. A light handwritten font is used at the bottom as a stylistic reference to the famous "doctor's handwriting".</span>
-            <span lang="ru">Имя врача выведено на первый план крупным строгим гротеском. Внизу использован легкий рукописный шрифт — стилистическая отсылка к знаменитому «врачебному почерку».</span>
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <!-- СЛАЙД 4 -->
-    <div class="case-slide">
-      <div class="case-slide-content reverse">
-        <div class="case-visual-block">
-          <img src="vika_slide3.png" alt="Graphics" class="solid-image">
-        </div>
-        <div class="case-text-block">
-          <h3 class="case-subtitle">
-            <span lang="en">Dynamics & Details</span>
-            <span lang="ru">Динамика и детали</span>
-          </h3>
-          <p class="case-description">
-            <span lang="en">Juicy vector graphics. Cropping elements "into the bleed" creates compositional dynamics. QR code colors are matched with avocado shades.</span>
-            <span lang="ru">Сочная векторная графика. Кадрирование элементов «в срез» задает динамику композиции. Цвета QR-кодов зарифмованы с оттенками авокадо.</span>
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <!-- СЛАЙД 5 -->
-    <div class="case-slide">
-      <div class="case-slide-content">
-        <div class="case-text-block">
-          <h3 class="case-subtitle">
-            <span lang="en">Pre-press & Production</span>
-            <span lang="ru">Препресс и производство</span>
-          </h3>
-          <p class="case-description">
-            <span lang="en">Flawless technical layout preparation. Strict layer grouping, safe zones and bleed lines included. The file is ready for printing without edits.</span>
-            <span lang="ru">Идеальная техническая подготовка макета. Строгая группировка слоев, заложены безопасные зоны и линии реза (bleed). Файл готов к отправке в типографию без правок.</span>
-          </p>
-        </div>
-        <div class="case-visual-block">
-          <img src="vika_slide5.png" alt="Layers" class="solid-image">
-        </div>
-      </div>
-    </div>
-
-    <!-- СЛАЙД 6 -->
-    <div class="case-slide">
-      <div class="case-slide-content layout-center">
-        <div class="case-text-block text-center">
-          <h3 class="case-subtitle">
-            <span lang="en">Final Output</span>
-            <span lang="ru">Финальный результат</span>
-          </h3>
-        </div>
-        <div class="case-visual-block flat-result">
-          <img src="vika1.png" alt="Front" class="solid-image">
-          <img src="vika2.png" alt="Back" class="solid-image">
-        </div>
-      </div>
-    </div>
-
-  </div> <!-- Конец слайдера -->
-
-  <!-- ЕДИНАЯ НИЖНЯЯ ПАНЕЛЬ НАВИГАЦИИ (ВИСИТ МЕРТВО ПО ЦЕНТРУ СНИЗУ) -->
-  <div class="case-slide-bottom-nav">
-    <button class="case-arrow-btn" onclick="slideCase('slider-diet', 'prev')">&lt;</button>
-    <span class="case-progress" id="case-counter-diet">01 / 06</span>
-    <button class="case-arrow-btn" onclick="slideCase('slider-diet', 'next')">&gt;</button>
-  </div>
-
-</div>
-
-<!-- МОДАЛЬНОЕ ОКНО ДЛЯ ПРЕЗЕНТАЦИИ ВКР (PNG) -->
-<div id="case-vkr" class="case-modal">
-  <div class="case-modal-header">
-    <div></div>
-    <button class="close-case-btn" onclick="closeCase('case-vkr')">close [x]</button>
-  </div>
-
-  <div class="case-slider-container" id="slider-vkr" onscroll="updateCaseProgress('slider-vkr', 'case-counter-vkr', 13)">
-    
-<!-- СЛАЙД 1: ОПИСАНИЕ И ОБЛОЖКА (ТЕКСТ СЛЕВА) -->
-    <div class="case-slide">
-      <div class="case-slide-content">
-        <div class="case-text-block" style="display: flex; flex-direction: column; gap: 24px;">
-          <h2 class="case-title" style="font-size: 2.8rem; margin-bottom: 10px;">
-            <span lang="en">Academic Presentation</span>
-            <span lang="ru">Презентация для&nbsp;ВКР</span>
-          </h2>
-          
-          <p class="case-description">
-            <span lang="en"><span style="color: #00e5ff;">Task:</span> Visual overhaul of a graduation thesis, mandated by the committee to replace standard, uninspiring student templates with a modern design.</span>
-            <span lang="ru"><span style="color: #00e5ff;">Задача:</span> Полное обновление визуала квалификационной работы по&nbsp;жесткому требованию комиссии уйти от&nbsp;стандартных и&nbsp;скучных студенческих шаблонов.</span>
-          </p>
-          
-          <p class="case-description">
-            <span lang="en"><span style="color: #ff5500;">Solution:</span> A bold, modern style featuring 3D elements was implemented. Complex academic tables and graphs were completely redesigned into trendy infographics, elevating the perception of dry data.</span>
-            <span lang="ru"><span style="color: #ff5500;">Решение:</span> Разработан яркий, современный стиль с&nbsp;интеграцией 3D-элементов. Главный акцент сделан на&nbsp;переработке сложных академических таблиц и&nbsp;графиков в&nbsp;стильную инфографику, которая полностью изменила подачу сухих данных.</span>
-          </p>
-        </div>
-        
-        <div class="case-visual-block">
-          <img src="Валерия_ВКР_Страница_01_Изображение_0001.png" alt="Слайд 1" class="solid-image">
-        </div>
-      </div>
-    </div>
-
-    <!-- СЛАЙД 2 -->
-    <div class="case-slide">
-      <div class="case-slide-content layout-center">
-        <div class="case-visual-block">
-          <img src="Валерия_ВКР_Страница_02_Изображение_0001.png" alt="Слайд 2" class="solid-image">
-        </div>
-      </div>
-    </div>
-
-    <!-- СЛАЙД 3 -->
-    <div class="case-slide">
-      <div class="case-slide-content layout-center">
-        <div class="case-visual-block">
-          <img src="Валерия_ВКР_Страница_03_Изображение_0001.png" alt="Слайд 3" class="solid-image">
-        </div>
-      </div>
-    </div>
-
-    <!-- СЛАЙД 4 -->
-    <div class="case-slide">
-      <div class="case-slide-content layout-center">
-        <div class="case-visual-block">
-          <img src="Валерия_ВКР_Страница_04_Изображение_0001.png" alt="Слайд 4" class="solid-image">
-        </div>
-      </div>
-    </div>
-
-    <!-- СЛАЙД 5 -->
-    <div class="case-slide">
-      <div class="case-slide-content layout-center">
-        <div class="case-visual-block">
-          <img src="Валерия_ВКР_Страница_05_Изображение_0001.png" alt="Слайд 5" class="solid-image">
-        </div>
-      </div>
-    </div>
-
-    <!-- СЛАЙД 6 -->
-    <div class="case-slide">
-      <div class="case-slide-content layout-center">
-        <div class="case-visual-block">
-          <img src="Валерия_ВКР_Страница_06_Изображение_0001.png" alt="Слайд 6" class="solid-image">
-        </div>
-      </div>
-    </div>
-
-    <!-- СЛАЙД 7 -->
-    <div class="case-slide">
-      <div class="case-slide-content layout-center">
-        <div class="case-visual-block">
-          <img src="Валерия_ВКР_Страница_07_Изображение_0001.png" alt="Слайд 7" class="solid-image">
-        </div>
-      </div>
-    </div>
-
-    <!-- СЛАЙД 8 -->
-    <div class="case-slide">
-      <div class="case-slide-content layout-center">
-        <div class="case-visual-block">
-          <img src="Валерия_ВКР_Страница_08_Изображение_0001.png" alt="Слайд 8" class="solid-image">
-        </div>
-      </div>
-    </div>
-
-    <!-- СЛАЙД 9 -->
-    <div class="case-slide">
-      <div class="case-slide-content layout-center">
-        <div class="case-visual-block">
-          <img src="Валерия_ВКР_Страница_09_Изображение_0001.png" alt="Слайд 9" class="solid-image">
-        </div>
-      </div>
-    </div>
-
-    <!-- СЛАЙД 10 -->
-    <div class="case-slide">
-      <div class="case-slide-content layout-center">
-        <div class="case-visual-block">
-          <img src="Валерия_ВКР_Страница_10_Изображение_0001.png" alt="Слайд 10" class="solid-image">
-        </div>
-      </div>
-    </div>
-
-    <!-- СЛАЙД 11 -->
-    <div class="case-slide">
-      <div class="case-slide-content layout-center">
-        <div class="case-visual-block">
-          <img src="Валерия_ВКР_Страница_11_Изображение_0001.png" alt="Слайд 11" class="solid-image">
-        </div>
-      </div>
-    </div>
-
-    <!-- СЛАЙД 12 -->
-    <div class="case-slide">
-      <div class="case-slide-content layout-center">
-        <div class="case-visual-block">
-          <img src="Валерия_ВКР_Страница_12_Изображение_0001.png" alt="Слайд 12" class="solid-image">
-        </div>
-      </div>
-    </div>
-
-    <!-- СЛАЙД 13 -->
-    <div class="case-slide">
-      <div class="case-slide-content layout-center">
-        <div class="case-visual-block">
-          <img src="Валерия_ВКР_Страница_13_Изображение_0001.png" alt="Слайд 13" class="solid-image">
-        </div>
-      </div>
-    </div>
-
-  </div> <!-- Конец слайдера ВКР -->
-
-  <!-- Навигация ВКР -->
-  <div class="case-slide-bottom-nav">
-    <button class="case-arrow-btn" onclick="slideCase('slider-vkr', 'prev')">&lt;</button>
-    <span class="case-progress" id="case-counter-vkr">01 / 13</span>
-    <button class="case-arrow-btn" onclick="slideCase('slider-vkr', 'next')">&gt;</button>
-  </div>
-
-</div> <!-- Закрыли модалку ВКР -->
-
-
-<!-- МОДАЛЬНОЕ ОКНО ДЛЯ ЛИСТОВКИ -->
-<div id="case-lemonade" class="case-modal">
-  <div class="case-modal-header">
-    <div></div>
-    <button class="close-case-btn" onclick="closeCase('case-lemonade')">close [x]</button>
-  </div>
-
-  <div class="case-slider-container" id="slider-lemonade">
-    <div class="case-slide">
-      <div class="case-slide-content">
-        
-<div class="case-text-block" style="display: flex; flex-direction: column; gap: 24px;">
-          <h2 class="case-title" style="font-size: 2.8rem; margin-bottom: 10px;">
-            <span lang="en">Review Promo Flyer</span>
-            <span lang="ru">Листовка для&nbsp;привлечения отзывов</span>
-          </h2>
-          
-          <!-- ЗАДАЧА -->
-          <p class="case-description">
-            <span lang="en"><span style="color: #00e5ff;">Task:</span> Engagement of new café visitors to leave reviews in&nbsp;2GIS.</span>
-            <span lang="ru"><span style="color: #00e5ff;">Задача:</span> Вовлечение посетителей нового кафе в&nbsp;публикацию отзывов на&nbsp;платформе 2ГИС.</span>
-          </p>
-          
-          <!-- РЕШЕНИЕ -->
-          <p class="case-description">
-            <span lang="en"><span style="color: #ff5500;">Solution:</span> Visual composition and promotional copy were developed with a focus on capturing customer attention at the checkout counter. Typography was carefully engineered, fonts were specifically selected, and the QR code was custom-styled to match the overall brand aesthetics. The deep green color scheme was deliberately chosen to fit the summer season and create a striking, clean contrast with the beverage glass.</span>
-            <span lang="ru"><span style="color: #ff5500;">Решение:</span> Визуальная композиция и&nbsp;рекламный текст были выстроены с&nbsp;расчетом на&nbsp;мгновенный захват внимания клиента во&nbsp;время ожидания в&nbsp;очереди у&nbsp;кассы. Проведена детальная работа с&nbsp;типографикой и&nbsp;подбором шрифтов, а&nbsp;QR-код интегрирован в&nbsp;едином стилистическом оформлении. Глубокий зеленый цвет выбран неслучайно: он&nbsp;идеально подходит под летний период и&nbsp;создает выразительный контраст со&nbsp;стаканом напитка.</span>
-          </p>
-        </div>
-
-        <div class="case-visual-block">
-          <img src="leaflet_lemonade.png" alt="Листовка для отзывов" class="solid-image" style="max-height: 75vh; width: auto;">
-        </div>
-
-      </div>
+    <div class="modal-bottom-bar">
+      <button class="nav-arrow" onclick="moveGallery(-1)">&lt;</button>
+      <span class="slide-counter" id="gallery-counter">1 / 1</span>
+      <button class="nav-arrow" onclick="moveGallery(1)">&gt;</button>
     </div>
   </div>
-</div> <!-- Закрыли модалку листовки -->
-
-<!-- КЕЙС: EIMPORT LOGOBOOK -->
-<div id="case-eimport" class="case-modal">
-  <div class="case-modal-header">
-    <div></div>
-    <button class="close-case-btn" onclick="closeCase('case-eimport')">close [x]</button>
-  </div>
-
-  <div class="case-slider-container" id="slider-eimport" onscroll="updateCaseProgress('slider-eimport', 'case-counter-eimport', 6)">
-    
-    <!-- СЛАЙД 1: ОБЛОЖКА -->
-    <div class="case-slide">
-      <div class="case-slide-content layout-center">
-        <div class="case-visual-block">
-          <img src="eimport_logobook_Страница_1.png" alt="Cover" class="solid-image">
-        </div>
-      </div>
-    </div>
-
-    <!-- СЛАЙД 2: ВАРИАЦИИ -->
-    <div class="case-slide">
-      <div class="case-slide-content layout-center">
-        <div class="case-visual-block">
-          <img src="eimport_logobook_Страница_2.png" alt="Layouts" class="solid-image">
-        </div>
-      </div>
-    </div>
-
-    <!-- СЛАЙД 3: МОНОХРОМ -->
-    <div class="case-slide">
-      <div class="case-slide-content layout-center">
-        <div class="case-visual-block">
-          <img src="eimport_logobook_Страница_3.png" alt="Monochrome" class="solid-image">
-        </div>
-      </div>
-    </div>
-
-    <!-- СЛАЙД 4: НЕДОПУСТИМОЕ ИСПОЛЬЗОВАНИЕ -->
-    <div class="case-slide">
-      <div class="case-slide-content layout-center">
-        <div class="case-visual-block">
-          <img src="eimport_logobook_Страница_4.png" alt="Do not use" class="solid-image">
-        </div>
-      </div>
-    </div>
-
-    <!-- СЛАЙД 5: ШРИФТЫ И ЦВЕТА -->
-    <div class="case-slide">
-      <div class="case-slide-content layout-center">
-        <div class="case-visual-block">
-          <img src="eimport_logobook_Страница_5.png" alt="Colors and typography" class="solid-image">
-        </div>
-      </div>
-    </div>
-
-    <!-- СЛАЙД 6: СЕТКА -->
-    <div class="case-slide">
-      <div class="case-slide-content layout-center">
-        <div class="case-visual-block">
-          <img src="eimport_logobook_Страница_6.png" alt="Grid and safe zone" class="solid-image">
-        </div>
-      </div>
-    </div>
-
-  </div> <!-- Конец слайдера -->
-
-  <!-- НАВИГАЦИЯ -->
-  <div class="case-slide-bottom-nav">
-    <button class="case-arrow-btn" onclick="slideCase('slider-eimport', 'prev')">&lt;</button>
-    <span class="case-progress" id="case-counter-eimport">01 / 06</span>
-    <button class="case-arrow-btn" onclick="slideCase('slider-eimport', 'next')">&gt;</button>
-  </div>
-</div>
-
-<!-- КЕЙС: НГТК -->
-<div id="case-ngtk" class="case-modal">
-  <div class="case-modal-header">
-    <div></div>
-    <button class="close-case-btn" onclick="closeCase('case-ngtk')">close [x]</button>
-  </div>
-
-  <div class="case-slider-container" id="slider-ngtk" onscroll="updateCaseProgress('slider-ngtk', 'case-counter-ngtk', 5)">
-    
-    <!-- СЛАЙД 1: РЕАЛИЗАЦИЯ НА ВХОДЕ (ОБЛОЖКА) -->
-    <div class="case-slide">
-      <div class="case-slide-content">
-        <div class="case-text-block" style="display: flex; flex-direction: column; gap: 24px;">
-          <h2 class="case-title" style="font-size: 2.8rem; margin-bottom: 10px;">
-            <span lang="en">NGTK Outdoor</span>
-            <span lang="ru">Наружная реклама для&nbsp;НГТК</span>
-          </h2>
-          <p class="case-description">
-            <span lang="en">Comprehensive visual communication and outdoor advertising for the Nizhny Novgorod Humanities and Technical College.</span>
-            <span lang="ru">Комплексная визуальная коммуникация и&nbsp;наружная реклама для&nbsp;Нижегородского гуманитарно-технического колледжа.</span>
-          </p>
-        </div>
-        <div class="case-visual-block">
-          <img src="Колледж_рука.jpeg" alt="Realization" class="solid-image">
-        </div>
-      </div>
-    </div>
-
-    <!-- СЛАЙД 2: ЛИСТОВКА ДЛЯ РАЗДАЧИ (КОЛЛЕДЖ 2) -->
-    <div class="case-slide">
-      <div class="case-slide-content">
-        <div class="case-text-block" style="display: flex; flex-direction: column; gap: 24px;">
-          <h3 class="case-subtitle">
-            <span lang="en">Promo Flyer</span>
-            <span lang="ru">Рекламная листовка</span>
-          </h3>
-          <p class="case-description">
-            <span lang="en">Designed for mass street distribution. Features an engaging 3D character and a clear step-by-step enrollment plan on the back.</span>
-            <span lang="ru">Спроектирована для&nbsp;массовой раздачи на&nbsp;улице. Внимание аудитории захватывает дружелюбный 3D-персонаж, а&nbsp;на&nbsp;обороте сверстан четкий пошаговый алгоритм поступления и&nbsp;сбора документов.</span>
-          </p>
-        </div>
-        <div class="case-visual-block flat-result">
-          <img src="Колледж_2_Страница_1_Изображение_0001.png" alt="Flyer Front" class="solid-image">
-          <img src="Колледж_2_Страница_2_Изображение_0001.png" alt="Flyer Back" class="solid-image">
-        </div>
-      </div>
-    </div>
-
-    <!-- СЛАЙД 3: ПЛАКАТ ВНУТРИ КОЛЛЕДЖА (КОЛЛЕДЖ 1) -->
-    <div class="case-slide">
-      <div class="case-slide-content">
-        <div class="case-text-block" style="display: flex; flex-direction: column; gap: 24px;">
-          <h3 class="case-subtitle">
-            <span lang="en">Internal Info Poster</span>
-            <span lang="ru">Плакат для&nbsp;доски объявлений</span>
-          </h3>
-          <p class="case-description">
-            <span lang="en">An informative poster placed inside the college, utilizing a strict yet accessible layout for the specialties table.</span>
-            <span lang="ru">Информационный плакат, размещенный внутри самого колледжа на&nbsp;главной доске объявлений. Содержит подробную сводную таблицу специальностей и&nbsp;сроков обучения с&nbsp;использованием строгой, но&nbsp;максимально понятной верстки.</span>
-          </p>
-        </div>
-        <div class="case-visual-block">
-          <img src="Колледж_1.png" alt="Internal Poster" class="solid-image">
-        </div>
-      </div>
-    </div>
-
-    <!-- СЛАЙД 4: ОБЪЯВЛЕНИЯ НА ВХОДЕ (КОЛЛЕДЖ 3) -->
-    <div class="case-slide">
-      <div class="case-slide-content">
-        <div class="case-text-block" style="display: flex; flex-direction: column; gap: 24px;">
-          <h3 class="case-subtitle">
-            <span lang="en">Entrance Announcements</span>
-            <span lang="ru">Объявления на&nbsp;входе</span>
-          </h3>
-          <p class="case-description">
-            <span lang="en">Clear and strict informational panels mounted directly at the college entrance group. Focused on high legibility and immediate call-to-action.</span>
-            <span lang="ru">Информационные панели, встречающие абитуриентов прямо на&nbsp;входной группе. Крупная контрастная типографика, мгновенно считываемый посыл и&nbsp;акцент на&nbsp;целевые действия без&nbsp;лишнего визуального шума.</span>
-          </p>
-        </div>
-        <div class="case-visual-block flat-result">
-          <img src="Колледж3_1.png" alt="Entrance Info" class="solid-image">
-          <img src="Колледж_3.png" alt="Entrance Specialties" class="solid-image">
-        </div>
-      </div>
-    </div>
-
-    <!-- СЛАЙД 5: ИТОГ / ВЫВОД -->
-    <div class="case-slide">
-      <div class="case-slide-content">
-        <div class="case-text-block" style="display: flex; flex-direction: column; gap: 24px;">
-          <h3 class="case-subtitle" style="font-size: 2.8rem; margin-bottom: 10px;">
-            <span lang="en">Bridging the Gap</span>
-            <span lang="ru">Госструктура нового&nbsp;поколения</span>
-          </h3>
-          <p class="case-description">
-            <span lang="en">The final visual system successfully merges official state requirements with a fresh, modern aesthetic, ensuring high impact across both physical and digital touchpoints.</span>
-            <span lang="ru">Итоговая дизайн-система успешно объединила строгие требования государственного учебного заведения с&nbsp;современной, свежей эстетикой. Это обеспечило высокую вовлеченность абитуриентов как&nbsp;через печатные носители, так и&nbsp;в&nbsp;живой городской среде.</span>
-          </p>
-        </div>
-        <div class="case-visual-block">
-          <img src="Колледж_фото.png" alt="Details" class="solid-image">
-        </div>
-      </div>
-    </div>
-
-  </div> <!-- Конец слайдера -->
-
-  <!-- НАВИГАЦИЯ -->
-  <div class="case-slide-bottom-nav">
-    <button class="case-arrow-btn" onclick="slideCase('slider-ngtk', 'prev')">&lt;</button>
-    <span class="case-progress" id="case-counter-ngtk">01 / 05</span>
-    <button class="case-arrow-btn" onclick="slideCase('slider-ngtk', 'next')">&gt;</button>
-  </div>
-</div>
-
-<!-- КЕЙС: РИЖСКИЙ ПАРК -->
-<div id="case-riga" class="case-modal">
-  <div class="case-modal-header">
-    <div></div>
-    <button class="close-case-btn" onclick="closeCase('case-riga')">close [x]</button>
-  </div>
-
-  <div class="case-slider-container" id="slider-riga" onscroll="updateCaseProgress('slider-riga', 'case-counter-riga', 2)">
-
-    <!-- СЛАЙД 1: РЕАЛИЗАЦИЯ (МАКЕТ НА ТРАССЕ) -->
-    <div class="case-slide">
-      <div class="case-slide-content">
-        <div class="case-text-block" style="display: flex; flex-direction: column; gap: 24px;">
-          <h2 class="case-title" style="font-size: 2.8rem; margin-bottom: 10px;">
-            <span lang="en">Rizhsky Park</span>
-            <span lang="ru">Билборд Рижский Парк</span>
-          </h2>
-          <p class="case-description">
-            <span lang="en"><span style="color: #00e5ff;">Task:</span> Premium billboard design for a countryside estate, optimized for instant readability on a high-speed highway.</span>
-            <span lang="ru"><span style="color: #00e5ff;">Задача:</span> Разработка премиального билборда для&nbsp;загородного поселка с&nbsp;учетом мгновенной считываемости на&nbsp;скоростной трассе.</span>
-          </p>
-          <p class="case-description">
-            <span lang="en"><span style="color: #ff5500;">Solution:</span> The layout is diagonally divided into two functional zones. A dark background on the left ensures perfect text contrast, while the open right side captures the location's atmosphere. Visual noise was completely eliminated to achieve a monolithic, premium look.</span>
-            <span lang="ru"><span style="color: #ff5500;">Решение:</span> Макет разделен диагональю на&nbsp;два функциональных блока. Темный фон слева обеспечивает идеальную контрастность текста, а&nbsp;свободная правая часть передает атмосферу локации. Визуальный шум полностью устранен для&nbsp;создания дорогого и&nbsp;монолитного образа бизнес-класса.</span>
-          </p>
-        </div>
-        <div class="case-visual-block">
-          <img src="баннер_усадьба_макет.jpg" alt="Billboard Mockup" class="solid-image">
-        </div>
-      </div>
-    </div>
-
-    <!-- СЛАЙД 2: ДЕТАЛИ И ВЕРСТКА (ПЛОСКИЙ МАКЕТ) -->
-    <div class="case-slide">
-      <div class="case-slide-content">
-        <div class="case-text-block" style="display: flex; flex-direction: column; gap: 24px;">
-          <h3 class="case-subtitle">
-            <span lang="en">Typography & Layout</span>
-            <span lang="ru">Типографика и&nbsp;верстка</span>
-          </h3>
-          <p class="case-description">
-            <span lang="en">Copywriting was meticulously edited and shortened for instant comprehension by drivers. Info badges are grouped to support the main diagonal angle, complemented by strict, dense typography without heavy glossy effects.</span>
-            <span lang="ru">Проведена точечная редактура копирайта: текстовые блоки сокращены для&nbsp;моментального восприятия водителями за&nbsp;доли секунды. Информационные плашки собраны в&nbsp;единую визуальную связку, поддерживающую угол главного разделителя, и&nbsp;дополнены строгой плотной типографикой.</span>
-          </p>
-        </div>
-        <div class="case-visual-block">
-          <img src="баннер_усадьба.jpg" alt="Billboard Layout" class="solid-image">
-        </div>
-      </div>
-    </div>
-
-  </div> <!-- Конец слайдера -->
-
-  <!-- НАВИГАЦИЯ -->
-  <div class="case-slide-bottom-nav">
-    <button class="case-arrow-btn" onclick="slideCase('slider-riga', 'prev')">&lt;</button>
-    <span class="case-progress" id="case-counter-riga">01 / 02</span>
-    <button class="case-arrow-btn" onclick="slideCase('slider-riga', 'next')">&gt;</button>
-  </div>
-</div>
-
-<!-- КЕЙС: БОРТОВИК (ЖУРНАЛ FLIPBOOK) -->
-<div id="case-journal" class="case-modal">
-  <div class="case-modal-header">
-    <div></div>
-    <button class="close-case-btn" onclick="closeCase('case-journal')">close [x]</button>
-  </div>
-
-  <div class="journal-container-wrapper">
-    <div class="journal-wrapper">
-      <div id="flipbook"></div>
-    </div>
-    <!-- Правая скролл-лента миниатюр -->
-    <div class="journal-sidebar" id="journal-sidebar"></div>
-  </div>
-
-  <!-- Навигация журнала -->
-  <div class="case-slide-bottom-nav">
-    <button class="case-arrow-btn" id="j-prev">&lt;</button>
-    <span class="case-progress" id="journal-counter">002 / 104</span>
-    <button class="case-arrow-btn" id="j-next">&gt;</button>
-  </div>
-</div>
-
-<!-- МОДАЛЬНОЕ ОКНО: ЕРМАК (КАТАЛОГ) -->
-<div id="case-ermak" class="case-modal">
-  <div class="case-modal-header">
-    <div></div>
-    <button class="close-case-btn" onclick="closeCase('case-ermak')">close [x]</button>
-  </div>
-
-  <div class="journal-container-wrapper">
-    <div class="journal-wrapper">
-      <div id="flipbook-ermak"></div>
-    </div>
-    <div class="journal-sidebar" id="sidebar-ermak"></div>
-  </div>
-
-  <div class="case-slide-bottom-nav">
-    <button class="case-arrow-btn" id="ermak-prev">&lt;</button>
-    <span class="case-progress" id="counter-ermak">2 / 54</span>
-    <button class="case-arrow-btn" id="ermak-next">&gt;</button>
-  </div>
-</div>
 
   <!-- PAGINATION -->
   <div class="pagination-container">
@@ -2958,8 +2297,6 @@
     <a href="#gallery" class="pagination-dot"></a>
     <a href="#contact" class="pagination-dot"></a>
   </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
 
   <script>
     const container = document.querySelector('.presentation-container');
@@ -3024,6 +2361,7 @@
       });
     });
 
+    // Изоляция скролла между секциями
     container.addEventListener('wheel', (e) => {
       if (window.innerWidth <= 768) return; 
       if (e.deltaY === 0) return;
@@ -3032,7 +2370,7 @@
       if (isThrottled) return;
 
       const activeSlide = slides[currentSlide];
-      const scrollBox = activeSlide.querySelector('.works-scroll-box, .gallery-grid');
+      const scrollBox = activeSlide.querySelector('.works-scroll-box');
 
       if (scrollBox) {
         const isAtBottom = scrollBox.scrollTop + scrollBox.clientHeight >= scrollBox.scrollHeight - 5;
@@ -3074,6 +2412,7 @@
       }, 600);
     }, { passive: false });
 
+    // Пагинация (точки)
     const observerOptions = {
       root: window.innerWidth <= 768 ? null : container,
       threshold: 0.5
@@ -3103,333 +2442,66 @@
     const observer = new IntersectionObserver(observerCallback, observerOptions);
     slides.forEach(slide => observer.observe(slide));
 
-    // --- ЛОГИКА ДВУХУРОВНЕВОЙ ГАЛЕРЕИ --- //
+    // --- ЛОГИКА ЕДИНОЙ ГАЛЕРЕИ --- //
+    let totalGallerySlides = 0;
 
-    function openCategory(catId, titleEn, titleRu) {
-      document.getElementById('gallery-categories').classList.remove('active');
-      document.getElementById('gallery-grid-view').classList.add('active');
-      
-      document.getElementById('main-title-en').innerText = titleEn;
-      document.getElementById('main-title-ru').innerText = titleRu;
+    function openGallery(folderPath, imageCount) {
+      const track = document.getElementById('gallery-track');
+      track.innerHTML = ''; // Очищаем старые картинки
+      totalGallerySlides = imageCount;
 
-      const items = document.querySelectorAll('.gallery-item');
-      items.forEach(item => {
-        if (item.getAttribute('data-category') === catId) {
-          item.style.display = 'flex';
-        } else {
-          item.style.display = 'none';
-        }
-      });
-    }
+      // Генерируем картинки
+      for (let i = 1; i <= imageCount; i++) {
+        const pageNum = String(i).padStart(2, '0'); // Делает 01, 02, 03...
+        const imgPath = `${folderPath}/${pageNum}.jpg`; // Путь к картинке
 
-    function backToCategories() {
-      document.getElementById('gallery-grid-view').classList.remove('active');
-      document.getElementById('gallery-categories').classList.add('active');
-      
-      document.getElementById('main-title-en').innerText = 'selected works';
-      document.getElementById('main-title-ru').innerText = 'избранные работы';
-    }
-
-    let isErmakLoaded = false;
-let pageFlipErmak = null;
-    let isJournalLoaded = false;
-    let pageFlip = null;
-
-function openCase(caseId) {
-  const modal = document.getElementById(caseId);
-  if (!modal) return;
-
-  modal.classList.add('active');
-  document.body.style.overflow = 'hidden';
-
-  // ==========================================
-  // ЛОГИКА КАТАЛОГА ЕРМАК
-  // ==========================================
-  if (caseId === 'case-ermak' && !isErmakLoaded) {
-    isErmakLoaded = true;
-
-    const totalPages = 54;
-    const flipbookContainer = document.getElementById('flipbook-ermak');
-    const sidebarContainer = document.getElementById('sidebar-ermak');
-
-    flipbookContainer.innerHTML = '';
-    sidebarContainer.innerHTML = '';
-
-    // Генерируем со 2-й по 53-ю страницу
-    for (let i = 2; i < totalPages; i++) {
-      const pageNum = String(i).padStart(2, '0');
-      const imgPath = `ЕРМАК_КАТАЛОГ_Веб (1)_Страница_${pageNum}.jpg`;
-
-      const pageDiv = document.createElement('div');
-      pageDiv.className = 'flip-page';
-
-      const pageImg = document.createElement('img');
-      pageImg.src = imgPath;
-      pageImg.style.width = '100%';
-      pageImg.style.height = '100%';
-      pageImg.style.objectFit = 'cover';
-      pageImg.style.pointerEvents = 'none';
-
-      pageDiv.appendChild(pageImg);
-      flipbookContainer.appendChild(pageDiv);
-
-      const thumbDiv = document.createElement('div');
-      thumbDiv.className = 'sidebar-thumb';
-      if (i === 2) thumbDiv.classList.add('active');
-
-      const thumbImg = document.createElement('img');
-      thumbImg.src = imgPath;
-      thumbDiv.appendChild(thumbImg);
-
-      thumbDiv.addEventListener('click', () => {
-        pageFlipErmak.flip(i - 2);
-      });
-
-      sidebarContainer.appendChild(thumbDiv);
-    }
-
-    // Инициализация с небольшой задержкой для отрисовки DOM
-    setTimeout(() => {
-      pageFlipErmak = new St.PageFlip(flipbookContainer, {
-        width: 450,
-        height: 650,
-        size: "stretch",
-        minWidth: 300,
-        maxWidth: 800,
-        minHeight: 420,
-        maxHeight: 1100,
-        maxShadowOpacity: 0.4,
-        showCover: false,
-        mobileScrollSupport: false
-      });
-
-      // ИЩЕМ ТОЛЬКО ВНУТРИ ЕРМАКА!
-      pageFlipErmak.loadFromHTML(flipbookContainer.querySelectorAll('.flip-page'));
-
-      document.getElementById('counter-ermak').innerText = `2 / 53`;
-
-      pageFlipErmak.on('flip', (e) => {
-        const currentIndex = e.data; 
-        const actualPage = currentIndex + 2; 
-
-        document.getElementById('counter-ermak').innerText = `${actualPage} / 53`;
-
-        sidebarContainer.querySelectorAll('.sidebar-thumb').forEach((thumb, idx) => {
-          if (idx === currentIndex) {
-            thumb.classList.add('active');
-            thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-          } else {
-            thumb.classList.remove('active');
-          }
-        });
-      });
-
-      document.getElementById('ermak-prev').addEventListener('click', () => pageFlipErmak.flipPrev());
-      document.getElementById('ermak-next').addEventListener('click', () => pageFlipErmak.flipNext());
-    }, 50);
-  }
-
-  // ==========================================
-  // ЛОГИКА ЖУРНАЛА БОРТОВИК
-  // ==========================================
-  else if (caseId === 'case-journal' && !isJournalLoaded) {
-    isJournalLoaded = true;
-
-    const totalPages = 103; 
-    const flipbookContainer = document.getElementById('flipbook');
-    const sidebarContainer = document.getElementById('journal-sidebar');
-
-    flipbookContainer.innerHTML = '';
-    sidebarContainer.innerHTML = '';
-
-    for (let i = 2; i <= totalPages; i++) {
-      const pageNum = String(i).padStart(3, '0');
-      const imgPath = `Бортовик_compressed_Страница_${pageNum}.jpg`;
-      
-      const pageDiv = document.createElement('div');
-      pageDiv.className = 'flip-page';
-      
-      const pageImg = document.createElement('img');
-      pageImg.src = imgPath;
-      pageImg.style.width = '100%';
-      pageImg.style.height = '100%';
-      pageImg.style.objectFit = 'cover';
-      pageImg.style.pointerEvents = 'none';
-      
-      pageDiv.appendChild(pageImg);
-      flipbookContainer.appendChild(pageDiv);
-
-      const thumbDiv = document.createElement('div');
-      thumbDiv.className = 'sidebar-thumb';
-      if (i === 2) thumbDiv.classList.add('active');
-
-      const thumbImg = document.createElement('img');
-      thumbImg.src = imgPath;
-      thumbDiv.appendChild(thumbImg);
-
-      thumbDiv.addEventListener('click', () => {
-        pageFlip.flip(i - 2);
-      });
-
-      sidebarContainer.appendChild(thumbDiv);
-    }
-
-    setTimeout(() => {
-      pageFlip = new St.PageFlip(flipbookContainer, {
-        width: 450,
-        height: 650,
-        size: "stretch",
-        minWidth: 300,
-        maxWidth: 800,
-        minHeight: 420,
-        maxHeight: 1100,
-        maxShadowOpacity: 0.4,
-        showCover: false,
-        mobileScrollSupport: false
-      });
-
-      // ИЩЕМ ТОЛЬКО ВНУТРИ ЖУРНАЛА! (Исправлен баг воровства страниц)
-      pageFlip.loadFromHTML(flipbookContainer.querySelectorAll('.flip-page'));
-
-      document.getElementById('journal-counter').innerText = `2 / 103`;
-
-      pageFlip.on('flip', (e) => {
-        const currentIndex = e.data;
-        const actualPage = currentIndex + 2;
+        const slide = document.createElement('div');
+        slide.className = 'slider-slide';
         
-        document.getElementById('journal-counter').innerText = `${actualPage} / 103`;
+        const img = document.createElement('img');
+        img.src = imgPath;
+        img.loading = "lazy"; // Чтобы телефон не умер
 
-        sidebarContainer.querySelectorAll('.sidebar-thumb').forEach((thumb, idx) => {
-          if (idx === currentIndex) {
-            thumb.classList.add('active');
-            thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-          } else {
-            thumb.classList.remove('active');
-          }
-        });
-      });
-
-      document.getElementById('j-prev').addEventListener('click', () => pageFlip.flipPrev());
-      document.getElementById('j-next').addEventListener('click', () => pageFlip.flipNext());
-    }, 50);
-  }
-
-  // ==========================================
-  // ЛОГИКА ОСТАЛЬНЫХ КЕЙСОВ (ОБЫЧНЫЕ СЛАЙДЕРЫ)
-  // ==========================================
-  else if (caseId !== 'case-journal' && caseId !== 'case-ermak' && !modal.querySelector('.case-sidebar')) {
-    const slider = modal.querySelector('.case-slider-container');
-    if (!slider) return;
-
-    const sidebar = document.createElement('div');
-    sidebar.className = 'case-sidebar';
-    modal.appendChild(sidebar);
-
-    const slides = slider.querySelectorAll('.case-slide');
-
-    slides.forEach((slide, index) => {
-      const img = slide.querySelector('img');
-      if (!img) return;
-
-      const thumbDiv = document.createElement('div');
-      thumbDiv.className = 'sidebar-thumb';
-      if (index === 0) thumbDiv.classList.add('active');
-
-      const thumbImg = document.createElement('img');
-      thumbImg.src = img.src;
-      thumbDiv.appendChild(thumbImg);
-
-      thumbDiv.addEventListener('click', () => {
-        slider.scrollTo({
-          left: slider.clientWidth * index,
-          behavior: 'smooth'
-        });
-      });
-
-      sidebar.appendChild(thumbDiv);
-    });
-
-    slider.addEventListener('scroll', () => {
-      const currentIndex = Math.round(slider.scrollLeft / slider.clientWidth);
-      const thumbs = sidebar.querySelectorAll('.sidebar-thumb');
-
-      thumbs.forEach((thumb, idx) => {
-        if (idx === currentIndex) {
-          thumb.classList.add('active');
-          thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        } else {
-          thumb.classList.remove('active');
-        }
-      });
-    });
-  }
-}
-
-    function closeCase(caseId) {
-      const modal = document.getElementById(caseId);
-      if (modal) {
-        modal.classList.remove('active');
+        slide.appendChild(img);
+        track.appendChild(slide);
       }
-      document.body.style.overflow = '';
-    }
 
-    // Переключение стрелочками с точным отслеживанием последнего слайда
-    function slideCase(sliderId, direction) {
-      const slider = document.getElementById(sliderId);
-      const slideWidth = slider.clientWidth;
-      const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
+      document.getElementById('global-gallery').classList.add('active');
+      document.body.style.overflow = 'hidden';
       
-      const currentSlideIndex = Math.round(slider.scrollLeft / slideWidth);
-      const totalSlides = Math.round(slider.scrollWidth / slideWidth);
+      // Сбрасываем скролл в начало
+      track.scrollTo({ left: 0 });
+      updateCounter();
 
-      if (direction === 'next') {
-        if (currentSlideIndex >= totalSlides - 1) {
-          slider.style.transition = 'opacity 0.25s ease-in-out';
-          slider.style.opacity = '0';
-          setTimeout(() => {
-            slider.scrollTo({ left: 0, behavior: 'auto' });
-            slider.style.opacity = '1';
-            setTimeout(() => { slider.style.transition = ''; }, 250);
-          }, 250);
-        } else {
-          slider.scrollBy({ left: slideWidth, behavior: 'smooth' });
-        }
-      } else {
-        if (currentSlideIndex <= 0) {
-          slider.style.transition = 'opacity 0.25s ease-in-out';
-          slider.style.opacity = '0';
-          setTimeout(() => {
-            slider.scrollTo({ left: maxScrollLeft, behavior: 'auto' });
-            slider.style.opacity = '1';
-            setTimeout(() => { slider.style.transition = ''; }, 250);
-          }, 250);
-        } else {
-          slider.scrollBy({ left: -slideWidth, behavior: 'smooth' });
-        }
-      }
+      // Слушаем скролл/свайп для обновления цифр
+      track.addEventListener('scroll', updateCounter);
     }
 
-    // Обновление цифр счетчика
-    function updateCaseProgress(sliderId, counterId, totalSlides) {
-      const slider = document.getElementById(sliderId);
-      const counter = document.getElementById(counterId);
-      const slideWidth = slider.clientWidth;
-      const currentScroll = slider.scrollLeft;
-      let currentSlide = Math.round(currentScroll / slideWidth) + 1;
-      let formattedCurrent = currentSlide < 10 ? '0' + currentSlide : currentSlide;
-      let formattedTotal = totalSlides < 10 ? '0' + totalSlides : totalSlides;
-      counter.innerText = `${formattedCurrent} / ${formattedTotal}`;
+    function closeGallery() {
+      document.getElementById('global-gallery').classList.remove('active');
+      document.body.style.overflow = '';
+      
+      // Отписываемся от события, чтобы не плодить слушателей
+      document.getElementById('gallery-track').removeEventListener('scroll', updateCounter);
     }
 
-    // Изоляция скролла внутри кейса
-    const caseSlider = document.getElementById('slider-diet');
-    if (caseSlider) {
-      caseSlider.addEventListener('wheel', (e) => {
-        if (e.deltaY !== 0) {
-          e.preventDefault();
-          caseSlider.scrollLeft += e.deltaY;
-        }
-      }, { passive: false });
+    function moveGallery(direction) {
+      const track = document.getElementById('gallery-track');
+      const slideWidth = track.clientWidth;
+      track.scrollBy({ left: slideWidth * direction, behavior: 'smooth' });
+    }
+
+    function updateCounter() {
+      const track = document.getElementById('gallery-track');
+      const slideWidth = track.clientWidth;
+      // Рассчитываем текущий слайд по позиции скролла
+      let currentIndex = Math.round(track.scrollLeft / slideWidth) + 1;
+      
+      // Защита от выхода за пределы
+      if (currentIndex < 1) currentIndex = 1;
+      if (currentIndex > totalGallerySlides) currentIndex = totalGallerySlides;
+      
+      document.getElementById('gallery-counter').innerText = `${currentIndex} / ${totalGallerySlides}`;
     }
   </script>
 
