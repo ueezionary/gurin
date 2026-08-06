@@ -1269,95 +1269,6 @@
   .journal-sidebar { display: none; } /* На мобилках скрываем, чтобы не загромождать экран */
 }
 
-/* =======================================================
-   ФИНАЛЬНЫЙ МОБИЛЬНЫЙ ФИКС (ВСТАВИТЬ ПЕРЕД ЗАКРЫТИЕМ </style>)
-   ======================================================= */
-@media (max-width: 768px) {
-  /* 1. ИСПРАВЛЕНИЕ ОБЫЧНЫХ КЕЙСОВ (2ГИС, ВКР, ДИЕТОЛОГ) */
-  .case-slide {
-    display: block !important; /* Убираем flex-center, чтобы верх не выталкивался за экран */
-    height: 100vh !important;
-    overflow-y: auto !important; /* Разрешаем вертикальный скролл внутри слайда */
-    padding: 80px 20px 100px 20px !important;
-  }
-
-  .case-slide-content, .case-slide-content.reverse {
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: center !important;
-    min-height: 100% !important; /* Центрируем, если текста мало */
-    gap: 30px !important;
-  }
-
-  .case-text-block {
-    order: 1 !important;
-    width: 100% !important;
-    text-align: center !important;
-  }
-
-  .case-visual-block {
-    order: 2 !important;
-    width: 100% !important;
-  }
-
-  .case-title { font-size: 2.2rem !important; }
-  .case-subtitle { font-size: 1.6rem !important; }
-  .case-description { font-size: 1.05rem !important; line-height: 1.6 !important; }
-
-  /* Снимаем жесткие ограничения высоты, чтобы картинки (как листовка) не плющились */
-  .case-visual-block img, 
-  .case-slide-content img,
-  .solid-image,
-  .floating-mockup {
-    max-height: none !important; 
-    width: 100% !important;
-    height: auto !important;
-    object-fit: contain !important;
-    margin-bottom: 20px !important;
-  }
-
-  /* 2. ИСПРАВЛЕНИЕ КАТАЛОГОВ (ЕРМАК И ЖУРНАЛ) */
-  .case-modal.mobile-scroll-mode {
-    overflow-y: auto !important; /* Разрешаем скролл всей модалке */
-    display: block !important;
-  }
-
-  .mobile-scroll-mode .journal-container-wrapper {
-    height: auto !important;
-    display: block !important; /* Убираем блокировку скролла */
-  }
-
-  .mobile-scroll-mode .journal-wrapper {
-    height: auto !important;
-    padding: 80px 15px 40px 15px !important;
-  }
-
-  /* Выстраиваем страницы каталога в колонку друг под другом */
-  .mobile-scroll-mode #flipbook,
-  .mobile-scroll-mode #flipbook-ermak {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 20px !important;
-    width: 100% !important;
-    height: auto !important;
-    max-height: none !important;
-    box-shadow: none !important;
-  }
-
-  .mobile-scroll-mode .flip-page {
-    width: 100% !important;
-    height: auto !important;
-    background: transparent !important;
-  }
-
-  .mobile-scroll-mode .flip-page img {
-    width: 100% !important;
-    height: auto !important;
-    border-radius: 8px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-  }
-}
-
   </style>
 </head>
 <body class="lang-en">
@@ -2348,7 +2259,7 @@
 <div class="gallery-item" data-category="digital" onclick="openCase('case-vkr')">
   <img src="Валерия_ВКР_Страница_01_Изображение_0001.png" alt="Презентация ВКР">
   <div class="item-overlay">
-    <span class="overlay-title">ВКР / Верстка и презентации</span>
+    <span class="overlay-title">ВКР / Диджитал и презентации</span>
     <span class="overlay-action">
       <span lang="en">-&gt; open presentation</span>
       <span lang="ru">-&gt; открыть презентацию</span>
@@ -3231,13 +3142,6 @@ function openCase(caseId) {
   modal.classList.add('active');
   document.body.style.overflow = 'hidden';
 
-  const isMobile = window.innerWidth <= 768;
-
-  // Если мобилка — включаем режим легкого вертикального скролла для журналов
-  if (isMobile && (caseId === 'case-journal' || caseId === 'case-ermak')) {
-    modal.classList.add('mobile-scroll-mode');
-  }
-
   // ==========================================
   // ЛОГИКА КАТАЛОГА ЕРМАК
   // ==========================================
@@ -3249,8 +3153,9 @@ function openCase(caseId) {
     const sidebarContainer = document.getElementById('sidebar-ermak');
 
     flipbookContainer.innerHTML = '';
-    if (sidebarContainer) sidebarContainer.innerHTML = '';
+    sidebarContainer.innerHTML = '';
 
+    // Генерируем со 2-й по 53-ю страницу
     for (let i = 2; i < totalPages; i++) {
       const pageNum = String(i).padStart(2, '0');
       const imgPath = `ЕРМАК_КАТАЛОГ_Веб (1)_Страница_${pageNum}.jpg`;
@@ -3264,64 +3169,64 @@ function openCase(caseId) {
       pageImg.style.height = '100%';
       pageImg.style.objectFit = 'cover';
       pageImg.style.pointerEvents = 'none';
-      pageImg.loading = "lazy"; // Ленивая загрузка для мобилок
 
       pageDiv.appendChild(pageImg);
       flipbookContainer.appendChild(pageDiv);
 
-      if (!isMobile && sidebarContainer) {
-        const thumbDiv = document.createElement('div');
-        thumbDiv.className = 'sidebar-thumb';
-        if (i === 2) thumbDiv.classList.add('active');
+      const thumbDiv = document.createElement('div');
+      thumbDiv.className = 'sidebar-thumb';
+      if (i === 2) thumbDiv.classList.add('active');
 
-        const thumbImg = document.createElement('img');
-        thumbImg.src = imgPath;
-        thumbDiv.appendChild(thumbImg);
+      const thumbImg = document.createElement('img');
+      thumbImg.src = imgPath;
+      thumbDiv.appendChild(thumbImg);
 
-        thumbDiv.addEventListener('click', () => {
-          pageFlipErmak.flip(i - 2);
-        });
+      thumbDiv.addEventListener('click', () => {
+        pageFlipErmak.flip(i - 2);
+      });
 
-        sidebarContainer.appendChild(thumbDiv);
-      }
+      sidebarContainer.appendChild(thumbDiv);
     }
 
-    if (!isMobile) {
-      setTimeout(() => {
-        pageFlipErmak = new St.PageFlip(flipbookContainer, {
-          width: 450, height: 650, size: "stretch",
-          minWidth: 300, maxWidth: 800, minHeight: 420, maxHeight: 1100,
-          maxShadowOpacity: 0.4, showCover: false, mobileScrollSupport: false
-        });
+    // Инициализация с небольшой задержкой для отрисовки DOM
+    setTimeout(() => {
+      pageFlipErmak = new St.PageFlip(flipbookContainer, {
+        width: 450,
+        height: 650,
+        size: "stretch",
+        minWidth: 300,
+        maxWidth: 800,
+        minHeight: 420,
+        maxHeight: 1100,
+        maxShadowOpacity: 0.4,
+        showCover: false,
+        mobileScrollSupport: false
+      });
 
-        pageFlipErmak.loadFromHTML(flipbookContainer.querySelectorAll('.flip-page'));
+      // ИЩЕМ ТОЛЬКО ВНУТРИ ЕРМАКА!
+      pageFlipErmak.loadFromHTML(flipbookContainer.querySelectorAll('.flip-page'));
 
-        document.getElementById('counter-ermak').innerText = `2 / 53`;
+      document.getElementById('counter-ermak').innerText = `2 / 53`;
 
-        pageFlipErmak.on('flip', (e) => {
-          const actualPage = e.data + 2;
-          document.getElementById('counter-ermak').innerText = `${actualPage} / 53`;
+      pageFlipErmak.on('flip', (e) => {
+        const currentIndex = e.data; 
+        const actualPage = currentIndex + 2; 
 
-          if (sidebarContainer) {
-            sidebarContainer.querySelectorAll('.sidebar-thumb').forEach((thumb, idx) => {
-              if (idx === e.data) {
-                thumb.classList.add('active');
-                thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-              } else {
-                thumb.classList.remove('active');
-              }
-            });
+        document.getElementById('counter-ermak').innerText = `${actualPage} / 53`;
+
+        sidebarContainer.querySelectorAll('.sidebar-thumb').forEach((thumb, idx) => {
+          if (idx === currentIndex) {
+            thumb.classList.add('active');
+            thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          } else {
+            thumb.classList.remove('active');
           }
         });
+      });
 
-        document.getElementById('ermak-prev').addEventListener('click', () => pageFlipErmak.flipPrev());
-        document.getElementById('ermak-next').addEventListener('click', () => pageFlipErmak.flipNext());
-      }, 50);
-    } else {
-        // На мобилках скрываем нижнюю панель с кнопками
-        const bottomNav = modal.querySelector('.case-slide-bottom-nav');
-        if (bottomNav) bottomNav.style.display = 'none';
-    }
+      document.getElementById('ermak-prev').addEventListener('click', () => pageFlipErmak.flipPrev());
+      document.getElementById('ermak-next').addEventListener('click', () => pageFlipErmak.flipNext());
+    }, 50);
   }
 
   // ==========================================
@@ -3335,7 +3240,7 @@ function openCase(caseId) {
     const sidebarContainer = document.getElementById('journal-sidebar');
 
     flipbookContainer.innerHTML = '';
-    if (sidebarContainer) sidebarContainer.innerHTML = '';
+    sidebarContainer.innerHTML = '';
 
     for (let i = 2; i <= totalPages; i++) {
       const pageNum = String(i).padStart(3, '0');
@@ -3350,63 +3255,63 @@ function openCase(caseId) {
       pageImg.style.height = '100%';
       pageImg.style.objectFit = 'cover';
       pageImg.style.pointerEvents = 'none';
-      pageImg.loading = "lazy";
       
       pageDiv.appendChild(pageImg);
       flipbookContainer.appendChild(pageDiv);
 
-      if (!isMobile && sidebarContainer) {
-        const thumbDiv = document.createElement('div');
-        thumbDiv.className = 'sidebar-thumb';
-        if (i === 2) thumbDiv.classList.add('active');
+      const thumbDiv = document.createElement('div');
+      thumbDiv.className = 'sidebar-thumb';
+      if (i === 2) thumbDiv.classList.add('active');
 
-        const thumbImg = document.createElement('img');
-        thumbImg.src = imgPath;
-        thumbDiv.appendChild(thumbImg);
+      const thumbImg = document.createElement('img');
+      thumbImg.src = imgPath;
+      thumbDiv.appendChild(thumbImg);
 
-        thumbDiv.addEventListener('click', () => {
-          pageFlip.flip(i - 2);
-        });
+      thumbDiv.addEventListener('click', () => {
+        pageFlip.flip(i - 2);
+      });
 
-        sidebarContainer.appendChild(thumbDiv);
-      }
+      sidebarContainer.appendChild(thumbDiv);
     }
 
-    if (!isMobile) {
-      setTimeout(() => {
-        pageFlip = new St.PageFlip(flipbookContainer, {
-          width: 450, height: 650, size: "stretch",
-          minWidth: 300, maxWidth: 800, minHeight: 420, maxHeight: 1100,
-          maxShadowOpacity: 0.4, showCover: false, mobileScrollSupport: false
-        });
+    setTimeout(() => {
+      pageFlip = new St.PageFlip(flipbookContainer, {
+        width: 450,
+        height: 650,
+        size: "stretch",
+        minWidth: 300,
+        maxWidth: 800,
+        minHeight: 420,
+        maxHeight: 1100,
+        maxShadowOpacity: 0.4,
+        showCover: false,
+        mobileScrollSupport: false
+      });
 
-        pageFlip.loadFromHTML(flipbookContainer.querySelectorAll('.flip-page'));
+      // ИЩЕМ ТОЛЬКО ВНУТРИ ЖУРНАЛА! (Исправлен баг воровства страниц)
+      pageFlip.loadFromHTML(flipbookContainer.querySelectorAll('.flip-page'));
 
-        document.getElementById('journal-counter').innerText = `2 / 103`;
+      document.getElementById('journal-counter').innerText = `2 / 103`;
 
-        pageFlip.on('flip', (e) => {
-          const actualPage = e.data + 2;
-          document.getElementById('journal-counter').innerText = `${actualPage} / 103`;
+      pageFlip.on('flip', (e) => {
+        const currentIndex = e.data;
+        const actualPage = currentIndex + 2;
+        
+        document.getElementById('journal-counter').innerText = `${actualPage} / 103`;
 
-          if (sidebarContainer) {
-            sidebarContainer.querySelectorAll('.sidebar-thumb').forEach((thumb, idx) => {
-              if (idx === e.data) {
-                thumb.classList.add('active');
-                thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-              } else {
-                thumb.classList.remove('active');
-              }
-            });
+        sidebarContainer.querySelectorAll('.sidebar-thumb').forEach((thumb, idx) => {
+          if (idx === currentIndex) {
+            thumb.classList.add('active');
+            thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          } else {
+            thumb.classList.remove('active');
           }
         });
+      });
 
-        document.getElementById('j-prev').addEventListener('click', () => pageFlip.flipPrev());
-        document.getElementById('j-next').addEventListener('click', () => pageFlip.flipNext());
-      }, 50);
-    } else {
-        const bottomNav = modal.querySelector('.case-slide-bottom-nav');
-        if (bottomNav) bottomNav.style.display = 'none';
-    }
+      document.getElementById('j-prev').addEventListener('click', () => pageFlip.flipPrev());
+      document.getElementById('j-next').addEventListener('click', () => pageFlip.flipNext());
+    }, 50);
   }
 
   // ==========================================
